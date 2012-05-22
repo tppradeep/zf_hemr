@@ -12,6 +12,7 @@ class User_IndexController extends Zend_Controller_Action
         	exit;
         }
         $this->view->checkacl('0','0','0','1'); // Just for initiallization for helper call
+        $this->view->checkaclresource('0','0',0); // Just for initiallization for helper call
         
         
     }

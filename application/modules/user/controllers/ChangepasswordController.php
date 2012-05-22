@@ -6,6 +6,7 @@ class User_ChangepasswordController extends Zend_Controller_Action
     public function init()
     {
         $this->view->checkacl('0','0','0','1'); // Just for initiallization for helper call
+        $this->view->checkaclresource('0','0',0); // Just for initiallization for helper call
     }
 
     public function indexAction()

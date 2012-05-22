@@ -72,14 +72,19 @@ Cufon.replace('.cart-title', { fontFamily: 'Enigmatic Regular', hover: true });
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td>
+            <?php 
+            $sess = new Zend_Session_Namespace('user');
+            $hf_id=$sess->hf_id;
+            if($this->checkaclresource('user','Profile',$hf_id))
+            {
+            ?>
             <fieldset class="frameset-profile">
     <legend>Profile:</legend>
 <table border="0" cellspacing="3" cellpadding="0">
   <tr>
     <td>
     <?php
-    $sess = new Zend_Session_Namespace('user');
-    $hf_id=$sess->hf_id;
+   
 	if($this->checkacl('user','Profile','index',$hf_id))	
 	{
 	 ?>
@@ -101,12 +106,13 @@ Cufon.replace('.cart-title', { fontFamily: 'Enigmatic Regular', hover: true });
     </a--></td>
   </tr>
 </table>
-
   </fieldset>
+  <?php }?>
             </td>
           </tr>
           <tr>
             <td>
+            <?php  if($this->checkaclresource('user','Plan',$hf_id)){?>
             <fieldset class="frameset-profile">
         <legend>Plan Status:</legend>
   <table width="100%" border="0" cellspacing="3" cellpadding="0">
@@ -129,11 +135,12 @@ Cufon.replace('.cart-title', { fontFamily: 'Enigmatic Regular', hover: true });
       </tr>
     </table>
       </fieldset>
-
+<?php }?>
             </td>
           </tr>
           <tr>
             <td>
+            <?php  if($this->checkaclresource('user','Invoice',$hf_id)){?>
               <fieldset class="frameset-profile">
         <legend>Invoices:</legend>
   <table border="0" cellspacing="3" cellpadding="0">
@@ -167,7 +174,7 @@ Cufon.replace('.cart-title', { fontFamily: 'Enigmatic Regular', hover: true });
     </tr>
     </table>
       </fieldset>
-
+		<?php }?>
             </td>
           </tr>
           <tr>

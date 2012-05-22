@@ -109,53 +109,60 @@ class Admin_Model_DbTable_Users extends Zend_Db_Table_Abstract
 	    $sql = 'select acl_resource,acl_action from acl_user_setting where hf_id='.$hf_id;
 	    $acl_dtd = $db->fetchAll($sql);
 	    echo "<pre>";
-	    print_r($acl_dtd);
-	    die;
-	   	$acl_resource = $acl_dtd[0]['acl_resource'];
-		$acl_action = $acl_dtd[0]['acl_action']; 	
-    
-	    
+	    $output2="";
+	    $output="";
+	    if(sizeof($acl_dtd)!=0)
+	    {
+		   	$acl_resource = $acl_dtd[0]['acl_resource'];
+			$acl_action = $acl_dtd[0]['acl_action'];
+	    }
+	    else
+	    {
+	        $acl_resource="";
+	        $acl_action="";
+	    }
+		    
+			
+			
+			
+		    
+		    $sql = 'select distinct(controller_display_name),controller from acl_resources where controller in (select distinct(controller) from acl_resources where module=\'user\' order by listing_order asc)';
+			$control_list =  $db->fetchAll($sql);
+	
+			$output = '<table width="100%" border="0" cellspacing="2" cellpadding="2">';
+	
+			foreach($control_list as $RL)
+			{
+			  $output .= '<tr>';
+			  $pos = strpos($acl_resource, $RL['controller']);
+			  if($pos !== false)
+			  {
+			      $chk_string = 'checked';
+			  }
+			  else
+			  {
+			      $chk_string='';
+			  }
+			  $output .= '<td class="shadowlight">';
+			  $output .= '<input name="cont" type="checkbox" value="'.$RL['controller'].'" '.$chk_string.' onclick="userprivilage(this.value,\''. $hf_id.'\')" /></td>';
+			  $output .= '<td width="100%" class="shadowlight">'.$RL['controller_display_name'].'</td>';
+			  $pos=false;
+			}
+	
+			$output .='</tr>';
+			$output .= '</table>';
+			
+			$output ='<td valign="top">'.$output.'</td>';
+			$UserAction = $this->useractionlist($acl_resource, $hf_id);
+			//print_r($UserAction);
+			
+			
+			/*
+			 * Action Set
+			*/
+			$output2 = '<td valign="top" id="privilegelist">'.$UserAction.'</td>';
 		
-		
-		
-	    
-	    $sql = 'select distinct(controller_display_name),controller from acl_resources where controller in (select distinct(controller) from acl_resources where module=\'user\' order by listing_order asc)';
-		$control_list =  $db->fetchAll($sql);
-
-		$output = '<table width="100%" border="0" cellspacing="2" cellpadding="2">';
-
-		foreach($control_list as $RL)
-		{
-		  $output .= '<tr>';
-		  $pos = strpos($acl_resource, $RL['controller']);
-		  if($pos !== false)
-		  {
-		      $chk_string = 'checked';
-		  }
-		  else
-		  {
-		      $chk_string='';
-		  }
-		  $output .= '<td class="shadowlight">';
-		  $output .= '<input name="cont" type="checkbox" value="'.$RL['controller'].'" '.$chk_string.' onclick="userprivilage(this.value,\''. $hf_id.'\')" /></td>';
-		  $output .= '<td width="100%" class="shadowlight">'.$RL['controller_display_name'].'</td>';
-		  $pos=false;
-		}
-
-		$output .='</tr>';
-		$output .= '</table>';
-		
-		$output ='<td valign="top">'.$output.'</td>';
-		$UserAction = $this->useractionlist($acl_resource, $hf_id);
-		//print_r($UserAction);
-		
-		
-		/*
-		 * Action Set
-		*/
-		$output2 = '<td valign="top" id="privilegelist">'.$UserAction.'</td>';
-		
-		
+	   
 		return $output.$output2;
 	}
 	public function useractionlist($id,$hf_id)
@@ -168,10 +175,15 @@ class Admin_Model_DbTable_Users extends Zend_Db_Table_Abstract
 	    $sql = 'select acl_resource,acl_action from acl_user_setting where hf_id='.$hf_id;
 	    $acl_dtd = $db->fetchAll($sql);
 	     
-	    
+	    if(sizeof($acl_dtd)!=0)
+	    {
 	    $acl_action = $acl_dtd[0]['acl_action'];
 	    $acl_resource = $acl_dtd[0]['acl_resource'];
-
+	    }
+	    else
+	    {
+	        $acl_action="";
+	    }
 	    
 	    $sql = 'select count(id) from acl_user_setting where hf_id='.$hf_id;
 	    if($db->fetchOne($sql)==0)

@@ -6,6 +6,7 @@ class User_ProductsController extends Zend_Controller_Action
     public function init()
     {
          $this->view->checkacl('0','0','0','1'); // Just for initiallization for helper call
+         $this->view->checkaclresource('0','0',0); // Just for initiallization for helper call
         $sess = new Zend_Session_Namespace('user');
         $this->view->hf_id=$sess->hf_id;
     }
