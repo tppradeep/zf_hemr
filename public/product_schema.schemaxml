@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="latin1" collation="latin1_swedish_ci">hosted_emr</database>
+</source>
+<canvas zoom="100">
+<tables>
+<table name="products" view="colnames">
+<left>40</left>
+<top>30</top>
+<width>156</width>
+<height>242</height>
+<sql_create_table>CREATE TABLE `products` (
+  `idproducts` bigint(20) NOT NULL AUTO_INCREMENT,
+  `Product_Name` varchar(150) DEFAULT NULL,
+  `Customer_id` varchar(50) DEFAULT NULL,
+  `Product_feature` text,
+  `Product_sort_order` bigint(20) DEFAULT NULL,
+  `Product_status` tinyint(4) DEFAULT NULL,
+  `cost` float DEFAULT NULL,
+  `payment_term` smallint(6) DEFAULT NULL,
+  PRIMARY KEY (`idproducts`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Products Master Table'</sql_create_table>
+</table>
+<table name="plans" view="colnames">
+<left>478</left>
+<top>332</top>
+<width>127</width>
+<height>175</height>
+<sql_create_table>CREATE TABLE `plans` (
+  `idplan` bigint(20) NOT NULL AUTO_INCREMENT,
+  `planname` varchar(255) DEFAULT NULL,
+  `customer_id` bigint(20) DEFAULT NULL,
+  `discount` float DEFAULT NULL,
+  `discount_from` date DEFAULT NULL,
+  `discount_to` date DEFAULT NULL,
+  PRIMARY KEY (`idplan`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="plan_products" view="colnames">
+<left>220</left>
+<top>261</top>
+<width>129</width>
+<height>124</height>
+<sql_create_table>CREATE TABLE `plan_products` (
+  `idplanproducts` bigint(20) NOT NULL AUTO_INCREMENT,
+  `idplan` bigint(20) DEFAULT NULL,
+  `idproducts` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`idplanproducts`),
+  KEY `FK_plan_products` (`idplan`),
+  KEY `FK_plan_products_to_products` (`idproducts`),
+  CONSTRAINT `FK_plan_products_to_products` FOREIGN KEY (`idproducts`) REFERENCES `products` (`idproducts`),
+  CONSTRAINT `FK_plan_products` FOREIGN KEY (`idplan`) REFERENCES `plans` (`idplan`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="product_cost" view="colnames">
+<left>455</left>
+<top>20</top>
+<width>147</width>
+<height>209</height>
+<sql_create_table>CREATE TABLE `product_cost` (
+  `idproduct_feature` bigint(20) NOT NULL AUTO_INCREMENT,
+  `idproducts` bigint(20) DEFAULT '0',
+  `customer_id` bigint(20) DEFAULT '0',
+  `user_from` bigint(20) DEFAULT '0',
+  `user_to` bigint(20) DEFAULT '0',
+  `cost` float NOT NULL DEFAULT '0',
+  `sortorder` bigint(20) NOT NULL DEFAULT '1',
+  `status` tinyint(4) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`idproduct_feature`),
+  KEY `FK_product_feature_Products` (`idproducts`),
+  CONSTRAINT `FK_product_feature_Products` FOREIGN KEY (`idproducts`) REFERENCES `products` (`idproducts`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Product Feature Main Table'</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>

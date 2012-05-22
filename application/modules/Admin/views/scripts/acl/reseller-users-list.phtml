@@ -1,0 +1,9 @@
+<select name="userid" id="userid" onchange="listroles(this.value);">
+          <option value="0" selected="selected" >Select User</option>
+          <?php 
+          foreach ($this->userlist as $RL)
+          {
+              echo '<option value="'.$RL['AdminId'].'">'.$RL['AdminFullName'].'('.$RL['AdminEmail'].')</option>';
+          }
+          ?>
+        </select>

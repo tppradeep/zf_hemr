@@ -1,0 +1,42 @@
+<?php if ($this->pageCount): ?>
+<table border="0" cellspacing="0" cellpadding="0" class="paginationControl">
+  <tr>
+  <td>
+<?php echo $this->firstItemNumber; ?> - <?php echo $this->lastItemNumber; ?> 
+of <?php echo $this->totalItemCount; ?>
+ </td>
+ <td>
+<!-- First page link -->
+<?php if (isset($this->previous)): ?>
+  <a href="<?php echo $this->url(array('page' => $this->first)); ?>"><img src="<?php echo $this->baseUrl();?>/images/first_active.png" width="24" height="24" alt="First" /></a>
+<?php else: ?>
+<span class="disabled"><img src="<?php echo $this->baseUrl();?>/images/first_not.png" width="24" height="24" alt="First" /></span>
+<?php endif; ?>
+ </td>
+<!-- Previous page link -->
+<td>
+<?php if (isset($this->previous)): ?>
+  <a href="<?php echo $this->url(array('page' => $this->previous)); ?>"><img src="<?php echo $this->baseUrl();?>/images/previous_active.png" width="24" height="24" alt="Previous" /></a>
+<?php else: ?>
+  <span class="disabled"><img src="<?php echo $this->baseUrl();?>/images/previous_not.png" width="24" height="24" alt="Previous" /></span>
+<?php endif; ?>
+ </td>
+ <td>
+<!-- Next page link -->
+<?php if (isset($this->next)): ?>
+  <a href="<?php echo $this->url(array('page' => $this->next)); ?>"><img src="<?php echo $this->baseUrl();?>/images/next_active.png" width="24" height="24" alt="Next" /></a>
+<?php else: ?>
+  <span class="disabled"><img src="<?php echo $this->baseUrl();?>/images/next_not.png" width="24" height="24" alt="Next" /></span>
+<?php endif; ?>
+ </td>
+ <td>
+<!-- Last page link -->
+<?php if (isset($this->next)): ?>
+  <a href="<?php echo $this->url(array('page' => $this->last)); ?>"><img src="<?php echo $this->baseUrl();?>/images/last_active.png" width="24" height="24" alt="Last" /></a>
+<?php else: ?>
+  <span class="disabled"><img src="<?php echo $this->baseUrl();?>/images/last_not.png" width="24" height="24" alt="Last" /></span>
+<?php endif; ?>
+ </td>
+ </tr>
+ </table>
+<?php endif; ?>

@@ -1,0 +1,13 @@
+<?php 
+
+if($this->transaction['st']=="Pending")
+{
+    ?>
+    Please Note your transaction status is Pending. Please check you have sufficient balance in your account and if the transaction required authentication, Please login to your Paypal Account and autherize the transaction. Once the payment is autherized, You will get a confirmation mail.
+    <?php 
+}
+?>
+<p>&nbsp;</p>
+Your Transaction Id :<?php echo $this->transaction['tx'];?> 
+<p>Payment Status : <?php echo $this->transaction['st'];?></p>
+<p>Invoice No : <?php echo $this->transaction['cm'];?>

@@ -1,0 +1,220 @@
+<?php
+//$this->title="New Customer Add";
+//$this->headTitle($this->title); // for title
+
+?>
+ <script language="javascript" type="text/javascript">
+    jQuery(document).ready(function(){
+                // binds form submission and fields to the validation engine
+                jQuery("#userregister").validationEngine();
+            });
+  </script>
+  <link href="../../../../public/css/site.css" rel="stylesheet" type="text/css" />
+  
+<?php 
+//$this->Pre($this->formdata);
+if($this->formdata['error']!="")
+{
+	echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">';
+	  echo '<tr>';
+	    echo '<td><img src="'.$this->baseUrl().'/images/error.png" width="24" height="24" alt="Error" /></td>';
+
+	    if($this->formdata['error']=="facility")
+	    	echo '<td class="error">The facility Identifier name ('. $this->formdata['hf_facility_identifier'].') is alreay taken by another user. Please change the facility name</td>';
+	    if($this->formdata['error']=="dashboarduser")
+	    	echo '<td class="error">The Email Address ('. $this->formdata['hf_email'].') is alreay taken by another user. Please change Email</td>';
+	  echo '</tr>';
+	echo '</table>';
+}
+?>
+<!-- form id="userregister" method="post" action="<?php echo $this->baseUrl();?>/UserRegister/userregister"-->
+<form id="userregister" method="post" action="">
+<br />
+<input type="hidden" name="_sec" value="register">
+<input type="hidden" name="apid" id="apid" value="<?php echo $this->plandetails['apid'];?>" />
+<input type="hidden" name="pid" id="pid" value="<?php echo $this->plandetails['pid'];?>" />
+<input type="hidden" name="bpcost" id="bpcost" value="<?php echo $this->plandetails['bpcost'];?>" />
+<input type="hidden" name="btotalfee" id="btotalfee" value="<?php echo $this->plandetails['btotalfee'];?>" />
+<input type="hidden" name="pcost" id="pcost" value="<?php echo $this->plandetails['pcost'];?>" />
+<input type="hidden" name="setupfee" id="setupfee" value="<?php echo $this->plandetails['setupfee'];?>" />
+<input type="hidden" name="totalfee" id="totalfee" value="<?php echo $this->plandetails['totalfee'];?>" />
+
+<table width="94%" border="0" align="center" cellpadding="2" cellspacing="2">
+  <tr>
+    <td align="center">
+    <div class="reg-steps">STEP:I - Choose Plan<br />
+	<span class="normal-text"><?php echo $this->escape($this->sp_view['hp_name']);?></span></div>
+    <div class="reg-steps" style="line-height:40px;">STEP:II - Create Account</div>
+    <div class="reg-steps" style="line-height:40px;">STEP:III - Payment</div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <div class="label-box">
+    <div class="label-no">1</div>
+    <div class="reg-label">Facility Identifier</div>
+    <div class="clear"></div>
+    <div class="write-box" style="width:325px;"><input name="hf_facility_identifier" type="text" id="hf_facility_identifier" maxlength="150" class="validate[required],custom[onlyLetterNumber]" value="<?php echo $this->formdata['hf_facility_identifier']?>" tabindex="1" style="width:315px;"/></div>
+    <div class="clear"></div>
+    </div>
+    </td>
+  </tr>
+   <tr>
+    <td>
+    <div class="label-box">
+    <div class="label-no">2</div>
+    <div class="reg-label">Full Name</div>
+    <div class="clear"></div>
+    <div class="write-box" style="width:425px;"><input name="hf_facility_name" type="text" id="hf_facility_name" maxlength="150" class="validate[required],custom[onlyLetterwithSpaceandAppostophy]" value="<?php echo $this->formdata['hf_facility_name']?>" tabindex="2"  style="width:415px;"/></div>
+    <div class="clear"></div>
+    </div>
+    </td>
+  </tr>
+   <tr>
+    <td>
+    <div class="label-box">
+    <div class="label-no">3</div>
+    <div class="reg-label">Speciality</div>
+    <div class="clear"></div>
+    <div class="write-box" style="width:425px;"><input name="hf_speciality" type="text" id="hf_speciality" maxlength="150" class="validate[required],custom[onlyLetterNumber]" value="<?php echo $this->formdata['hf_facility_identifier']?>" tabindex="3"  style="width:415px;"/></div>
+    <div class="clear"></div>
+    </div>
+    </td>
+  </tr>
+   <tr>
+    <td>
+    <div class="label-box">
+    <div class="label-no">6</div>
+    <div class="reg-label">Email ID (This will be the login ID to your account)</div>
+    <div class="clear"></div>
+    <div class="write-box" style="width:325px;"><input name="hf_email" type="text" id="hf_email" maxlength="150" class="validate[required],custom[email]" value="<?php echo $this->formdata['hf_email']?>" tabindex="4"  style="width:315px;"/></div>
+    <div class="clear"></div>
+    </div>
+    </td>
+  </tr>
+   <tr>
+    <td>
+    <div class="label-box">
+    <div class="label-no">5</div>
+    <div class="reg-label">Dashboard Password</div><div class="reg-label" style="margin-left:70px;">Confirm Password</div>
+    <div class="clear"></div>
+    <div class="write-box" style="width:185px;"><input name="dashboard_password" type="password" id="dashboard_password" maxlength="150" class="validate[required],custom[onlyLetterNumber]" tabindex="5"  style="width:175px;"/></div>
+    
+    <div class="write-box" style="width:185px;"><input name="dashboard_password_confirm" type="password" id="dashboard_password_confirm" maxlength="150" class="validate[required],custom[onlyLetterNumber]" tabindex="6"  style="width:175px;"/></div>
+    <div class="clear"></div>
+    </div>
+    </td>
+  </tr>
+   <tr>
+    <td>
+    
+    </td>
+  </tr>
+   <tr>
+    <td>
+    <div class="label-box">
+    <div class="label-no">7</div>
+    <div class="reg-label">Address</div>
+    <div class="clear"></div>
+    <div class="write-box" style="width:325px;"><textarea name="hf_address" id="hf_address" rows="5"  tabindex="8" class="validate[required]" style="width:319px;border-color:#FFF;border:1px;"><?php echo $this->formdata['hf_address']?></textarea></div>
+    <div class="clear"></div>
+    </div>
+    </td>
+  </tr>
+   <tr>
+    <td>
+    <div class="label-box">
+    <div class="label-no">8</div>
+    <div class="reg-label">City</div>
+    <div class="clear"></div>
+    <div class="write-box" style="width:325px;"><input name="hf_city" type="text" id="hf_city" maxlength="150" class="validate[required]" value="<?php echo $this->formdata['hf_city']?>" tabindex="9"  style="width:315px;"/></div>
+    <div class="clear"></div>
+    </div>
+    </td>
+  </tr>
+   <tr>
+    <td>
+    <div class="label-box">
+    <div class="label-no">9</div>
+    <div class="reg-label">State / Province / Region</div>
+    <div class="clear"></div>
+    <div class="write-box" style="width:325px;"><input name="hf_state" type="text" id="hf_state" maxlength="150" class="validate[required]" value="<?php echo $this->formdata['hf_state']?>" tabindex="10"  style="width:315px;"/></div>
+    <div class="clear"></div>
+    </div>
+    </td>
+  </tr>
+   <tr>
+    <td>
+    <div class="label-box">
+    <div class="label-no">10</div>
+    <div class="reg-label2">Postal / Zip Code</div>
+    <div class="clear"></div>
+    <div class="write-box" style="width:125px;"><input name="hf_zip" type="text" id="hf_zip" maxlength="150" class="validate[required]" value="<?php echo $this->formdata['hf_zip']?>" tabindex="11"  style="width:115px;"/></div>
+    <div class="clear"></div>
+    </div>
+    </td>
+  </tr>
+   <tr>
+    <td>
+    <div class="label-box">
+    <div class="label-no">11</div>
+    <div class="reg-label2">Country</div>
+    <div class="clear"></div>
+    <div class="write-box" style="width:325px;"><select name="hf_country" id="hf_country"  class="validate[required]" tabindex="12"  style="width:315px;">
+          <?php 
+		  $selcountry=$this->formdata['hf_country'];
+		  if($selcountry=="")
+		  	$selcountry="USA";
+		  foreach($this->country as $country)
+		  {
+		  	
+		  	
+		  	if($selcountry==$country['Code'])
+		  	{
+		  		$selval = " selected";
+		  	}
+		  	else
+		  	{
+		  		$selval ="";
+		  	}
+		  	echo "<option value='".$country['Code']."' ".$selval.">".$country['Name']."</option>";
+		   
+		  }
+		  ?>
+        </select></div>
+    <div class="clear"></div>
+    </div>
+    </td>
+  </tr>
+   <tr>
+    <td>
+    <div class="label-box">
+    <div class="label-no">12</div>
+    <div class="reg-label2">Phone Number</div> <div class="reg-label2" style="margin-left:65px;">Fax</div>
+    <div class="clear"></div>
+    <div class="write-box" style="width:125px;"><input name="hf_phone" type="text" id="hf_phone" value="<?php echo $this->formdata['hf_phone']?>" size="10" maxlength="15" class="validate[required]" tabindex="13" style="width:115px;"/></div>
+     <div class="write-box" style="width:125px;"><input name="hf_fax" type="text" id="hf_fax" value="<?php echo $this->formdata['hf_fax']?>" size="10" maxlength="15" class="validate[required]" tabindex="14" style="width:115px;"/></div>
+    <div class="clear"></div>
+    </div>
+    </td>
+  </tr>
+   <tr>
+    <td>
+    <div class="label-box">
+    <div class="label-no">13</div>
+    <div class="reg-label2">Tax ID</div> <div class="reg-label2" style="margin-left:125px;">NPI</div>
+    <div class="clear"></div>
+    <div class="write-box" style="width:125px;"><input name="hf_tax_id" type="text" id="hf_tax_id" value="<?php echo $this->formdata['hf_tax_id']?>" size="10" maxlength="15" tabindex="15" style="width:115px;"/></div>
+      <div class="write-box" style="width:125px;"><input name="hf_npi" type="text" id="hf_npi" value="<?php echo $this->formdata['hf_npi']?>" size="10" maxlength="15"  tabindex="16" style="width:115px;"/></div>
+    <div class="clear"></div>
+    </div>
+    </td>
+  </tr>
+   <tr>
+    <td style="padding-left:250px;padding-top:15px;">
+   <input type="submit" name="Submit" value="Register Details" class="user-submit" tabindex="17" />
+    </td>
+  </tr>
+</table>
+</form>
+

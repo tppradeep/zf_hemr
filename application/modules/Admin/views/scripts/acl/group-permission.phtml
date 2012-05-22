@@ -1,0 +1,46 @@
+<?php
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+?>
+<link href="../../../../../../public/css/admin.css" rel="stylesheet" type="text/css" />
+<div id="right_panel">
+<table width="100%" border="0" cellspacing="2" cellpadding="2">
+  <tr>
+    <td><table border="0" cellspacing="2" cellpadding="2">
+      <tr>
+        <td>Select Reseller </td>
+        <td>:</td>
+        <td><select name="cusid" onchange="listusersGroup(this.value);">
+          <option value="0" selected="selected" >Select Reseller</option>
+          <?php 
+          foreach ($this->ResellerList as $RL)
+          {
+              echo '<option value="'.$RL['id'].'">'.$RL['Name'].'</option>';
+          }
+          ?>
+        </select></td>
+      </tr>
+      <tr>
+        <td>Select User</td>
+        <td>:</td>
+        <td id="rolelisting">Please Select Reseller </td>
+      </tr>
+    </table></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><table width="100%" border="0" cellspacing="2" cellpadding="2">
+      <tr>
+        <td valign="top" class="list-table-header shadow">Resources</td>
+        <td valign="top" class="list-table-header shadow">Privileges</td>
+      </tr>
+      <tr>
+        <td valign="top" id="controllerlist">&nbsp;</td>
+        <td valign="top" id="actionlist">&nbsp;</td>
+      </tr>
+    </table></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+</div>

@@ -1,0 +1,54 @@
+<script type="text/javascript" charset="utf-8">
+		$(function () {
+			var tabContainers = $('div.tabs > div');
+			tabContainers.hide().filter(':first').show();
+			
+			$('div.tabs ul.tabNavigation a').click(function () {
+				tabContainers.hide();
+				tabContainers.filter(this.hash).show();
+				$('div.tabs ul.tabNavigation a').removeClass('selected');
+				$(this).addClass('selected');
+				return false;
+			}).filter(':first').click();
+		});
+		
+		
+
+$('#tds').corner('2px bevel');
+
+
+	</script>
+  
+<?php $this->placeholder('sidebar')->captureStart() ?>
+<link href="../../../../public/css/site.css" rel="stylesheet" type="text/css" />
+   
+<table width="100%">
+<?php 
+
+foreach($this->plans as $plans)
+{
+?>
+<tr>
+<td><a href="<?php echo $this->url(array('controller'=>'PlanList','action'=>'listplan', 'id'=>$this->ecode($plans['hp_id'])));?>" class="plan_list"><?php echo $this->escape($plans['hp_name']);?></a></td>
+</tr>
+<?php 
+}
+ ?>
+</table>
+<?php $this->placeholder('sidebar')->captureEnd() ?>
+
+<div class="tabs">
+        <ul class="tabNavigation">
+            <li id="tds"><a href="#first">Plans</a></li>
+            <li id="tds"><a href="#second">Products</a></li>
+        </ul>
+<div id="first">
+            <h2>Plans</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+<div id="second">
+
+            <h2>Products</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+</div>

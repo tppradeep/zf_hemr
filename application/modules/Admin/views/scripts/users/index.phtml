@@ -1,0 +1,126 @@
+	<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/themes/base/jquery.ui.all.css">
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/external/jquery.bgiframe-2.1.2.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.core.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.widget.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.mouse.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.button.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.draggable.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.position.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.dialog.js"></script>
+	<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/demo/demos.css">
+	
+	<script>
+	$(function() {
+		$("#dialog-confirm").addClass("hidevisible");  
+		});
+	
+	
+	function del(delid)
+	{
+		$(function() {
+		$( "#dialog-confirm" ).addClass("shovisible");
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+			$( "#dialog-confirm" ).dialog({
+				resizable: false,
+				height:180,
+				modal: true,
+				buttons: {
+					"Delete all items": function() {
+						$( this ).dialog( "close" );
+						window.location.href="<?php echo $this->baseUrl();?>/Admin/Users/delete/id/"+delid+"";
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		});
+	}
+	
+	</script>
+<?php
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+?>
+
+
+
+
+<div id="right_panel">
+ <div id="dialog-confirm" title="Delete Record?">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+ 
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="grid">
+  <thead>
+  <tr>
+    <td height="20" align="center" nowrap="nowrap" class="invoice-table-title b table-head-bg white">#</td>
+    <td class="invoice-table-title b table-head-bg">Facility Identifier</td>
+    <td class="invoice-table-title b table-head-bg" align="left">Full Name</td>
+    <td class="invoice-table-title b table-head-bg" align="center">Email</td>
+    <td align="center" class="invoice-table-title b table-head-bg">Date Of Registration</td>
+    <td align="center" class="invoice-table-title b table-head-bg">User Status</td>
+    <td class="invoice-table-title b table-head-bg"></td>
+  </tr>
+  </thead>
+  <tbody>
+  <?php 
+  $sino=1;
+  //$currency = new Zend_Currency();
+  foreach($this->userlist as $userlist)
+  {
+  ?>
+  <tr>
+    <td height="22" class="normal-text  line" align="center"><?php echo $sino;?>.</td>
+    <td class="normal-text line"><?php echo $userlist['hf_facility_identifier']?></td>
+    <td class="normal-text line" align="left"><?php echo $userlist['hf_facility_name'];?></td>
+    <td class="normal-text line" align="center"><?php echo $userlist['hf_email'];?></td>
+    <td align="center" class="normal-text line"><?php echo $userlist['reg_date'];?>
+    </td>
+      <td align="center" class="normal-text line">
+    <?php
+    echo($userlist['user_status'])?'<img src="'.$this->baseUrl().'/images/active.png" alt="Active" title="Active"/>':'<img src="'.$this->baseUrl().'/images/disable.png" alt="Disabled" title="Disabled"/>';
+    ?></td>
+    <td class="normal-text line" align="center">
+
+     <a class="openmodalbox" href="javascript:void(0);"	rel="ajax: <?php echo $this->baseUrl();?>/Admin/Users/viewplan/id/<?php echo $this->Ecode($userlist['hf_id']);?>">
+    <?php 
+    echo "<img src='".$this->baseUrl()."/images/plan.png' alt='View Plan' title='View Plan' width='16px' height='16px'  style='cursor:pointer;' />";
+//    echo '</a>&nbsp;';
+?></a>&nbsp;
+     <a href="<?php echo $this->baseUrl();?>/Admin/Users/userinvoice/id/<?php echo $this->Ecode($userlist['hf_id']);?>?keepThis=true&TB_iframe=true&height=350&width=600" class="thickbox">
+    
+    <?php 
+    echo "<img src='".$this->baseUrl()."/images/invoice_small.png' alt='View Invoices' title='View Invoices'  style='cursor:pointer;' />";
+	?></a>&nbsp;
+     <a href="<?php echo $this->baseUrl();?>/Admin/Users/user-acl/id/<?php echo $this->Ecode($userlist['hf_id']);?>?keepThis=true&TB_iframe=true&height=400&width=700" class="thickbox" title="Assign Resource And Privilege To User"><img src="<?php echo $this->baseUrl();?>/images/permission.png" alt="Set Permission" title="Set Permission" style="cursor:pointer;"/></a>&nbsp;
+    <a class="openmodalbox"	href="javascript:void(0);"	rel="ajax: <?php echo $this->baseUrl();?>/Admin/Users/userdetails/id/<?php echo $this->Ecode($userlist['hf_id']);?>">
+    <?php 
+  //  echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Products','action'=>'view', 'id'=>$this->Ecode($this->$product['idproducts'])),0,true).' rel="prettyPhoto[ajax]"">';
+    echo "<img src='".$this->baseUrl()."/images/view.png' alt='View' title='View'  style='cursor:pointer;' />";
+    echo '</a>&nbsp;';
+    
+    
+ //   echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Products','action'=>'edit', 'id'=>$this->Ecode($userlist['hf_id'])),0,true).'">';
+ //   echo "<img src='".$this->baseUrl()."/images/edit.png' alt='Edit' title='Edit'  style='cursor:pointer;' />";
+ //   echo '</a>&nbsp;';
+       	echo "<img src='".$this->baseUrl()."/images/delete.gif' alt='Delete' title='Delete' onClick='del(".$userlist['hf_id'].")'   style='cursor:pointer;'/>";
+    ?>
+    </td>
+  </tr>
+  <?php 
+  $sino = ++$sino;
+  }
+  ?>
+  </tbody>
+</table>
+  </div>
+ <script type="text/javascript">
+                //<![CDATA[
+ $(document).ready(function() {
+	    oTable = $('#grid').dataTable({
+	        "bJQueryUI": true,
+	        "sPaginationType": "full_numbers"
+	    });
+	} );
+                //]]>
+  </script>

@@ -1,0 +1,84 @@
+<?php
+	$productdtd = array();
+	$productdtd = $this->invdtd[2];
+	
+?>
+<form action="" method="POST">
+<input type="hidden" name="invoiceno" value="<?php echo $this->invdtd[1]['invoice_number'];?>" />
+<input type="hidden" name="providerno" value="<?php echo $this->invdtd[0]['provider_no'];?>" />
+  <table width="100%" border="0" cellspacing="2" cellpadding="2">
+    <tr>
+      <td class="list-table-header shadow">&nbsp;Plan Name</td>
+      <td align="center" class="label">&nbsp;</td>
+      <td class="list-table-header shadow">&nbsp;&nbsp;<?php echo $this->invdtd[0]['plan_name'];?></td>
+    </tr>
+    <tr>
+      <td class="label">Provider Selected</td>
+      <td align="center" class="label">:</td>
+      <td class="label">&nbsp;<?php echo $this->invdtd[0]['provider_no'];?></td>
+    </tr>
+     <tr>
+      <td class="label">Invoice No</td>
+      <td align="center" class="label">:</td>
+      <td class="label"><?php echo $this->invdtd[1]['invoice_number'];?></td>
+    </tr>
+     <tr>
+      <td colspan="3" class="line">&nbsp;</td>
+      </tr>
+    <tr>
+      <td class="label">Product In the plan</td>
+      <td align="center" class="label">&nbsp;</td>
+      <td class="label">&nbsp;</td>
+    </tr>
+     <tr>
+      <td colspan="3" class="line">&nbsp;</td>
+      </tr>
+    <?php 
+	foreach($productdtd as $PD)
+	{
+	?>
+    <tr>
+      <td class="label"><?php echo $PD['product_name'];?></td>
+      <td align="center" class="label">:</td>
+      <td class="label"><label for="textfield"></label>
+      $<input type="text" name="<?php echo $PD['idcustomer_products'];?>_cost" id="<?php echo $PD['idcustomer_products'];?>_cost" value="<?php echo $PD['cost'];?>" disabled="disabled" /></td>
+    </tr>
+    <tr>
+      <td class="label">Setup Fee</td>
+      <td align="center" class="label">:</td>
+      <td class="label"><label for="textfield2"></label>
+     $<input type="text" name="<?php echo $PD['idcustomer_products'];?>_setup" id="<?php echo $PD['idcustomer_products'];?>_setup" value="<?php echo $PD['setup_fee'];?>"  disabled="disabled"/></td>
+    </tr>
+     <tr>
+      <td colspan="3" class="line">&nbsp;</td>
+      </tr>
+    <?php
+	}
+	?>
+    <tr>
+      <td class="label">Total Setup Fee</td>
+      <td>:</td>
+      <td>$<input type="text" name="setupfee" id="setupfee" value="<?php echo $this->invdtd[1]['setupfee'];?>"  disabled="disabled"/></td>
+    </tr>
+    <tr>
+      <td class="label">Total Monthly Subscription</td>
+      <td>:</td>
+      <td>$<input type="text" name="subscription_amount" id="subscription_amount" value="<?php echo $this->invdtd[1]['subscription_amount'];?>"  disabled="disabled"/></td>
+    </tr>
+    <tr>
+      <td class="label">Discount</td>
+      <td>:</td>
+      <td>$<input type="text" name="discount_amount" id="discount_amount" value="<?php echo $this->invdtd[1]['discount_amount'];?>" /></td>
+    </tr>
+    <tr>
+      <td class="label">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="label">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td><input type="submit" name="button2" id="button2" value="Update Price For This Customer" /></td>
+    </tr>
+  </table>
+</form>

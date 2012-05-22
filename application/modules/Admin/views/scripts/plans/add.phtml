@@ -1,0 +1,99 @@
+<?php
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+?>
+<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/themes/base/jquery.ui.all.css">
+<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.core.js"></script>
+<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.widget.js"></script>
+<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.datepicker.js"></script>
+<script language="javascript" type="text/javascript">
+    jQuery(document).ready(function(){
+                // binds form submission and fields to the validation engine
+                jQuery("#planfeature").validationEngine();
+            });
+			
+		$(function() {
+		var dates = $( "#from, #to" ).datepicker({
+			defaultDate: "+1w",
+			changeMonth: true,
+			numberOfMonths: 3,
+			onSelect: function( selectedDate ) {
+				var option = this.id == "from" ? "minDate" : "maxDate",
+					instance = $( this ).data( "datepicker" ),
+					date = $.datepicker.parseDate(
+						instance.settings.dateFormat ||
+						$.datepicker._defaults.dateFormat,
+						selectedDate, instance.settings );
+				dates.not( this ).datepicker( "option", option, date );
+			}
+		});
+	});	
+  </script>
+<link href="../../../../../../public/css/admin.css" rel="stylesheet" type="text/css" />
+<p>&nbsp;</p>
+<form method="post" action="" id="planfeature" enctype="multipart/form-data">
+<table width="75%" border="0" cellspacing="3" cellpadding="4" align="center">
+  <tr>
+    <td colspan="3" class="list-table-header shadow">Add New Plan</td>
+    </tr>
+  <tr>
+    <td class="label line">Plan Name </td>
+    <td class="label line">:</td>
+    <td class="line"><input name="hp_name" type="text" id="hp_name" size="60" maxlength="150"  class="validate[required]"/></td>
+  </tr>
+  <tr>
+    <td class="label line">Plan Caption </td>
+    <td class="label line">:</td>
+    <td class="line"><input name="hp_caption" type="text" id="hp_caption" size="60" maxlength="150"  class="validate[required]"/></td>
+  </tr>
+  <tr>
+    <td class="label line">Sort Order </td>
+    <td class="label line">:</td>
+    <td class="line"><input name="hp_sortorder" type="text" id="hp_sortorder"  class="validate[required],custom[integer]"/></td>
+  </tr>
+   <tr>
+    <td class="label line">Status </td>
+    <td class="label line">:</td>
+    <td class="label line"><p>
+        <label>
+          <input name="hp_status" type="radio" value="1" checked="checked" />
+          Status</label>
+        <label>
+          <input type="radio" name="hp_status" value="0" />
+          Disable</label>
+        <br />
+      </p></td>
+  </tr>
+   <tr>
+    <td class="label line">Plan Listing Image </td>
+    <td class="label line">:</td>
+    <td class="line"><input name="image_name" type="file" id="image_name" size="50" maxlength="50"  class="validate[required]"/></td>
+  </tr>
+   <tr>
+     <td align="right">&nbsp;</td>
+     <td>&nbsp;</td>
+     <td>&nbsp;</td>
+   </tr>
+   <!--tr>
+     <td align="left">Discount</td>
+     <td>:</td>
+     <td><input type="text" name="discount" id="discount" /></td>
+   </tr>
+   <tr>
+     <td align="left">Discount Period<br />
+       (only for new enrolling)</td>
+     <td>:</td>
+     <td><label for="from">From</label>
+<input type="text" id="from" name="from"/>
+<label for="to">to</label>
+<input type="text" id="to" name="to"/></td>
+   </tr>
+   <tr>
+     <td colspan="3" align="left" class="label red">[Note : Plan has no individual cost. Plan cost will be the sum of products added into the plan. So Plan cost will vary depends on the cost of products in that plan. However we can set a discount on plan in percentage. This will be the treated as a discount on gross products in this plan.]</td>
+    </tr-->
+   <tr>
+    <td align="right">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><input type="submit" name="Submit" class="shadow" value="Add" /></td>
+  </tr>
+</table>
+</form>

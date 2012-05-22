@@ -1,0 +1,52 @@
+<?php 
+$sess = new Zend_Session_Namespace('user');
+$hf_id=$sess->hf_id;
+$pval=$this->products;
+if(!is_array($pval) and $pval=="equal")
+{
+ echo "<p>&nbsp;</p><div class='shadowlight red' style='width:90%;padding:10px;margin-left:10px;'>Please wait 24 Hours to set up your plan. Once the plan is setup, you can add additional products into the existing plan</div>";
+}
+else 
+{
+?>
+<form method="post" action="">
+<table width="100%" border="0" cellspacing="2" cellpadding="2">
+  <tr>
+    <td width="3%" class="cart-title shadow">#</td>
+    <td width="70%" class="cart-title shadow">Product Name</td>
+    <td width="12%" align="right" class="cart-title shadow">Cost / Provider</td>
+    <td width="12%" align="right" class="cart-title shadow">Setup Fee</td>
+    <td width="12%" align="left" nowrap="nowrap" class="cart-title shadow">Payment Term</td>
+    <td width="7%" class="cart-title shadow">Features</td>
+    <td width="7%" class="cart-title shadow">Providers</td>
+    <td width="7%" class="cart-title shadow">Total Cost</td>
+     <?php if($this->checkacl('user','Products','addtocart',$hf_id)){?>
+    <td width="8%" nowrap="nowrap" class="cart-title shadow">Add To Cart</td>
+    <?php }?>
+  </tr>
+  <?php 
+ /*
+  * Adding the products from cart_product_list function
+  */
+ echo $this->products;
+  ?>
+   <tr>
+    <td height="25" class="normal-text"></td>
+    <td height="25" class="normal-text">&nbsp;</td>
+    <td height="25" class="normal-text">&nbsp;</td>
+    <td height="25" class="normal-text">&nbsp;</td>
+    <td height="25" class="normal-text">&nbsp;</td>
+    <td height="25" class="normal-text">&nbsp;</td>
+    <td height="25" class="normal-text">&nbsp;</td>
+    <?php if($this->checkacl('user','Products','addtocart',$hf_id)){?>
+    <td height="25" nowrap="nowrap" class="normal-text">
+    <input type="submit" value="View Cart" />
+    <!-- <a href="<?php echo $this->baseURL();?>/Cart/index/uID/<?php echo $this->Ecode($this->hf_id);?>/Pid/<?php echo $this->Ecode(0);?>" class="BrowseProducts shadow">View Cart</a> -->
+    </td>
+    <?php }?>
+  </tr>
+</table>
+</form>
+<?php 
+}
+?>

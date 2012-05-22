@@ -1,0 +1,68 @@
+<link href="../../../../../../public/css/admin.css" rel="stylesheet" type="text/css" />
+    <table width="100%" border="0" cellspacing="0" cellpadding="4">
+      <tr>
+        <td colspan="3" class="list-table-header shadow">Product Details</td>
+      </tr>
+      <tr>
+        <td width="19%" class="label line b">Product Name</td>
+        <td width="1%">:</td>
+        <td width="80%" class="label line"><?php echo $this->productview['product_name'];?></td>
+      </tr>
+      <tr>
+        <td class="label line b">Product Description</td>
+        <td>:</td>
+        <td class="label line"><label for="product_feature"></label>
+       <?php echo $this->productview['product_feature'];?></td>
+      </tr>
+      <tr>
+        <td class="label line b">Product Cost</td>
+        <td>:</td>
+        <td class="label line">$
+          <label for="cost"></label>
+       <?php echo $this->productview['cost'];?></td>
+      </tr>
+      <tr>
+        <td class="label line b">Payment Term</td>
+        <td>:</td>
+        <td class="label line"><?php echo($this->productview['payment_term']==0)?"One Time":"Monthly";?></td>
+      </tr>
+      <tr>
+        <td class="label line b">Listing Order</td>
+        <td>:</td>
+        <td class="label line"><label for="product_sort_order"></label>
+        <?php echo $this->productview['product_sort_order'];?></td>
+      </tr>
+      <tr>
+        <td class="label line b">Status</td>
+        <td>:</td>
+        <td class="label line">
+         <?php echo($this->productview['product_status']==0)?"Not Active":"Active";?></td>
+      </tr>
+     </table>
+     
+     <p class="sub-head">Variable Price Details :</p>
+     <table width="100%" border="0" cellspacing="1" cellpadding="4">
+       <tr>
+         <td align="center" class="list-table-header shadow">#</td>
+         <td align="center" class="list-table-header shadow">Users From</td>
+         <td align="center" class="list-table-header shadow">Users To</td>
+         <td align="center" class="list-table-header shadow">Cost</td>
+         <td align="center" class="list-table-header shadow">Status</td>
+       </tr>
+       <?php 
+       $sino = 1;
+       foreach($this->productprice as $productprice)
+       {
+       ?>
+       <tr>
+         <td align="center" class="shadowlight normal"><?php echo $sino;?></td>
+         <td align="center" class="shadowlight normal"><?php echo $productprice["user_from"];?></td>
+         <td align="center" class="shadowlight normal"><?php echo $productprice["user_to"];?></td>
+         <td align="center" class="shadowlight normal">$ <?php echo $productprice["cost"];?></td>
+         <td align="center" class="shadowlight normal"><?php echo($productprice['status'])?'<img src="'.$this->baseUrl().'/images/active.png" alt="Active" title="Active"/>':'<img src="'.$this->baseUrl().'/images/disable.png" alt="Disabled" title="Disabled"/>';?></td>
+       </tr>
+       <?php 
+       $sino = $sino + 1;
+       }
+       ?>
+     </table>

@@ -1,0 +1,146 @@
+<?php
+include_once  "/ckeditor/ckeditor.php";
+$CKEditor = new CKEditor();
+// Path to the CKEditor directory.
+$CKEditor->basePath = $this->baseUrl().'/ckeditor/';
+// Replace a textarea element with an id (or name) of "textarea_id" on last of page.
+
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+?>
+<script language="javascript" type="text/javascript">
+    jQuery(document).ready(function(){
+                // binds form submission and fields to the validation engine
+                jQuery("#productadd").validationEngine();
+            });
+</script>
+<link href="../../../../../../public/css/admin.css" rel="stylesheet" type="text/css" />
+
+
+
+<div id="right_panel">
+  <form id="productadd" name="productadd" method="post" action="">
+    <table width="100%" border="0" cellspacing="0" cellpadding="4">
+      <tr>
+        <td colspan="3" class="list-table-header shadow">Add New Product</td>
+      </tr>
+      <tr>
+        <td width="19%" class="label line">Product Name</td>
+        <td width="1%">:</td>
+        <td width="80%" class="label line">
+        <input name="product_name" type="text" id="product_name" size="50" maxlength="150"  class="validate[required]" /></td>
+      </tr>
+      <tr>
+        <td class="label line">Product Description</td>
+        <td>:</td>
+        <td class="label line">
+        <textarea name="product_feature" id="product_feature" cols="45" rows="5"  class="validate[required]"></textarea></td>
+      </tr>
+        <tr>
+        <td class="label line">Payment Term</td>
+        <td>:</td>
+        <td class="label line">
+          <select name="payment_term" id="payment_term">
+            <option value="0" selected="selected">One Time</option>
+            <option value="1">Monthly</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td class="label line">Monthly Cost (Recurring)</td>
+        <td>:</td>
+        <td class="label line">$
+          <label for="cost"></label>
+        <input type="text" name="cost" id="cost" /></td>
+      </tr>
+     <tr>
+        <td class="label line">Does this Product Cost increment with additional Providers ?</td>
+        <td>:</td>
+        <td class="label line"><p>
+          <label>
+            <input type="radio" name="provider_cost_nature" value="0" id="provider_nature_0" />
+            No</label>
+          
+          <label>
+            <input name="provider_cost_nature" type="radio" id="provider_nature_1" value="1" checked="checked" />
+            Yes</label>
+          <br />
+        </p></td>
+      </tr>
+      <tr>
+        <td class="label line">Setup Fee (One Time)</td>
+        <td>:</td>
+        <td class="label line"><label for="setup_fee"></label>
+        <input type="text" name="setup_fee" id="setup_fee" /></td>
+      </tr>
+       <tr>
+        <td class="label line">Does this Product Setup Fee increment with additional Providers ?</td>
+        <td>:</td>
+        <td class="label line"><p>
+          <label>
+            <input type="radio" name="provider_setup_nature" value="0" id="provider_nature_0" />
+            No</label>
+          
+          <label>
+            <input name="provider_setup_nature" type="radio" id="provider_nature_1" value="1" checked="checked" />
+            Yes</label>
+          <br />
+        </p></td>
+      </tr>
+      <tr>
+        <td class="label line">Listing Order</td>
+        <td>:</td>
+        <td class="label line">
+        <input type="text" name="product_sort_order" id="product_sort_order" class="validate[required],custom[integer]" /></td>
+      </tr>
+      
+      <tr>
+        <td class="label line">Product Type</td>
+        <td>:</td>
+        <td class="label line"><p>
+          <label>
+            <input type="radio" name="ProductType" value="1" id="ProductTYpe_0" />
+            With Plan</label>
+         
+          <label>
+            <input type="radio" name="ProductType" value="2" id="ProductTYpe_1" />
+            Without Plan</label>
+         
+          <label>
+            <input name="ProductType" type="radio" id="ProductTYpe_2" value="3" checked="checked" />
+            Both</label>
+          <br />
+        </p></td>
+      </tr>
+      <tr>
+        <td class="label line">Status</td>
+        <td>:</td>
+        <td class="label line">
+          <p>
+            <label>
+              <input name="product_status" type="radio" id="status_0" value="1" checked="checked" />
+              Active</label>
+          
+            <label>
+              <input type="radio" name="product_status" value="0" id="status_1" />
+              Disable</label>
+            <br />
+        </p></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td><input type="submit" name="button" id="button" value="Add" class="shadow" /></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+  </form>
+</div>
+<?php 
+$CKEditor->replace("product_feature");
+?>
+<div class="clear"></div>
+<p>&nbsp;</p>
+<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>

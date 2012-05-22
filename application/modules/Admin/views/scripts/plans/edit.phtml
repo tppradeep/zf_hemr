@@ -1,0 +1,226 @@
+<?php
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+
+?>
+<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/themes/base/jquery.ui.all.css">
+<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.core.js"></script>
+<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.widget.js"></script>
+<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.datepicker.js"></script>
+ <script language="javascript" type="text/javascript">
+    jQuery(document).ready(function(){
+                // binds form submission and fields to the validation engine
+                jQuery("#plans").validationEngine();
+            });
+			$(function() {
+				
+		var dates = $( "#from, #to" ).datepicker({
+			defaultDate: "+1w",
+			changeMonth: true,
+			numberOfMonths: 3,
+			dateFormat:"mm/dd/yy",
+			onSelect: function( selectedDate ) {
+				var option = this.id == "from" ? "minDate" : "maxDate",
+					instance = $( this ).data( "datepicker" ),
+					date = $.datepicker.parseDate(
+						instance.settings.dateFormat ||
+						$.datepicker._defaults.dateFormat,
+						selectedDate, instance.settings );
+				dates.not( this ).datepicker( "option", option, date );
+			}
+		});
+	});	
+	
+	function costcalculation()
+	{
+		pcost = document.getElementById("pcost").value;
+		psetup = document.getElementById("psetup").value;
+		
+		dtype = document.getElementById("bundle_price_type").value;
+		
+		cost_discount = document.getElementById("cost_discount").value;
+		setup_discount = document.getElementById("setup_discount").value;
+		
+		if(dtype==1) // in percentage
+		{
+			bcost = parseFloat(pcost) - (parseFloat(pcost) * parseFloat (cost_discount)/100);
+			bsetup = parseFloat(psetup) - (parseFloat(psetup) * parseFloat(setup_discount)/100);
+			btotal = bcost + bsetup;
+			
+			document.getElementById("setupcost").innerHTML = bsetup;
+			document.getElementById("productcost").innerHTML = bcost;
+			document.getElementById("totalcost").innerHTML = btotal;
+		}
+		if(dtype==2) // in percentage
+		{
+			bcost = parseFloat(pcost) - parseFloat(cost_discount);
+			bsetup = parseFloat(psetup) - parseFloat(setup_discount);
+			btotal = bcost + bsetup;
+			
+			document.getElementById("setupcost").innerHTML = bsetup;
+			document.getElementById("productcost").innerHTML = bcost;
+			document.getElementById("totalcost").innerHTML = btotal;
+		}
+		if(dtype==0)
+		{
+			document.getElementById("cost_discount").value=0;
+			document.getElementById("setup_discount").value=0;
+		
+			bcost = parseFloat(pcost);
+			bsetup = parseFloat(psetup);
+			btotal = bcost + bsetup;
+			
+			document.getElementById("setupcost").innerHTML = bsetup;
+			document.getElementById("productcost").innerHTML = bcost;
+			document.getElementById("totalcost").innerHTML = btotal;
+		}
+	}
+  </script>
+<link href="../../../../../../public/css/admin.css" rel="stylesheet" type="text/css" />
+<p>&nbsp;</p>
+
+<form method="post" action="" id="plans" enctype="multipart/form-data">
+<input type="hidden" name="hp_id" value="<?php echo $this->planedit['hp_id'];?>"/>
+<table width="75%" border="0" cellspacing="3" cellpadding="0" align="center">
+  <tr>
+    <td colspan="3" class="list-table-header">&nbsp;Update Plan</td>
+  </tr>
+  <tr>
+    <td class="label line">Plan Name </td>
+    <td class="label line">:</td>
+    <td class="line"><input name="hp_name" type="text" id="hp_name" size="60" maxlength="150"  class="validate[required]" value="<?php echo $this->planedit['hp_name'];?>"/></td>
+  </tr>
+  <tr>
+    <td class="label line">Plan Caption </td>
+    <td class="label line">:</td>
+    <td class="line"><input name="hp_caption" type="text" id="hp_caption" size="60" maxlength="150"  class="validate[required]" value="<?php echo $this->planedit['hp_caption'];?>"/></td>
+  </tr>
+  <tr>
+    <td class="label line">Sort Order </td>
+    <td class="label line">:</td>
+    <td class="line"><input name="hp_sortorder" type="text" id="hp_sortorder"  class="validate[required],custom[integer]" value="<?php echo $this->planedit['hp_sortorder'];?>"/></td>
+  </tr>
+   <tr>
+    <td class="label line">Status </td>
+    <td class="label line">:</td>
+    <td class="line">
+	  <label>
+          <input name="hp_status" type="radio" value="1" <?php echo($this->planedit['hp_status']==1)?'checked="checked"':"";?>/>
+          Status</label>
+        <label>
+          <input type="radio" name="hp_status" value="0"  <?php echo($this->planedit['hp_status']==0)?'checked="checked"':""?>/>
+          Disable</label>
+	</td>
+  </tr>
+    <tr>
+    <td class="label line">Plan Listing Image </td>
+    <td class="label line">:</td>
+    <td class="line"><input name="image_name" type="file" id="image_name" size="50" maxlength="50"  class="validate[required]"/></td>
+  </tr>
+    <tr>
+      <td align="left">Actual Plan Cost</td>
+      <td>&nbsp;</td>
+      <td>
+      <table border="0" cellspacing="4" cellpadding="2">
+        <tr>
+          <td class="list-table-header shadow">Cost Section</td>
+          <td class="list-table-header shadow">Setup Section</td>
+        </tr>
+        <tr>
+          <td align="right" class="sub-head2 shadowlight"><input type="hidden" name="pcost" id="pcost" value="<?php echo $this->plancost['cost'];?>" />
+            $ <?php echo $this->plancost['cost'];?></td>
+          <td align="right" class="sub-head2 shadowlight"><input type="hidden" name="psetup" id="psetup" value="<?php echo $this->plancost['setupfee'];?>" />
+            $ <?php echo $this->plancost['setupfee'];?></td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr>
+     <td align="left" valign="top" nowrap="nowrap">Plan Bundle Price Discount
+       <select name="bundle_price_type" id="bundle_price_type"  onblur="costcalculation();" onchange="costcalculation();">
+       	 <option value="0" <?php if($this->planedit['bundle_discount_type']==0) echo "selected=selected";?>>None</option>	
+         <option value="1" <?php if($this->planedit['bundle_discount_type']==1 || $this->planedit['bundle_discount_type']=='') echo "selected=selected";?>>In %</option>
+         <option value="2" <?php if($this->planedit['bundle_discount_type']==2) echo "selected=selected";?>>Price</option>
+      </select></td>
+     <td valign="top">:</td>
+     <td><table width="682" border="0" cellpadding="2" cellspacing="2">
+       <tr>
+         <td width="141" valign="bottom" nowrap="nowrap">Cost Section Discount</td>
+         <td width="147" valign="bottom" nowrap="nowrap">Setup Section Discount</td>
+         <td width="374" align="center" class="list-table-header">Effective Plan Cost</td>
+       </tr>
+       <tr>
+         <td valign="top"><input type="text" name="cost_discount" id="cost_discount" value="<?php echo $this->planedit['bundle_discount_per_cost'];?>" onblur="costcalculation()" /></td>
+         <td valign="top"><input type="text" name="setup_discount" id="setup_discount" value="<?php echo $this->planedit['bundle_discount_per_setup'];?>" onblur="costcalculation()"/></td>
+         <td width="374" style="padding-left:15px;"><p>Setup Cost : $<span id="setupcost">
+		 <?php 
+		 $tpcost=0;
+		 $tscost=0;
+		  if($this->planedit['bundle_setup_cost'] > 0)
+		  {
+			  echo $this->planedit['bundle_setup_cost'];
+			  $tscost = $this->planedit['bundle_setup_cost'];
+		  }
+		  else
+		  {
+		 	echo $this->plancost['setupfee'];
+			$tscost = $this->plancost['setupfee'];
+		  }
+			?></span><br />
+           Product Cost : $<span id="productcost"><?php 
+		   if($this->planedit['bundle_cost'] > 0)
+		   {
+			  echo $this->planedit['bundle_cost'];
+			  $tpcost=$this->planedit['bundle_cost'];
+		   }
+		   else
+		   {
+		   	   echo $this->plancost['cost'];
+			   $tpcost=$this->plancost['cost'];
+		   }
+		   
+		   ?></span></p>
+           <p class="b label shadowlight">Total Cost : $<span id="totalcost"><?php echo $tscost + $tpcost;?></span></p></td>
+         </tr>
+       <tr>
+         <td colspan="3" valign="top"><span class="paginationControl red"><strong>Note :</strong> You can Enter the discount in percentage or can enter  how flat discount providing for a plan<br />
+In case if you are entering in percentage, you have to  select the Plan Bundle Price in % (default) and required to enter the  percentage amount in cost and setup section.<br />
+If you are providing flat discount, then you have to select  Plan bundle Price in price and have to enter the discount amount on cost and  setup section. For example, if your plan cost comes $230 and you are planning to  give it in $200 then in &ldquo;Cost section discount&rdquo; you have to enter $30. So the  effective price of the plan cost will be $200.</span></td>
+         </tr>
+     </table></td>
+   </tr>
+    <!--tr>
+     <td align="left">Discount</td>
+     <td>:</td>
+     <td><input type="text" name="discount" id="discount" value="<?php echo $this->planedit['discount'];?>" size="3"/>% of gross plan amount</td>
+   </tr>
+   <tr>
+     <td align="left">Discount Period<br />
+       (only for new enrolling)</td>
+     <td>:</td>
+     <td><label for="from">From</label>
+<input type="text" id="from" name="from" value="<?php
+
+if($this->planedit['discount_start_date']!='')
+{
+	$d=explode("-",$this->planedit['discount_start_date']);
+	echo $d[1]."/".$d[2]."/".$d[0];
+}
+?>"/>
+<label for="to">to</label>
+<input type="text" id="to" name="to" value="<?php 
+if($this->planedit['discount_end_date']!='')
+{
+	$e=explode("-",$this->planedit['discount_end_date']);
+	echo $e[1]."/".$e[2]."/".$e[0];
+}
+	?>"/></td>
+   </tr>
+    <tr>
+     <td colspan="3" align="left" class="label red">[Note : Plan has no individual cost. Plan cost will be the sum of products added into the plan. So Plan cost will vary depends on the cost of products in that plan. However we can set a discount on plan in percentage. This will be the treated as a discount on gross products in this plan.]</td>
+    </tr-->
+   <tr>
+    <td align="right">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><input type="submit" name="Submit" value="Update" /></td>
+  </tr>
+</table>
+</form>

@@ -1,0 +1,55 @@
+<?php
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+include_once  "/ckeditor/ckeditor.php";
+
+// Create a class instance.
+$CKEditor = new CKEditor();
+
+// Path to the CKEditor directory.
+$CKEditor->basePath = $this->baseUrl().'/ckeditor/';
+
+// Replace a textarea element with an id (or name) of "textarea_id".
+?>
+<script language="javascript" type="text/javascript">
+    jQuery(document).ready(function(){
+                // binds form submission and fields to the validation engine
+                jQuery("#help").validationEngine();
+            });
+  </script>
+<p>&nbsp;</p>
+<form method="post" action="" id="help">
+<input type="hidden" name="id" value="<?php echo $this->hedit['page_help_id'];?>"/>
+<table width="75%" border="0" cellspacing="3" cellpadding="0" align="center">
+  <tr>
+    <td colspan="3" class="list-table-header">Update Help</td>
+    </tr>
+  <tr>
+    <td class="label line">Module</td>
+    <td class="label line">:</td>
+    <td class="line"><input name="module" type="text" id="module" size="50" maxlength="50"  class="validate[required]" value="<?php echo $this->hedit['module'];?>"/></td>
+  </tr>
+  <tr>
+    <td class="label line">Section</td>
+    <td class="label line">:</td>
+    <td class="line"><input name="section" type="text" id="section" size="50" maxlength="50"  class="validate[required]" value="<?php echo $this->hedit['section'];?>"/></td>
+  </tr>
+    <tr>
+    <td class="label line">Title</td>
+    <td class="label line">:</td>
+    <td class="line"><input name="title" type="text" id="title" size="50" maxlength="50"  class="validate[required]" value="<?php echo $this->hedit['title'];?>"/></td>
+  </tr>
+  <tr>
+    <td class="label line">Details</td>
+    <td class="label line">:</td>
+    <td class="label line" align="left">&nbsp;<textarea name="detailss" cols="4" rows="2" id="helpdetails" style="width:428px;height:153px;"><?php echo $this->hedit['description'];?></textarea></td>
+  </tr>
+  <tr>
+    <td align="right">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><input type="submit" name="Submit" value="Update" /></td>
+  </tr>
+</table>
+</form>
+<?php 
+$CKEditor->replace("detailss");
+?>

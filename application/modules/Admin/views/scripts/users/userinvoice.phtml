@@ -1,0 +1,61 @@
+<link href="../../../../../../public/css/admin.css" rel="stylesheet" type="text/css" />
+
+<table width="100%" border="0" cellspacing="2" cellpadding="0" id="grid">
+  <thead>
+  <tr>
+    <td height="20" class="list-table-header shadow" align="center">#</td>
+    <td class="list-table-header shadow">Invoice No</td>
+    <td class="list-table-header shadow" align="left">Invoice Date</td>
+    <td class="list-table-header shadow" align="left">Providers Selected</td>
+    <td class="list-table-header shadow" align="center">Invoice Amount</td>
+    <td class="list-table-header shadow" align="center">Payment Date</td>
+    <td class="list-table-header shadow" align="center">Payment Status</td>
+    <td class="list-table-header shadow"></td>
+  </tr>
+  </thead>
+  <tbody>
+  <?php 
+  $sino=1;
+  //$currency = new Zend_Currency();
+  foreach($this->userinvoice as $userlist)
+  {
+  ?>
+  <tr>
+    <td height="15px" class="normal-text shadowlight" align="center"><?php echo $sino;?>.</td>
+    <td class="normal-text shadowlight"><?php echo $userlist['invoice_number']?></td>
+    <td class="normal-text shadowlight" align="left"><?php
+	if($userlist['invoice_date']<>"")
+	{
+	   echo $this->Disdate($userlist['invoice_date']);
+	}
+    ?></td>
+    <td class="normal-text shadowlight" align="center"><?php echo $this->providerno;?></td>
+    <td class="normal-text shadowlight" align="center"><?php echo $userlist['amount'] + $userlist['setupfee'];?></td>
+    <td class="normal-text shadowlight" align="center"><?php
+    if($userlist['payment_date']<>"")
+    {
+    	echo $this->Disdate($userlist['payment_date']);
+    }
+    ?>
+    
+    </td>
+    <td class="normal-text shadowlight"><?php echo $userlist['payment_status'];?>
+    </td>
+    <td align="center" valign="middle" nowrap="nowrap" class="normal-text shadowlight">
+     <a href="<?php echo $this->baseUrl();?>/uploads/invoice/<?php echo $userlist['invoice_number'];?>.pdf" target="_blank"><?php
+    echo "<img src='".$this->baseUrl()."/images/pdf.png' alt='View Invoices' title='View Invoices'  style='cursor:pointer;margin-top:15px;'/>";
+	?></a><a href="<?php echo $this->baseUrl();?>/Admin/Updateinvoice/index/id/<?php echo $userlist['invoice_number'];?>"> 
+    <?php 
+    echo "<img src='".$this->baseUrl()."/images/updateinvoice.png' alt='Update Invoice Amount' title='Update Invoice Amount'  style='cursor:pointer;margin-top:15px;'/>";
+	?>
+    </a>
+    
+    </td>
+  </tr>
+  <?php 
+  $sino = ++$sino;
+  }
+  ?>
+  </tbody>
+</table>
+

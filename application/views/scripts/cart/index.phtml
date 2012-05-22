@@ -1,0 +1,225 @@
+<link href="../../../../public/css/user.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript">
+function AddAdditionalProductIntoCart(productid,providerno,ival)
+{
+	if(ival) // for adding
+	{
+		$.ajax({
+		  type: "GET",
+		  url: "../../../../../Cart/add-additional-product",
+		  data: { productid: ""+productid+"", providerno: ""+providerno+"", add:"add" }
+		}).done(function( msg ) {
+		  alert( msg );
+		  location.reload();
+		});
+	}
+	
+}
+function RemoveAdditionalProductFromCart(idcart)
+{
+	confirmdel = confirm("Are you sure to delete this product from cart?");
+	if(confirmdel)
+	{
+		$.ajax({
+		  type: "GET",
+		  url: "../../../../../Cart/remove-additional-product",
+		  data: { cartid: ""+idcart+"" }
+		}).done(function( msg ) {
+		  alert( msg );
+		  location.reload();
+		});	
+	}
+}
+</script>
+<table width="94%" border="0" align="center" cellpadding="2" cellspacing="2">
+ <?php
+ if($this->planname !="")
+ {
+ ?>
+  <tr>
+    <td align="center">
+    <div class="reg-steps">STEP:I - Choose Plan<br />
+	<span class="normal-text"><?php echo $this->escape($this->planname);?></span></div>
+    <div class="reg-steps">STEP:II - Create Account<br />
+	<span class="normal-text"><?php echo $this->escape($this->username['hf_facility_name']);?>(<?php echo $this->escape($this->username['hf_email']);?>)</span>
+	</div>
+    <div class="reg-steps" style="line-height:40px;">STEP:III - Payment</div>
+    </td>
+  </tr>
+  <?php
+ }
+  ?>
+  <tr>
+    <td align="left" class="cart-head">My Cart</td>
+  </tr>
+  <tr>
+    <td align="left">
+    <form method="post" action="<?php echo $this->baseURL();?>/payment/index/uid/<?php echo $this->uid;?>/pid/<?php echo $this->pid;?>">
+    <table width="100%" border="0" cellspacing="2" cellpadding="2">
+      <tr>
+        <td width="2%" class="cart-title shadow">#</td>
+        <td width="31%" class="cart-title shadow">Description</td>
+        <td width="9%" align="center" class="cart-title shadow">User Licence</td>
+        <td width="12%" align="right" class="cart-title shadow">Unit Price</td>
+         <td width="7%" align="right" class="cart-title shadow">Discount</td>
+        <td width="38%" align="right" class="cart-title shadow">Total</td>
+        <td width="1%" align="right" class="cart-title shadow">&nbsp;</td>
+      </tr>
+      <?php 
+      $currency = new Zend_Currency('en_US');
+      $gtotal=0;
+	  $sino=1;
+	  $gsetupfee=0;
+      foreach($this->cart as $cart)
+      {
+      ?>
+      <tr>
+        <td height="25" class="normal-text shadowlight"><?php echo $sino;?>.</td>
+        <td class="normal-text shadowlight"><?php echo $this->escape($cart['description']);?> </td>
+        <td class="normal-text shadowlight" align="center"><?php echo $cart['qty'];?></td>
+        <td class="normal-text shadowlight" align="right">
+        <?php 
+        echo $currency->toCurrency($cart['unit_price']);
+        ?>
+        </td>
+        <td class="normal-text shadowlight" align="right">
+        <?php 
+        echo $currency->toCurrency($cart['discount']);
+        ?>
+        </td>
+        <td class="normal-text shadowlight" align="right">
+        <?php 
+         echo $currency->toCurrency(($cart['unit_price']*$cart['qty'])-$cart['discount']);
+         $gtotal = $gtotal + (($cart['unit_price']*$cart['qty'])-$cart['discount']);
+        ?>
+        </td>
+        <td class="normal-text shadowlight" align="right">
+        <?php
+		if($cart['plan_id']==0)
+		{
+			echo '<img src="'.$this->baseUrl().'/images/delete.gif" width="16" height="16" alt="Delete" title="Delete" onclick="RemoveAdditionalProductFromCart('.$cart['idcart'].')" />';	
+		}
+		?>
+        </td>
+        <?
+		if($cart['setupfee']>0)
+		{
+		?>
+       <tr>
+       <td class="normal-text shadowlight"> <?php echo $sino;?>.a</td>
+       <td class="normal-text shadowlight" colspan="2"> Setup Fee</td>
+        <td class="normal-text shadowlight" align="right">
+        <?php 
+        echo $currency->toCurrency($cart['setupfee']);
+        ?>
+        </td>
+        <td class="normal-text shadowlight" align="right">
+        <?php 
+        echo $currency->toCurrency($cart['setupfee_discount']);
+        ?>
+        </td>
+       <td nowrap="nowrap" class="normal-text shadowlight" align="right"><?php echo  $currency->toCurrency($cart['setupfee']-$cart['setupfee_discount']);
+	    $gsetupfee = $gsetupfee + ($cart['setupfee']-$cart['setupfee_discount']);
+	   ?></td>
+       <td nowrap="nowrap" class="normal-text shadowlight" align="right">&nbsp;</td>
+       </tr>
+       <?
+		}
+	   ?>
+     
+    
+      <?php 
+	  $sino=$sino+1;
+      }
+	   if( $sino>1)
+		  {
+      ?>
+        <tr>
+        <td class="normal-text"></td>
+        <td colspan="4" class="normal-text b">Gross Amount</td>
+        <td class="normal-text b" align="right"><?php echo $currency->toCurrency($gtotal+$gsetupfee);?></td>
+        <td class="normal-text b" align="right">&nbsp;</td>
+        </tr>
+        <tr>
+          <td class="normal-text"></td>
+          <td align="right" class="normal-text b"></td>
+          <td align="right" class="normal-text b">&nbsp;</td>
+          <td align="right" nowrap="nowrap" class="normal-text b">
+          <?php  if($this->planname =="")
+ {?>
+          <a href="<?php echo $this->baseURL();?>/user/Products" class="BrowseProducts shadow">Browse Products</a>
+          <?php }?>
+          </td>
+          <td colspan="3" class="normal-text b" align="center">
+        <?php
+		if($gtotal==0)
+		{
+			?>
+			<a href="<?php echo $this->baseURL();?>/Cart/Freeplan/pid/<?php echo $this->pid;?>" class="BrowseProducts shadow">Confirm Order</a>
+			<?php 
+		}
+		else
+		{
+			?>
+          <input type="submit" name="button" id="button" value="Confirm Order" class="submit shadow" />
+        <?
+		}
+		?>
+          </td>
+        </tr>
+          <? }
+		  else
+		  if($sino==1)
+		  echo "<tr><td colspan='6' align=center>&nbsp;</td></tr><tr><td colspan='6' align=center class='normal-text red shadowlight'>Cart is Empty</td></tr>";
+		  ?>
+    </table>
+    </form>
+    </td>
+  </tr>
+  <tr>
+  <td class="form-label-main">
+  If you wish to add more products, you can add into the cart from below
+  </td>
+  </tr>
+  <tr>
+  <td>
+ <!-- ADDITIONAL PRODUCT LISTING -->
+ 
+ <table width="100%" border="0" cellspacing="2" cellpadding="2">
+  <tr>
+    <td width="3%" class="cart-title shadow">#</td>
+    <td width="70%" class="cart-title shadow">Product Name</td>
+    <td width="12%" align="right" class="cart-title shadow">Cost / Provider</td>
+    <td width="12%" align="right" class="cart-title shadow">Setup Fee</td>
+    <!--td width="12%" align="left" nowrap="nowrap" class="cart-title shadow">Payment Term</td-->
+    <td width="7%" class="cart-title shadow">Features</td>
+    <td width="7%" class="cart-title shadow">Providers</td>
+    <td width="7%" class="cart-title shadow">Total Cost</td>
+    <td width="8%" nowrap="nowrap" class="cart-title shadow">Add To Cart</td>
+  </tr>
+  <?php 
+ /*
+  * Adding the products from cart_product_list function
+  */
+ echo $this->products;
+  ?>
+   <tr>
+    <td height="25" class="normal-text"></td>
+    <td height="25" class="normal-text">&nbsp;</td>
+    <td height="25" class="normal-text">&nbsp;</td>
+    <td height="25" class="normal-text">&nbsp;</td>
+    <td height="25" class="normal-text">&nbsp;</td>
+    <td height="25" class="normal-text">&nbsp;</td>
+    <td height="25" class="normal-text">&nbsp;</td>
+    <td height="25" nowrap="nowrap" class="normal-text">
+   
+    <!-- <a href="<?php echo $this->baseURL();?>/Cart/index/uID/<?php echo $this->Ecode($this->hf_id);?>/Pid/<?php echo $this->Ecode(0);?>" class="BrowseProducts shadow">View Cart</a> -->
+    </td>
+  </tr>
+</table>
+ <!-- END ADDITIONAL PRODUCT LISTING -->
+  </td>
+  </tr>
+</table>
+  
+  

@@ -1,0 +1,110 @@
+	<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/themes/base/jquery.ui.all.css">
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/jquery-1.7.1.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/external/jquery.bgiframe-2.1.2.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.core.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.widget.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.mouse.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.button.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.draggable.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.position.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.dialog.js"></script>
+	<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/demo/demos.css">
+	<script>
+	$(function() {
+		$("#dialog-confirm").addClass("hidevisible");  
+		});
+	
+	
+	function del(delid)
+	{
+		$(function() {
+		$( "#dialog-confirm" ).addClass("shovisible");
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+			$( "#dialog-confirm" ).dialog({
+				resizable: false,
+				height:180,
+				modal: true,
+				buttons: {
+					"Delete all items": function() {
+						$( this ).dialog( "close" );
+						window.location.href="<?php echo $this->baseUrl();?>/Admin/Planfeatures/delete/id/"+delid+"";
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		});
+	}
+	
+	</script>
+
+
+<?php
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+?>
+
+ <div id="dialog-confirm" title="Delete Record?">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+ 
+<table width="82%" border="0" align="center">
+ <tr>
+    <td colspan="4"  align="right" valign="top" class="list-table-details">
+    
+    <table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+  
+    <td> 
+    <img src="<?php echo $this->baseUrl();?>/images/add.png" alt='Add' title='Add' /></td>
+    <td><?php echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Planfeatures','action'=>'add'),0,true).'" class="add">';?>
+    Add New Feature
+    <?php echo "</a>";?></td>
+  </tr>
+</table>
+
+   
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4"  align="center" valign="top" class="list-table-details">
+     <span id="con_mess">
+     <?php 
+   echo $this->ps;
+    ?>
+    </span>
+    </td>
+    </tr>
+  <tr>
+    <td class="list-table-header">Feature Name </td>
+    <td class="list-table-header" align=center>Feature Order </td>
+	<td class="list-table-header" align=center>To Do</td>
+  </tr>
+  
+
+
+<?php 
+
+	for($i=0; $i<sizeof($this->pf);$i++)
+	{
+		echo($i%2==0)? "<tr class='list-tr-bg2'>": "<tr class='list-tr-bg'>";
+		
+		echo "<td class='list-table-details'>".$this->pf[$i]['hpcm_type_name']."</td>";
+		echo "<td align=center class='list-table-details'>".$this->pf[$i]['hpcm_order']."</td>";
+	//	echo "<td align=center class='list-table-details'>";
+	//	echo ($this->pf[$i]['payment_type']==0?"One Time":"Monthly");
+	//	echo "</td>";
+		echo "<td class='list-table-details' align='center'>";
+		echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Planfeatures','action'=>'edit', 'id'=>$this->Ecode($this->pf[$i]['hpcm_type_id'])),0,true).'">';
+		echo "<img src='".$this->baseUrl()."/images/edit.png' alt='Edit' title='Edit'  style='cursor:pointer;' />";
+		echo '</a>&nbsp;';
+	//	echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Planfeatures','action'=>'delete', 'id'=>$this->Ecode($this->pf[$i]['hpcm_type_id'])),0,true).'">';
+if($this->pf[$i]['delete']!=0)
+		echo "<img src='".$this->baseUrl()."/images/delete.gif' alt='Delete' title='Delete' onClick='del(".$this->pf[$i]['hpcm_type_id'].")'   style='cursor:pointer;'/>";
+//		echo '</a>';
+		echo "</td>";
+		echo "</tr>";
+	}
+
+?>
+</table>

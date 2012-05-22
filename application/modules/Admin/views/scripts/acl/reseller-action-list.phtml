@@ -1,0 +1,41 @@
+<table width="99%">
+<?php 
+if($this->sec=="group")
+{
+    $con_d_name='';
+    foreach($this->ActionList as $AL)
+    {
+    	if($con_d_name=="" || $AL['controller_display_name']<>$con_d_name)
+    	{
+    		$con_d_name=$AL['controller_display_name'];
+    		echo '<tr><td colspan="2" class="sub-head">'.$AL['controller_display_name'].'</td></tr>';
+    	}
+    	?>
+    		<tr>
+    		<td><input type="checkbox"></td>
+    		<td class="label b shadowlight" width="100%"><?php echo $this->escape($AL['action_display_name']);?></td>
+    		</tr>
+    	<?php 
+    	}
+}
+else 
+{
+    
+	$con_d_name='';
+	foreach($this->ActionList as $AL)
+	{
+		if($con_d_name=="" || $AL['controller_display_name']<>$con_d_name)
+		{
+			$con_d_name=$AL['controller_display_name'];
+			echo '<tr><td colspan="2" class="sub-head">'.$AL['controller_display_name'].'</td></tr>';
+		}
+	?>
+		<tr>
+		<td><input type="checkbox"></td>
+		<td class="label b shadowlight" width="100%"><?php echo $this->escape($AL['action_display_name']);?></td>
+		</tr>
+	<?php 
+	}
+}
+?>
+</table>

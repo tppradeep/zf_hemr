@@ -1,0 +1,40 @@
+<link href="../../../../../../public/css/admin.css" rel="stylesheet" type="text/css" />
+<?php 
+if($this->success=="y")
+    echo "<span id='con_mess'>Successfully Added Sub Products</span>"
+?>
+<form id="form1" name="form1" method="post" action="">
+  <table width="100%" border="0" cellspacing="2" cellpadding="2">
+    <tr>
+      <td width="28%" class="list-table-header shadow">Selected Product :</td>
+      <td width="72%" class="list-table-header shadow"><?php echo $this->productname;?>
+      <input type="hidden" name="idproduct" value="<?php echo $this->idproduct;?>" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2"><span class="text-bold-12">Select the subproducts of this product.</span><br />
+      [<span class="label red">Note : The selected sub product will automatically add into Plan / Product when customer add the products / plan. These subproducts cannot delete from the selection]</span></td>
+    </tr>
+    <?php 
+    foreach($this->productlist as $PL)
+    {
+    ?>
+    <tr>
+      <td colspan="2"><input type="checkbox" value="<?php echo $PL['idproducts'];?>" name="<?php echo $PL['idproducts'];?>" 
+      <?php 
+      if (in_array($PL['idproducts'], $this->selectedsubproducts)) {
+      	echo "checked=checked";
+      }
+      ?>
+      
+      /> : <?php echo $this->escape($PL['product_name']);?></td>
+    </tr>
+    <?php 
+    }
+    ?>
+    <tr>
+      <td>&nbsp;</td>
+      <td><input type="submit" name="button" id="button" value="Add" /></td>
+    </tr>
+  </table>
+</form>

@@ -1,0 +1,46 @@
+<link href="../../../../../../public/css/user.css" rel="stylesheet" type="text/css" />
+ <script language="javascript" type="text/javascript">
+    jQuery(document).ready(function(){
+                // binds form submission and fields to the validation engine
+                jQuery("#changepassword").validationEngine();
+            });
+  </script>
+<form id="changepassword" name="changepassword" method="post" action="">
+  <table width="60%" border="0" align="center" cellpadding="3" cellspacing="3">
+    <tr>
+      <td colspan="3" class=" normal-text red b"><?php 
+      if($this->status=="y")
+      {
+      	echo "Your password successfully updated";
+      }
+      elseif($this->status=="n")
+      {
+      	echo "Please check your current password. Entered current password is not matching.";
+      }
+      	?></td>
+    </tr>
+    <tr>
+      <td colspan="3" class=" normal-text table-head-bg white b shadow">Change Password</td>
+    </tr>
+    <tr>
+      <td width="49%" class="form-label-main">Current Password</td>
+      <td width="1%" class="form-label-main">:</td>
+      <td width="50%"><input name="c_pwd" type="password"  class="validate[required],custom[onlyLetterNumber]" id="c_pwd" maxlength="25"/></td>
+    </tr>
+    <tr>
+      <td class="form-label-main">New Password</td>
+      <td class="form-label-main">:</td>
+      <td><input name="n_pwd" type="password"  class="validate[required],custom[onlyLetterNumber]" id="n_pwd" maxlength="25"/></td>
+    </tr>
+    <tr>
+      <td class="form-label-main">Confirm New Password</td>
+      <td class="form-label-main">:</td>
+      <td><input name="cn_pwd" type="password"  class="validate[required],custom[onlyLetterNumber]" id="cn_pwd" maxlength="25"/></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td><input type="submit" name="button" id="button" value="Update Password" class="user-submit" /></td>
+    </tr>
+  </table>
+</form>

@@ -1,0 +1,58 @@
+<?php
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+?>
+
+<script language="javascript" type="text/javascript">
+    jQuery(document).ready(function(){
+                // binds form submission and fields to the validation engine
+                jQuery("#help").validationEngine();
+            });
+  </script>
+  <link href="../../../../../../public/css/user.css" rel="stylesheet" type="text/css" />
+  
+<p>&nbsp;</p>
+<form method="post" action="" id="help" enctype="multipart/form-data">
+<table width="75%" border="0" cellspacing="3" cellpadding="0" align="center">
+  <tr>
+    <td colspan="3" class="list-table-header">Add New Video (<img src="<?php echo $this->baseUrl();?>/images/youtube2.png"/>)</td>
+    </tr>
+  <tr>
+    <td class="label line">Video Title</td>
+    <td class="label line">:</td>
+    <td class="line"><input name="video_title" type="text" id="video_title" size="50" maxlength="254"  class="validate[required]"/></td>
+  </tr>
+  <tr>
+    <td class="label line">Video URL(YouTube Url Only)</td>
+    <td class="label line">:</td>
+    <td class="label line" align="left">&nbsp;<textarea name="utube_url" cols="4" rows="2" id="utube_url" style="width:428px;height:153px;"></textarea></td>
+  </tr>
+   <tr>
+    <td class="label line">Sort Order</td>
+    <td class="label line">:</td>
+    <td class="line"><input name="sortorder" type="text" id="sortorder" size="4" maxlength="3"  class="validate[required],custom[integer]"/></td>
+  </tr>
+   <tr>
+    <td class="label line">Status</td>
+    <td class="label line">:</td>
+    <td class="line"><p>
+      <label>
+        <input type="radio" name="status" value="1" id="RadioGroup1_0" />
+        Active
+      </label>
+      <br />
+      <label>
+        <input type="radio" name="status" value="0" id="RadioGroup1_1" />
+        Disabled</label>
+      <br />
+    </p></td>
+  </tr>
+  <tr>
+    <td align="right">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><input type="submit" name="Submit" value="Add" /></td>
+  </tr>
+</table>
+</form>
+<?php 
+//$CKEditor->replace("detailss");
+?>

@@ -1,0 +1,66 @@
+<?php 
+//echo "<pre>";
+//print_r($this->paidinvoice);
+?>
+<div class="clear"></div>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="grid">
+  <thead>
+  <tr>
+    <td height="20" class="invoice-table-title b table-head-bg" align="center">#</td>
+    <td class="invoice-table-title b table-head-bg">Invoice Number</td>
+    <td class="invoice-table-title b table-head-bg">Invoice Date</td>
+    <td class="invoice-table-title b table-head-bg">Payment Date</td>
+    <td class="invoice-table-title b table-head-bg">Amount</td>
+    <td class="invoice-table-title b table-head-bg">Transaction Id</td>
+    <td class="invoice-table-title b table-head-bg"></td>
+  </tr>
+  </thead>
+  <tbody>
+  <?php 
+ 
+  //die;
+  $currency = new Zend_Currency('en_US');
+  $sino=1;
+  foreach($this->OutstandingInvoice as $invdetails)
+  {
+  ?>
+  <tr>
+    <td height="22" class="normal-text  line" align="center"><?php echo $sino;?>.</td>
+    <td class="normal-text line"><?php echo $invdetails['invoice_number']?></td>
+    <td class="normal-text line"><?php echo $this->Disdate($invdetails['invoice_date']);?></td>
+    <td class="normal-text line"><?php 
+    if($invdetails['payment_date']!="")
+    echo $this->Disdate($invdetails['payment_date']);?></td>
+    <td class="normal-text line" align='right'><?php echo $currency->toCurrency($invdetails['amount']+$invdetails['setupfee'])?></td>
+    <td class="normal-text line"><?php 
+    if(trim($invdetails['transaction_id'])!="0")
+    		echo $invdetails['transaction_id'];?></td>
+    <td class="normal-text line" align="center">
+    <a href="<?php echo $this->baseURL()."/uploads/invoice/".$invdetails['invoice_number'];?>.pdf" class="form-label-main" target="_blank"> <img src="<?php echo $this->baseUrl();?>/images/pdf.png" width="17" height="17" alt="View Invoice" /></a>
+    <?php 
+    	echo "<a href='".$this->baseUrl()."/user/invoice/view/inid/".$this->Ecode($invdetails['invoice_number'])."'. target=\"_blank\" class=\"popupwindow\" rel=\"height:488,width:635,toolbar:0,scrollbars:1,status:0,resizable:0,left:50,top:100\">";
+    ?>
+    <img src="<?php echo $this->baseUrl();?>/images/view.gif" width="17" height="17" alt="View Invoice" />
+    <?php 
+    	echo "</a>";
+    ?>
+    </td>
+  </tr>
+  <?php 
+  $sino = ++$sino;
+  }
+  ?>
+  </tbody>
+</table>
+ <script type="text/javascript">
+                //<![CDATA[
+ $(document).ready(function() {
+	    oTable = $('#grid').dataTable({
+	        "bJQueryUI": true,
+	        "sPaginationType": "full_numbers"
+	    });
+	} );
+                //]]>
+                </script>
+

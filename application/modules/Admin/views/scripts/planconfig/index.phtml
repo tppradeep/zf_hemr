@@ -1,0 +1,75 @@
+<link href="../../../../../../public/css/admin.css" rel="stylesheet" type="text/css" />
+<?php 
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+?>
+<script language="javascript">
+function toggleChecked(status) 
+{
+	$(":checkbox").each( function() {
+		$(this).attr("checked",status);
+	})
+}
+</script>
+<div id="right_panel">
+<form id="form1" name="form1" method="post" action="">
+<table width="100%" border="0" cellspacing="3" cellpadding="4">
+  <tr>
+    <td colspan="7" class="list-table-header shadow">
+    <?php 
+    echo "Selected Plan : ".$this->planname;
+    ?>
+    </td>
+    </tr>
+  <tr>
+    <td width="3%" class="list-table-header shadow">#</td>
+    <td width="3%" align="center" class="list-table-header shadow"><input type="checkbox" onclick="toggleChecked(this.checked)"></td>
+    <td width="30%" class="list-table-header shadow">Product Name</td>
+    <td width="6%" class="list-table-header shadow">View Details</td>
+    <td width="33%" align="center" class="list-table-header shadow">Product Cost</td>
+    <td width="21%" align="center" class="list-table-header shadow">Payment Term</td>
+    <td width="4%" class="list-table-header shadow">&nbsp;</td>
+  </tr>
+  <?php
+  $sino=1; 
+  $dvalue="";
+  function test_print($item,$key,$udata)
+  {
+  	if($item==$udata)
+  	{
+  		$dvalue="checked='checked'";
+  		echo $dvalue;
+  	 // break;
+  	}
+  }
+  foreach($this->products as $product)
+  {
+  ?>
+  <tr>
+    <td class="shadowlight"><?php echo $sino;?></td>
+    <td align="center" class="shadowlight">
+      <input name="<?php echo $product['idproducts'];?>" <?php  array_walk_recursive($this->AddedProducts, 'test_print',$product['idproducts']);?> type="checkbox" id="<?php echo $product['idproducts'];?>" value="<?php echo $product['idproducts'];?>" />
+    </td>
+    <td class="shadowlight"><?php echo $product['product_name'];?></td>
+    <td align="center" class="shadowlight">
+    <a class="openmodalbox"	href="javascript:void(0);"	rel="ajax: <?php echo $this->baseUrl();?>/Admin/Products/view/id/<?php echo $product['idproducts']?>">
+    <?php 
+  //  echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Products','action'=>'view', 'id'=>$this->Ecode($this->$product['idproducts'])),0,true).' rel="prettyPhoto[ajax]"">';
+    echo "<img src='".$this->baseUrl()."/images/view.png' alt='View' title='View'  style='cursor:pointer;' />";
+    echo '</a>&nbsp;';
+    ?>
+    </td>
+    <td align="center" class="shadowlight">$ <?php echo $product['cost'];?></td>
+    <td align="center" class="shadowlight"><?php echo($product['payment_term']==0)? "One time": "Monthly";?></td>
+    <td class="shadowlight">&nbsp;</td>
+  </tr>
+  <?php 
+  $dvalue ="";
+  $sino = $sino + 1;
+  }
+  ?>
+    <tr>
+    <td colspan="7" class="shadowlight"><input type="submit" name="button" id="button" value="Add Selected Product Into Plan" class="shadow normal" /></td>
+    </tr>
+</table>
+</form>
+</div>

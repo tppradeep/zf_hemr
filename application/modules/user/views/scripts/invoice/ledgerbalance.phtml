@@ -1,0 +1,86 @@
+<link href="../../../../../../public/css/user.css" rel="stylesheet" type="text/css" />
+<table width="100%" border="0" cellspacing="2" cellpadding="2">
+  <tr>
+    <td width="3%" height="25" class="form-label-main table-head-bg b white shadow">#</td>
+    <td width="10%" class="form-label-main table-head-bg b white shadow">Invoice Date</td>
+    <td width="68%" class="form-label-main table-head-bg b white shadow">Particulars</td>
+    <td width="10%" align="center" class="form-label-main table-head-bg b white shadow">Debit</td>
+    <td width="9%" align="center" class="form-label-main table-head-bg b white shadow">Credit</td>
+  </tr>
+  <?php 
+  $currency = new Zend_Currency('en_US');
+  $sino=1;
+  $confirmamount=0;
+  $pendingamount=0;
+  foreach($this->ledgerbalance as $ledge)
+  {
+  ?>
+  <tr 
+  <?
+  if($sino % 2 == 0)
+  	echo 'bgcolor="#F7F7F7"'; 
+  ?>
+  >
+    <td height="20" class="normal-text"><?php echo $sino;?>.</td>
+    <td class="normal-text"><?php echo $this->Disdate($ledge['invoice_date']);?></td>
+    <td class="normal-text" valign="top"><br><?php echo $ledge['particulars'];?> <?php echo $ledge['invoice_number'];?></td>
+    <td align="right">
+      <span class="normal-text">
+      <?php 
+    if($ledge['payment_status']!="COMPLETED")
+    {
+    	$pendingamount = $pendingamount + $ledge['amount'] + $ledge['setupfee'];
+    	echo $currency->toCurrency(round($ledge['amount']+$ledge['setupfee'],2));
+    }
+    ?>
+    </span></td>
+    <td align="right">
+      <span class="normal-text">
+      <?php 
+    if($ledge['payment_status']=="COMPLETED")
+    {
+    	$confirmamount = $confirmamount + $ledge['amount']+$ledge['setupfee'];
+    	echo $currency->toCurrency(round($ledge['amount']+$ledge['setupfee'],2));
+    }
+    ?>
+    </span></td>
+  </tr>
+ 
+  <?php 
+	$sino = $sino+1;
+  }
+	
+  ?>
+   <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="form-label-main line"></td>
+    <td class="form-label-main line">&nbsp;</td>
+    <td class="form-label-main line">&nbsp;</td>
+  </tr>
+   <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="form-label-main">Total :</td>
+    <td class="form-label-main" align="right"><?php echo $currency->toCurrency(round($pendingamount,2));?></td>
+    <td class="form-label-main" align="right"><?php echo $currency->toCurrency(round($confirmamount,2));?></td>
+  </tr>
+  <?php 
+  $balance = round($pendingamount,2) - round($confirmamount,2);
+  if($balance>0)
+  {
+  ?>
+   <tr>
+     <td>&nbsp;</td>
+     <td>&nbsp;</td>
+     <td class="form-label-main red">Balance :</td>
+     <td class="form-label-main red" align="right"><?php 
+    
+     echo $currency->toCurrency(round($balance,2));
+     ?></td>
+     <td class="form-label-main" align="right">&nbsp;</td>
+   </tr>
+   <?php 
+  }
+   ?>
+</table>

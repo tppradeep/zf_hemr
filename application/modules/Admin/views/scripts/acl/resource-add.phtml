@@ -1,0 +1,51 @@
+<?php
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+?>
+<link href="../../../../../../public/css/admin.css" rel="stylesheet" type="text/css" />
+
+<div id="right_panel">
+  <form id="form1" name="form1" method="post" action="">
+    <table border="0" align="center" cellpadding="4" cellspacing="6">
+      <tr>
+        <td colspan="4" class="list-table-header shadow">Add New Resource in ACL</td>
+      </tr>
+      <tr>
+        <td colspan="2" class="label b shadowlight">&nbsp;</td>
+        <td valign="top" class="label b shadowlight">Display Name<br />
+          <span class="logout">[Userfriendly Names for easy understanding]</span></td>
+        <td valign="top" class="label b shadowlight">Zend Module Name<br />          <span class="logout">[Don't edit this name. This is linked with zend structure]</span></td>
+      </tr>
+      <tr>
+        <td class="label b shadowlight">Module </td>
+        <td class="label b shadowlight">:</td>
+        <td class="label b shadowlight"><input name="module_display_name" type="text" id="module_display_name" size="40" /></td>
+        <td class="label b shadowlight"><input name="module" type="text" id="module" size="40" /></td>
+      </tr>
+      <tr>
+        <td class="label b shadowlight">Controller </td>
+        <td class="label b shadowlight">:</td>
+        <td class="label b shadowlight"><input name="controller_display_name" type="text" id="controller_display_name" size="40" /></td>
+        <td class="label b shadowlight"><input name="controller" type="text" id="textfield4" size="40" /></td>
+      </tr>
+      <tr>
+        <td class="label b shadowlight">Action Display</td>
+        <td class="label b shadowlight">:</td>
+        <td class="label b shadowlight"><input name="action_display_name" type="text" id="textfield5" size="40" /></td>
+        <td class="label b shadowlight"><input name="action" type="text" id="textfield6" size="40" /></td>
+      </tr>
+      <tr>
+        <td class="label b shadowlight">Listing Order</td>
+        <td class="label b shadowlight">:</td>
+        <td colspan="2" class="label b shadowlight"><input type="text" name="listing_order" id="listing_order" /></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td colspan="2"><input type="submit" name="button" id="button" value="Add" class="shadow" /></td>
+      </tr>
+    </table>
+    <table width="100%" border="0" cellspacing="2" cellpadding="2">
+      <tr> </tr>
+    </table>
+  </form>
+</div>

@@ -1,0 +1,140 @@
+	<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/themes/base/jquery.ui.all.css">
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/jquery-1.7.1.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/external/jquery.bgiframe-2.1.2.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.core.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.widget.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.mouse.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.button.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.draggable.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.position.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.dialog.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/js/jquery.youtubepopup.min.js"></script>
+	<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/demo/demos.css">
+	<script>
+	$(function() {
+		$("#dialog-confirm").addClass("hidevisible");  
+		$("a.youtube").YouTubePopup({ idAttribute: 'youtube' });
+		});
+	
+	
+
+	
+	function del(delid,pagid)
+	{
+		$(function() {
+		$( "#dialog-confirm" ).addClass("shovisible");
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+			$( "#dialog-confirm" ).dialog({
+				resizable: false,
+				height:180,
+				modal: true,
+				buttons: {
+					"Delete all items": function() {
+						$( this ).dialog( "close" );
+						window.location.href="<?php echo $this->baseUrl();?>/Admin/Videogallery/delete/id/"+delid+"/pageid/"+pagid+"";
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		});
+	}
+	
+	</script>
+<?php
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+?>
+ <link href="../../../../../../public/css/admin.css" rel="stylesheet" type="text/css" />
+<div id="dialog-confirm" title="Delete Record?">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+<table width="82%" border="0" align="center">
+ <tr>
+    <td colspan="5"  align="right" valign="top" class="list-table-details"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="47%" align="left" class="brejcomp">
+     
+       </td>
+        <td width="7%" align="right" class="add">Search: </td>
+        <td width="23%" align="right">
+        <form action="" method="post">
+        <table border="0" cellspacing="2" cellpadding="2">
+          <tr>
+            <td nowrap="nowrap" class="sub-head2">&nbsp;</td>
+            <td><span class="sub-head2">Video Title</span><br />
+                    
+              <input type="text" name="title" id="title" value="<?php if(sizeof($this->formdata)>0) echo $this->formdata['title'];?>" /></td>
+            <td nowrap="nowrap" class="sub-head2">&nbsp;</td>
+            <td></td>
+             <td><input type="image" src="<?php echo $this->baseUrl();?>/images/Search.png" width="32" height="32" alt="Search" title="Search" /></td>
+          </tr>
+        </table>
+        </form></td>
+        <td width="23%" align="right"><table border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td><img src="<?php echo $this->baseUrl();?>/images/add.png" alt='Add' title='Add' /></td>
+             <td nowrap="nowrap"><?php echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Videogallery','action'=>'add','page_help_id'=>$this->page_help_id),0,true).'" class="add">';?> Add New Video <?php echo "</a>";?></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td colspan="5"  align="center" valign="top" class="list-table-details" id="alert">
+    <span id="con_mess">
+   <?php 
+   echo $this->pss;
+    ?>
+    </span>
+    </td>
+    </tr>
+  <tr>
+    <td width="8%" class="list-table-header">#</td>
+    <td width="24%" align=center class="list-table-header">Video Title</td>
+	<td width="44%" align=center class="list-table-header">YouTube Url</td>
+	<td width="24%" align=center nowrap="nowrap" class="list-table-header">To Do</td>
+  </tr>
+ 
+  
+<?php 
+
+	if(sizeof($this->videolist)==0)
+	{
+		echo "<tr><td colspan='5' align='center' class='b red'>no record found</td></tr>";
+	}
+	else
+	{
+	    
+	$i=1;
+			foreach($this->videolist as $record)
+		{
+	
+			echo($i%2==0)? "<tr class='list-tr-bg2'>": "<tr class='list-tr-bg'>";
+			echo "<td class='list-table-details'>".$i."</td>";
+			echo "<td align=left class='list-table-details'>".$record['video_title']."</td>";
+			echo "<td align=center class='list-table-details'>".$record['utube_url']."<a class='youtube' youtube='4eYSpIz2FjU' href='#' title='...'>Play</a></td>";
+			echo "<td class='list-table-details' align='center'>";
+			echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Videogallery','action'=>'edit', 'id'=>$this->Ecode($record['page_help_video_id'])),0,true).'">';
+			echo "<img src='".$this->baseUrl()."/images/edit.png' alt='Edit' title='Edit'  style='cursor:pointer;' />";
+			echo '</a>&nbsp;';
+			
+			echo "<img src='".$this->baseUrl()."/images/delete.gif' alt='Delete' title='Delete' onClick='del(".$record['page_help_video_id'].",".$this->Dcode($this->page_help_id).")'   style='cursor:pointer;'/>";
+			echo "</td>";
+			echo "</tr>";
+			$i++;
+		}
+	}
+?>
+ <tr>
+    <td colspan="4" align="right" nowrap="nowrap">
+		<table>
+	    	<tr>
+    			<td><?php echo $this->paginationControl($this->videolist, 'Sliding', 'pagination.phtml'); ?></td>
+        		<td><?php echo $this->paginationControl($this->videolist, 'Sliding', 'pagination_dropdown.phtml'); ?></td>
+  			</tr>
+  		</table>
+  </td>
+  </tr>
+</table>
+

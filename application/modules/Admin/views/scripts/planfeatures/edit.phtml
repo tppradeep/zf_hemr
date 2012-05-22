@@ -1,0 +1,67 @@
+<?php
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+?>
+ <script language="javascript" type="text/javascript">
+    jQuery(document).ready(function(){
+                // binds form submission and fields to the validation engine
+                jQuery("#planfeature").validationEngine();
+            });
+  </script>
+<p>&nbsp;</p>
+<form method="post" action="" id="planfeature">
+<input type="hidden" name="hpcm_type_id" value="<?php echo $this->fvalues['hpcm_type_id'];?>"/>
+<table width="75%" border="0" cellspacing="3" cellpadding="0" align="center">
+  <tr>
+    <td colspan="3" class="list-table-header line">Update Plan Feature </td>
+    </tr>
+  <tr>
+    <td class="label line">Feature Caption </td>
+    <td class="label line">:</td>
+    <td class="line"><input name="hpcm_type_name" type="text" id="hpcm_type_name" size="60" maxlength="150"  class="validate[required]" value="<?php echo $this->fvalues['hpcm_type_name'];?>"/></td>
+  </tr>
+  <?php 
+  if($this->fvalues['custom_label1']<>'')
+ 		{
+  ?>
+  <tr>
+    <td class="label line"><?php echo $this->fvalues['custom_label1'];?> </td>
+    <td class="label line">:</td>
+    <td class="line"><input name="min_val" type="text" id="min_val" size="6" maxlength="150"  class="validate[required]" value="<?php echo $this->fvalues['min_val'];?>"/></td>
+  </tr>
+  <?php 
+  		}
+  ?>
+   <tr>
+    <td class="label line">Sort Order </td>
+    <td class="label line">:</td>
+    <td class="line"><input name="hpcm_order" type="text" id="hpcm_order"  class="validate[required],custom[integer]"  value="<?php echo $this->fvalues['hpcm_order'];?>"/></td>
+  </tr>
+  <tr>
+    <td class="label line">Status</td>
+    <td class="label line">:</td>
+    <td class="label line">
+      <label class="label">
+        <input name="status" type="radio" value="1" 
+         <?php 
+      if($this->fvalues['status']==1)
+      		echo " checked='checked'";
+      ?>
+         />
+        Active</label>
+      <br />
+      <label class="label">
+        <input type="radio" name="status" value="0" 
+         <?php 
+      if($this->fvalues['status']==0)
+      		echo " checked='checked'";
+      ?>
+        />
+        Disable</label></td>
+  </tr>
+  <tr>
+    <td align="right">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><input type="submit" name="Submit" value="Update" /></td>
+  </tr>
+</table>
+</form>

@@ -1,0 +1,77 @@
+<?php $this->placeholder('sidebar')->captureStart() ?>
+<script type="text/javascript">document.documentElement.className += " js";</script>
+ <script type="text/javascript">
+
+    $(document).ready(function(){
+        $(".tabs").accessibleTabs({
+            tabhead:'h2',
+            fx:"fadeIn"
+        });
+    });
+
+    </script>  
+<link href="../../../../public/css/site.css" rel="stylesheet" type="text/css" />
+ <?
+	if($this->loginerror=="not")
+	{
+		echo "<span class='normal-text'>Please check your user id and password.</span>";
+	}
+  ?>
+   <div class="tabs">
+        <h2>OpenEMR</h2>
+        <h2>Dashboard</h2>
+        <div class="tabbody">
+              <form action="<?php echo $this->baseUrl();?>/Usercheck" method="post">
+	  <table width="81%" border="0" align="center" cellpadding="2" cellspacing="4">
+        <tr>
+          <td class="form-label-main">Facility</td>
+          <td>:</td>
+          <td><input type="text" name="facility" id="facility" /></td>
+        </tr>
+        <tr>
+          <td class="form-label-main">User Id</td>
+          <td>:</td>
+          <td><input type="text" name="authUser" id="authUser" /></td>
+        </tr>
+        <tr>
+          <td class="form-label-main">Password</td>
+          <td>:</td>
+          <td><input type="password" name="clearPass" id="clearPass" /></td>
+        </tr>
+        <tr>
+          <td colspan="3" align="right"><input name="Submit" type="submit" class="login" value="Login" /></td>
+        </tr>
+      </table>
+      </form>
+        </div>
+        <div class="tabbody">
+             <form action="<?php echo $this->baseUrl();?>/Usercheck" method="post">
+	  <table width="81%" border="0" align="center" cellpadding="2" cellspacing="4">
+        <tr>
+          <td class="form-label-main">Email ID</td>
+          <td>:</td>
+          <td><input type="text" name="uid" id="uid" /></td>
+        </tr>
+        <tr>
+          <td class="form-label-main">Password</td>
+          <td>:</td>
+          <td><input type="password" name="pwd" id="pwd" /></td>
+        </tr>
+        <tr>
+          <td colspan="3" align="right" nowrap="nowrap" class="normal-text"><label>
+              <input name="usertype" type="radio" id="RadioGroup1_0" value="1" checked="checked" />
+              Customer</label>
+           
+            <label>
+              <input type="radio" name="usertype" value="2" id="RadioGroup1_1" />
+          Reseller</label>            <br />          <input name="Submit" type="submit" class="login" value="Submit" /></td>
+        </tr>
+      </table>
+      </form>
+<!--	  <a href="<?php echo $this->url(array('controller' => 'PlanList','action' => 'index')); ?>" class="td-plan-features">New Register</a>
+-->        </div>
+
+        
+       
+    </div>
+<?php $this->placeholder('sidebar')->captureEnd() ?>

@@ -1,0 +1,144 @@
+	<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/themes/base/jquery.ui.all.css">
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/external/jquery.bgiframe-2.1.2.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.core.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.widget.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.mouse.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.button.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.draggable.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.position.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.dialog.js"></script>
+	<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/demo/demos.css">
+	
+	
+		
+	<script>
+	$(function() {
+		$("#dialog-confirm").addClass("hidevisible");  
+		});
+	
+	
+	function del(delid)
+	{
+		$(function() {
+		$( "#dialog-confirm" ).addClass("shovisible");
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+			$( "#dialog-confirm" ).dialog({
+				resizable: false,
+				height:180,
+				modal: true,
+				buttons: {
+					"Delete all items": function() {
+						$( this ).dialog( "close" );
+						window.location.href="<?php echo $this->baseUrl();?>/Admin/Products/delete/id/"+delid+"";
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		});
+	}
+	
+	</script>
+<?php
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+?>
+
+
+
+
+<div id="right_panel">
+ <div id="dialog-confirm" title="Delete Record?">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+
+<div class="addnew">
+    <?php echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Products','action'=>'add'),0,true).'" class="add">';?>
+    Add New Product
+    <?php echo "</a>";?>
+</div>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="grid">
+  <thead>
+  <tr>
+    <td width="4%" height="20" align="center" class="invoice-table-title b table-head-bg white">#</td>
+    <td width="20%" class="invoice-table-title b table-head-bg">Product Name</td>
+    <td width="16%" align="right" class="invoice-table-title b table-head-bg">Product Cost (in $)</td>
+    <td width="15%" align="center" nowrap="nowrap" class="invoice-table-title b table-head-bg">Setup Fee (in $)</td>
+    <td width="15%" align="center" nowrap="nowrap" class="invoice-table-title b table-head-bg">Product Type</td>
+    <td width="7%" align="center" class="invoice-table-title b table-head-bg">Status</td>
+    <td width="13%" align="center" class="invoice-table-title b table-head-bg">Added Date</td>
+    <td width="16%" class="invoice-table-title b table-head-bg">Payment Term</td>
+    <td width="9%" class="invoice-table-title b table-head-bg"></td>
+  </tr>
+  </thead>
+  <tbody>
+  <?php 
+  $sino=1;
+  //$currency = new Zend_Currency();
+  foreach($this->products as $product)
+  {
+  ?>
+  <tr>
+    <td height="22" class="normal-text  line" align="center"><?php echo $sino;?>.</td>
+    <td class="normal-text line"><?php echo $product['product_name']?></td>
+    <td class="normal-text line" align="right"><?php echo $product['cost'];?></td>
+    <td class="normal-text line" align="center"><?php echo $product['setup_fee'];?></td>
+    <td class="normal-text line" align="center">
+    <?php 
+    if($product['ProductType']==1) echo "With Plan";
+    if($product['ProductType']==2) echo "Without Plan";
+    if($product['ProductType']==3) echo "With & without Plan";
+    ?>
+    </td>
+    <td class="normal-text line" align="center"><?php
+    echo($product['product_status'])?'<img src="'.$this->baseUrl().'/images/active.png" alt="Active" title="Active"/>':'<img src="'.$this->baseUrl().'/images/disable.png" alt="Disabled" title="Disabled"/>';
+    ?></td>
+    <td class="normal-text line" align="center"><?php echo  $this->Disdate($product['added_date'])?></td>
+    <td class="normal-text line">
+    <?php
+    echo($product['payment_term']==0)? "One time": "Monthly";
+     ?></td>
+    <td class="normal-text line" align="center" nowrap="nowrap">
+ 
+ 	<a href="<?php echo $this->baseUrl();?>/Admin/Subproduct/index/id/<?php echo $product['idproducts']?>?keepThis=true&TB_iframe=true&height=350&width=500" class="thickbox">   
+   <?php 
+   //echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Subproduct','action'=>'index', 'idproducts'=>$this->Ecode($product['idproducts'])),0,true).'">';
+   echo "<img src='".$this->baseUrl()."/images/subproduct.png' alt='Select Its Subproducts' title='Select Its Subproducts'  style='cursor:pointer;' />";
+   echo '</a>&nbsp;';
+   
+ //  echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Productprice','action'=>'index', 'idproducts'=>$this->Ecode($product['idproducts'])),0,true).'">';
+  // echo "<img src='".$this->baseUrl()."/images/cost.png' alt='Vaiable Cost' title='Variable Cost'  style='cursor:pointer;' />";
+  // echo '</a>&nbsp;';
+   ?> 
+    <a class="openmodalbox"	href="javascript:void(0);"	rel="ajax: <?php echo $this->baseUrl();?>/Admin/Products/view/id/<?php echo $product['idproducts']?>">
+    <?php 
+  //  echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Products','action'=>'view', 'id'=>$this->Ecode($this->$product['idproducts'])),0,true).' rel="prettyPhoto[ajax]"">';
+    echo "<img src='".$this->baseUrl()."/images/view.png' alt='View' title='View'  style='cursor:pointer;' />";
+    echo '</a>&nbsp;';
+    
+    
+    echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Products','action'=>'edit', 'id'=>$this->Ecode($product['idproducts'])),0,true).'">';
+    echo "<img src='".$this->baseUrl()."/images/edit.png' alt='Edit' title='Edit'  style='cursor:pointer;' />";
+    echo '</a>&nbsp;';
+       	echo "<img src='".$this->baseUrl()."/images/delete.gif' alt='Delete' title='Delete' onClick='del(".$product['idproducts'].")'   style='cursor:pointer;'/>";
+    ?>
+    </td>
+  </tr>
+  <?php 
+  $sino = ++$sino;
+  }
+  ?>
+  </tbody>
+</table>
+  </div>
+ <script type="text/javascript">
+                //<![CDATA[
+ $(document).ready(function() {
+	    oTable = $('#grid').dataTable({
+	        "bJQueryUI": true,
+	        "sPaginationType": "full_numbers"
+	    });
+	} );
+                //]]>
+                </script>

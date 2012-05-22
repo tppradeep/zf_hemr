@@ -1,0 +1,54 @@
+<link href="../../../../../../public/css/user.css" rel="stylesheet" type="text/css" />
+<table width="100%" border="0" cellspacing="2" cellpadding="2">
+    <tr>
+      <td colspan="4" class="plan-title shadow"><?php echo $this->planname['plan_name'];?>(selected providers : <?php echo $this->planname['provider_no'];?>)</td>
+    </tr>
+    <tr>
+      <td colspan="4" class="normal-text">This Plan includes following packages :</td>
+    </tr>
+    <tr>
+      <td width="3%" align="center" class="table-head shadow">#</td>
+      <td width="73%" class="table-head shadow">Package Name</td>
+      <td width="24%" align="right" class="table-head shadow">Setup Fee</td>
+      <td width="24%" align="right" class="table-head shadow">Cost</td>
+    </tr>
+    <?php
+    $us = new Zend_Currency('en_US');
+    
+    $plancost=0;
+    $totalsetupfee=0;
+    $sino=1; 
+    foreach($this->productdetails as $productdtd)
+    {
+    ?>
+    <tr>
+      <td align="center" valign="top" class="normal-text shadowlight"><?php echo $sino;?>.</td>
+      <td class="normal-text shadowlight"><span class="product"><?php echo $productdtd['product_name'];?>
+      <?php 
+      if($productdtd['payment_term']==1)
+      {
+          echo "(Monthly Payment)";
+      }
+      ?>
+      </span><br />
+        <strong>Features : </strong>
+        <p><?php echo $productdtd['product_feature'];?></p></td>
+      <td align="right" valign="top" class="normal-text shadowlight"><?php echo $us->toCurrency($productdtd['setup_fee']);?></td>
+      <td align="right" valign="top" class="normal-text shadowlight"><?php echo $us->toCurrency($productdtd['cost'] * $this->planname['provider_no']);?></td>
+    </tr>
+   
+    <?php 
+    $totalsetupfee=$totalsetupfee + $productdtd['setup_fee'];
+    	if($productdtd['cost']=="")
+    	    $productdtd['cost']=0;
+    	$plancost = $plancost + $productdtd['cost'] * $this->planname['provider_no'];
+    $sino = $sino + 1;
+    }
+    ?>
+     <tr>
+      <td align="center" valign="top" class="normal-text shadowlight">&nbsp;</td>
+      <td class="table-head shadowlight">Plan Amount :</td>
+      <td align="right" valign="top" nowrap="nowrap" class="table-head shadowlight"><?php echo $us->toCurrency($totalsetupfee);?></td>
+      <td align="right" valign="top" nowrap="nowrap" class="table-head shadowlight"><?php echo $us->toCurrency($plancost);?></td>
+    </tr>
+  </table>

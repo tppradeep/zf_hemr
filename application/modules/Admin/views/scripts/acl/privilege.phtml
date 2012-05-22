@@ -1,0 +1,120 @@
+	<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/themes/base/jquery.ui.all.css">
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/external/jquery.bgiframe-2.1.2.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.core.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.widget.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.mouse.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.button.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.draggable.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.position.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.dialog.js"></script>
+	<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/demo/demos.css">
+	
+	
+		
+	<script>
+	$(function() {
+		$("#dialog-confirm").addClass("hidevisible");  
+		});
+	
+	
+	function del(delid)
+	{
+		$(function() {
+		$( "#dialog-confirm" ).addClass("shovisible");
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+			$( "#dialog-confirm" ).dialog({
+				resizable: false,
+				height:180,
+				modal: true,
+				buttons: {
+					"Delete all items": function() {
+						$( this ).dialog( "close" );
+						window.location.href="<?php echo $this->baseUrl();?>/Admin/Acl/privilegedelete/id/"+delid+"";
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		});
+	}
+	
+	</script>
+<?php
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+?>
+<div id="right_panel">
+<?php 
+if($this->st==1)
+{
+    echo '<div id="con_mess">Record Added Successfully</div>';
+}
+if($this->st==2)
+{
+	echo '<div id="con_mess">Record Updated Successfully</div>';
+}
+if($this->st==3)
+{
+	echo '<div id="con_mess">Record Deleted Successfully</div>';
+}
+?>
+ <div id="dialog-confirm" title="Delete Record?">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+
+<div class="addnew">
+    <?php echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Acl','action'=>'privilegeadd'),0,true).'" class="add">';?>
+    Add New Privilege
+    <?php echo "</a>";?>
+</div>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="grid">
+  <thead>
+  <tr>
+    <td width="4%" height="20" align="center" class="invoice-table-title b table-head-bg white">#</td>
+    <td width="16%" align="center" nowrap="nowrap" class="invoice-table-title b table-head-bg">Privilege Name</td>
+    <td width="15%" align="center" nowrap="nowrap" class="invoice-table-title b table-head-bg">Created Date</td>
+    <td width="7%" align="center" class="invoice-table-title b table-head-bg">Last Modified Date</td>
+    <td width="9%" class="invoice-table-title b table-head-bg"></td>
+  </tr>
+  </thead>
+  <tbody>
+  <?php 
+  $sino=1;
+  //$currency = new Zend_Currency();
+  foreach($this->privilegelist as $PL)
+  {
+  ?>
+  <tr>
+    <td height="22" class="normal-text  line" align="center"><?php echo $sino;?>.</td>
+    <td class="normal-text line" align="center"><?php echo $PL['privilege'];?></td>
+    
+    <td class="normal-text line" align="center" nowrap="nowrap"><?php  echo $this->Disdate($PL['created']);?></td>
+    <td class="normal-text line" align="center" nowrap="nowrap"><?php  echo $this->Disdate($PL['modified']);?></td>
+    <td class="normal-text line" align="center" nowrap="nowrap">
+ 
+  <?php 
+    echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Acl','action'=>'privilegeedit', 'id'=>$this->Ecode($PL['id'])),0,true).'">';
+    echo "<img src='".$this->baseUrl()."/images/edit.png' alt='Edit' title='Edit'  style='cursor:pointer;' />";
+    echo '</a>&nbsp;';
+       	echo "<img src='".$this->baseUrl()."/images/delete.gif' alt='Delete' title='Delete' onClick='del(".$PL['id'].")'   style='cursor:pointer;'/>";
+    ?>
+    </td>
+  </tr>
+  <?php 
+  $sino = ++$sino;
+  }
+  ?>
+  </tbody>
+</table>
+  </div>
+ <script type="text/javascript">
+                //<![CDATA[
+ $(document).ready(function() {
+	    oTable = $('#grid').dataTable({
+	        "bJQueryUI": true,
+	        "sPaginationType": "full_numbers"
+	    });
+	} );
+                //]]>
+                </script>

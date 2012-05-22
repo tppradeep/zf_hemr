@@ -1,0 +1,131 @@
+	<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/themes/base/jquery.ui.all.css">
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/jquery-1.7.1.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/external/jquery.bgiframe-2.1.2.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.core.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.widget.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.mouse.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.button.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.draggable.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.position.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.dialog.js"></script>
+	<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/demo/demos.css">
+	<script>
+	$(function() {
+		$("#dialog-confirm").addClass("hidevisible");  
+		});
+	
+	
+	function del(delid)
+	{
+		$(function() {
+		$( "#dialog-confirm" ).addClass("shovisible");
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+			$( "#dialog-confirm" ).dialog({
+				resizable: false,
+				height:180,
+				modal: true,
+				buttons: {
+					"Delete all items": function() {
+						$( this ).dialog( "close" );
+						window.location.href="<?php echo $this->baseUrl();?>/Admin/Plans/delete/id/"+delid+"";
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		});
+	}
+	
+	</script>
+<?php
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+?>
+ <div id="dialog-confirm" title="Delete Record?">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+<table width="82%" border="0" align="center">
+ <tr>
+    <td colspan="13"  align="right" valign="top" class="list-table-details">
+    
+    <table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+  
+    <td> 
+    <img src="<?php echo $this->baseUrl();?>/images/add.png" alt='Add' title='Add' /></td>
+    <td><?php echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Plans','action'=>'add'),0,true).'" class="add">';?>
+    Add New Plan
+    <?php echo "</a>";?></td>
+  </tr>
+</table>
+
+   
+    </td>
+  </tr>
+  <tr>
+    <td colspan="13"  align="center" valign="top" class="list-table-details" id="alert">
+    <span id="con_mess">
+     </span>
+    </td>
+    </tr>
+  <tr>
+    <td class="list-table-header shadow">&nbsp;Plan Name </td>
+    <td class="list-table-header shadow" align=center>Caption </td>
+    <td class="list-table-header shadow" align=center>Actual Cost ($)</td>
+    <td class="list-table-header shadow" align=center>Actual Setup Fee ($)</td>
+    <td class="list-table-header shadow" align=center>Image</td>
+    <td class="list-table-header shadow" align=center>Bundle Discount For Setup Fee</td>
+    <td class="list-table-header shadow" align=center>Bundle Discount for Cost</td>
+    <td class="list-table-header shadow" align=center>Plan Cost</td>
+    <td class="list-table-header shadow" align=center>Plan Setup Cost</td>
+    <td class="list-table-header shadow" align=center>Total Plan Cost</td>
+	<td class="list-table-header shadow" align=center>Listing Order</td>
+	<td class="list-table-header shadow" align=center>Status</td>
+	<td class="list-table-header shadow" align=center>To Do</td>
+  </tr>
+  
+
+
+<?php 
+	for($i=0; $i<sizeof($this->ps);$i++)
+	{
+		$total =$this->ps[$i]['bundle_cost']+$this->ps[$i]['bundle_setup_cost'];
+		echo($i%2==0)? "<tr class='list-tr-bg2'>": "<tr class='list-tr-bg'>";
+		
+		echo "<td class='list-table-details shadowlight'>&nbsp;".$this->ps[$i]['hp_name']."</td>";
+		echo "<td align=center class='list-table-details shadowlight'>".$this->ps[$i]['hp_caption']."</td>";
+		echo "<td align=center class='list-table-details shadowlight'>".$this->pscost[$i]['cost']."</td>";
+		echo "<td align=center class='list-table-details shadowlight'>".$this->pscost[$i]['setupfee']."</td>";
+		echo "<td align=center class='list-table-details shadowlight'><img src='".$this->baseUrl()."/uploads/plans/".$this->ps[$i]['Imagename']."' width='38' height='43'></td>";
+		echo "<td align=center class='list-table-details shadowlight'>".$this->ps[$i]['bundle_discount_per_setup'];
+		if($this->ps[$i]['bundle_discount_type']==1)
+			echo "%";
+		echo "</td>";
+		echo "<td align=center class='list-table-details shadowlight'>".$this->ps[$i]['bundle_discount_per_cost'];
+		if($this->ps[$i]['bundle_discount_type']==1)
+			echo "%";
+		echo "</td>";
+		echo "<td align=center class='list-table-details shadowlight'>".$this->ps[$i]['bundle_cost']."</td>";
+		echo "<td align=center class='list-table-details shadowlight'>".$this->ps[$i]['bundle_setup_cost']."</td>";
+		echo "<td align=center class='list-table-details shadowlight'>".$total."</td>";
+		echo "<td align=center class='list-table-details shadowlight'>".$this->ps[$i]['hp_sortorder']."</td>";
+		echo "<td align=center class='list-table-details shadowlight' nowrap='nowrap'>";
+		echo($this->ps[$i]['hp_status'])?'<img src="'.$this->baseUrl().'/images/active.png" alt="Active" title="Active"/>':'<img src="'.$this->baseUrl().'/images/disable.png" alt="Disabled" title="Disabled"/>';
+		echo "</td>";
+		echo "<td class='list-table-details shadowlight' align='center' nowrap='nowrap'>";
+		
+		echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Planconfig','action'=>'index', 'id'=>$this->Ecode($this->ps[$i]['hp_id'])),0,true).'">';
+		echo "<img src='".$this->baseUrl()."/images/setting.png' alt='Configuration' title='Configuration'  style='cursor:pointer;' />";
+		echo '</a>&nbsp;';
+		
+		echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Plans','action'=>'edit', 'id'=>$this->Ecode($this->ps[$i]['hp_id'])),0,true).'">';
+		echo "<img src='".$this->baseUrl()."/images/edit.png' alt='Edit' title='Edit'  style='cursor:pointer;' />";
+		echo '</a>&nbsp;';
+		if($i!=0)
+			echo "<img src='".$this->baseUrl()."/images/delete.gif' alt='Delete' title='Delete' onClick='del(".$this->ps[$i]['hp_id'].")'   style='cursor:pointer;'/>";
+		echo "</td>";
+		echo "</tr>";
+	}
+
+?>
+</table>

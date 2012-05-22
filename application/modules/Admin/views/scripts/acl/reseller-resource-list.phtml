@@ -1,0 +1,29 @@
+<table width="95%">
+<?php 
+if($this->sec=="group")
+{
+
+    foreach($this->ControllerList as $CL)
+    {
+?>
+		<tr>
+		<td><input type="checkbox" name="cont" value="<?php echo $CL['controller']?>" onclick=actionlist('<?php echo $CL['controller']?>',this.checked,'group')></td>
+		<td class="label b shadowlight" width="100%"><?php echo $this->escape($CL['controller_display_name']);?></td>
+		</tr>
+<?php
+    }
+}
+else 
+{
+	foreach($this->ControllerList as $CL)
+	{
+	?>
+		<tr>
+		<td><input type="checkbox" name="cont" value="<?php echo $CL['controller']?>" onclick=actionlist('<?php echo $CL['controller']?>',this.checked,'user')></td>
+		<td class="label b shadowlight" width="100%"><?php echo $this->escape($CL['controller_display_name']);?></td>
+		</tr>
+	<?php 
+	}
+}
+?>
+</table>

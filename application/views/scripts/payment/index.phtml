@@ -1,0 +1,249 @@
+<link href="../../../../public/css/site.css" rel="stylesheet" type="text/css" />
+ <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="POST">
+<table width="95%" border="0" align="center" cellpadding="2" cellspacing="5">
+  <tr>
+    <td colspan="3" class="normal-text b">Hi <?php echo $this->uname;?>,</td>
+  </tr>
+  <tr>
+    <td colspan="3" class="normal-text b">
+    <?php 
+    echo $this->escape($this->cmsdtd['cms_details']); //Cms.php (DbTable)
+    ?>    </td>
+  </tr>
+  <tr>
+    <td class="normal-text b line">User ID </td>
+    <td align="center" class="normal-text b line">:</td>
+    <td class="normal-text line"><?php 
+        echo $this->ulogin['hf_email']; // UserRegister.php (DbTable)
+    ?></td>
+  </tr>
+  <tr>
+    <td class="normal-text b line">Password</td>
+    <td align="center" class="normal-text b line">:</td>
+    <td class="normal-text line"><?php echo $this->ulogin['dashboard_password'];?></td>
+  </tr>
+  <tr>
+    <td class="normal-text b line">Selected Plan </td>
+    <td align="center" class="normal-text b line">:</td>
+    <td class="normal-text line"><?php echo $this->planname["hp_name"]; // PlanList.php (DbTable)?></td>
+  </tr>
+  <tr>
+    <td class="h1">Invoce Details : </td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="tborder">
+      <tr>
+        <td width="25%" valign="middle"><img src="<?php echo $this->baseUrl();?>/images/zhhealthcare.jpg" width="32" height="32" alt="Z&amp;H" /></td>
+        <td width="40%" valign="top" class="invoice-title">
+        <?php 
+        $Address = new Zend_Session_Namespace('address');
+        echo $Address->address;
+	
+        ?>
+        </td>
+        <td width="35%" valign="bottom"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="71%" class="normal-text">Invoice No</td>
+            <td width="2%" class="sub-title">:</td>
+            <td width="27%" nowrap="nowrap" class="form-label-main"><?php echo $this->invoicenumber;?></td>
+          </tr>
+          <tr>
+            <td class="normal-text">Currency</td>
+            <td class="sub-title">:</td>
+            <td class="form-label-main">USD</td>
+          </tr>
+          <tr>
+            <td class="normal-text">Date </td>
+            <td class="sub-title">:</td>
+            <td class="form-label-main"><?php echo date("m-d-Y");?></td>
+          </tr>
+        </table></td>
+        </tr>
+      <tr>
+        <td colspan="3" valign="middle" class="line">&nbsp;</td>
+        </tr>
+      <tr>
+        <td valign="middle" class="invoice-title"><strong>Bill To :</strong><br />
+        <?php 
+        	echo $this->invoiceaddress['hf_facility_name'];
+        	echo "<br/>";
+        	echo $this->invoiceaddress['hf_address'];
+        	echo "<br/>";
+        	echo $this->invoiceaddress['hf_city'];
+        	echo ", Zipcode:";
+        	echo $this->invoiceaddress['hf_zip'];
+        	echo "<br/>";
+        	echo $this->invoiceaddress['hf_state'];
+        	echo " - ";
+        	echo $this->invoiceaddress['hf_country'];
+        	echo "<br/>Email:";
+        	echo $this->invoiceaddress['hf_email'];
+        	echo "<br/>Phone :";
+        	echo $this->invoiceaddress['hf_phone'];
+        	echo "<br/> Fax:";
+       		echo $this->invoiceaddress['hf_fax'];
+        ?>
+        </td>
+        <td valign="top" class="invoice-title">&nbsp;</td>
+        <td valign="bottom">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="3" valign="middle" class="line">&nbsp;</td>
+        </tr>
+      <tr>
+        <td colspan="3" valign="middle" class="invoice-title"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="4%" class="invoice-table-title">&nbsp;</td>
+            <td width="78%" class="invoice-table-title">SKU / Description</td>
+            <td width="2%" class="invoice-table-title">&nbsp;</td>
+            <td width="12%" align="right" class="invoice-table-title">Amount</td>
+            <td width="4%" class="invoice-table-title">&nbsp;</td>
+          </tr>
+  <?php if($this->onetimepayment>0)
+  {?>
+ 
+  <tr>
+    <td height="35" class="normal-text b line">&nbsp;</td>
+    <td class="normal-text line">Plan Setup Fee </td>
+    <td class="normal-text line">:</td>
+    <td align="right" class="normal-text b line"><?php 
+    $OneTimeFee = new Zend_Currency('en_US');
+   echo  $OneTimeFee->toCurrency($this->onetimepayment);
+   // echo $this->onetimepayment;?></td>
+    <td align="right" class="normal-text b line">&nbsp;</td>
+  </tr>
+  <?php 
+  }
+  if($this->monthlypayment>0)
+  {
+  ?>
+  <tr>
+    <td height="35" class="normal-text b line">&nbsp;</td>
+    <td class="normal-text line">Monthly Fee (advance payment) </td>
+    <td class="normal-text line">:</td>
+    <td align="right" class="normal-text b line"><?php
+    $MonthlyFee = new Zend_Currency('en_US');
+    echo $MonthlyFee->toCurrency($this->monthlypayment);
+   ?></td>
+    <td align="right" class="normal-text b line">&nbsp;</td>
+  </tr>
+  <?php 
+  }
+  if(($this->onetimepayment + $this->monthlypayment)>0)
+  {
+  ?>
+  <tr>
+    <td height="35" class="normal-text b line">&nbsp;</td>
+    <td align="right" class="normal-text b line">
+     <?php 
+  if($this->discount>0)
+  {
+  	echo "Net";
+  }
+  else
+  {
+  	echo "Gross";
+  }
+  ?>
+   Payment </td>
+    <td class="normal-text b line">:</td>
+    <td align="right" class="normal-text b line"><?php
+    $gtotal = $this->onetimepayment + $this->monthlypayment;
+    $totalFee = new Zend_Currency('en_US');
+    echo $totalFee->toCurrency($gtotal);
+    ?></td>
+    <td align="right" class="normal-text b line">&nbsp;</td>
+  </tr>
+  <?php 
+  if($this->discount>0)
+  {
+  ?>
+  <tr>
+    <td height="35" class="normal-text b line">&nbsp;</td>
+    <td align="right" class="normal-text b line">Discount </td>
+    <td class="normal-text b line">:</td>
+    <td align="right" class="normal-text b line"><?php
+    	$total = $this->onetimepayment + $this->monthlypayment;
+    	$dis_count=$this->discount;
+		$dis_amount=($total * $dis_count)/100;
+		echo $totalFee->toCurrency($dis_amount);
+    //echo $this->discount;?></td>
+    <td align="right" class="normal-text b line">&nbsp;</td>
+  </tr>
+ 
+   <tr>
+     <td height="35" class="normal-text b line">&nbsp;</td>
+    <td align="right" class="normal-text b line">Gross Amount</td>
+    <td class="normal-text b line">:</td>
+    <td align="right" class="normal-text b line"><?php
+    $gtotal=$total - $dis_amount;
+    $totalFee = new Zend_Currency('en_US');
+    echo $totalFee->toCurrency($gtotal);
+    ?></td>
+    <td align="right" class="normal-text b line">&nbsp;</td>
+   </tr>
+   <?php 
+  }
+  ?>          </table></td>
+      </tr>
+    </table></td>
+    </tr>
+
+
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="right" colspan="3"><input type="submit" name="Submit" value="Proceed to Payment" class="user-submit"/></td>
+  </tr>
+  <?php 
+  }
+  ?>
+  <tr>
+    <td align="right" colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td>
+      
+		<!-- Identify your business so that you can collect the payments. -->
+		<input type="hidden" name="business" value="pradee_1332324973_biz@zhservices.com">
+		<input type=hidden name=SIGNATURE value="AFcWxV21C7fd0v3bYYYRCpSSRl31ASh58JiqMRQg94gl0iRFYVSC2fVW">
+		<!-- Specify a Buy Now button. -->
+		<input type="hidden" name="cmd" value="_xclick-subscriptions">
+		<!-- Specify details about the item that buyers will purchase. -->
+		<input type="hidden" name="item_name" value="<?php echo $this->planname;?> Plan Subscription">
+		<input type="hidden" name="item_number" value="<?php echo $this->invoiceNumber;?>">
+		<input type="hidden" name="amount" value="<?php echo $gtotal;?>">
+		<input type="hidden" name="currency_code" value="USD">
+		<input type="hidden" name="no_shipping" value="1">
+		<?php 
+		$sess = new Zend_Session_Namespace('user');
+		$hf_id=$sess->hf_id;
+		?>
+		<input type="hidden" name="custom" value="<?php  echo $this->custom;?>">
+		<input type="hidden" name="invoice" value="<?php echo $this->invoiceNumber;?>">
+		<input type="hidden" name="a1" value="<?php echo $gtotal;?>">
+        <input type="hidden" name="p1" value="1">
+        <input type="hidden" name="t1" value="M">
+              
+		<?php if($this->monthlypayment>0)
+		{?>
+		<input type="hidden" name="a3" value="<?php echo $this->monthlypayment?>">
+		<input type="hidden" name="p3" value="1">
+		<input type="hidden" name="t3" value="M">
+		<?php }?>
+		<!-- Prompt buyers to enter their desired quantities. -->
+		
+		<!-- Display the payment button. -->
+
+        <input type="image" name="submit" border="0" src="<?php echo $this->baseUrl().'/images/paypal_logo.jpg'?>"/></td>
+        <td align="left" class="paypal-notification"><?php 
+   		 echo $this->escape($this->paypaldtd['cms_details']); //Cms.php (DbTable)
+    ?> </td>
+      </tr>
+    </table></td>
+  </tr>
+</table></form> 

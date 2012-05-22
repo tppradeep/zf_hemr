@@ -1,0 +1,113 @@
+<link href="../../../../../../public/css/admin.css" rel="stylesheet" type="text/css" />
+<table width="100%" border="0" cellspacing="2" cellpadding="0" align="center" id="userregister">
+	<tr>
+		<td colspan="2" class="normal-text red b">
+		<?php 
+		if($this->st=="y")
+			echo "Successfully updated the records";
+		?>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="list-table-header shadow">Details of Registered User</td>
+	</tr>
+	<tr>
+		<td class="text-bold-12">Name </td>
+		<td class="text-bold-12">Speciality 
+		</td>
+  </tr>
+	<tr>
+		<td><?php echo $this->formdata['hf_facility_name']?></td>
+		<td><?php echo $this->formdata['hf_speciality']?></td>
+	</tr>
+	<tr>
+		<td class="form-label-main">&nbsp;</td>
+		<td class="form-label-main">&nbsp;</td>
+	</tr>
+	
+	<tr>
+		<td class="text-bold-12">Email Address
+        </td>
+		<td class="form-label-main">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="normal-text"><?php echo $this->formdata['hf_email']?></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="form-label-main">&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="text-bold-12">Address</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="2"><?php echo $this->formdata['hf_address']?>
+			<br />
+		<span class="text-bold-12">Street Address</span></td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>
+		<span class="sub-head2">City : </span><?php echo $this->formdata['hf_city']?></td>
+		<td>
+		<span class="sub-head2">State / Province / Region </span>: <?php echo $this->formdata['hf_state']?></td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td><span class="sub-head2">Postal / Zip Code : </span><?php echo $this->formdata['hf_zip']?></td>
+		<td><br />
+		<span class="sub-head2">Country</span>
+:		<?php 
+		  foreach($this->country as $country)
+		  {
+		  	if($this->formdata['hf_country']==$country['Code'])
+		  	{
+		  		echo $country['Name'];
+		  	}
+		   
+		  }
+		  ?>
+		</td>
+	</tr>
+	<tr>
+		<td class="form-label-main">&nbsp;</td>
+		<td class="form-label-main">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="text-bold-12">Phone Number</td>
+		<td class="text-bold-12">Fax</td>
+	</tr>
+	<tr>
+		<td><?php echo $this->formdata['hf_phone']?></td>
+		<td><?php echo $this->formdata['hf_fax']?></td>
+	</tr>
+	<tr>
+		<td class="form-label-main">&nbsp;</td>
+		<td class="form-label-main">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="text-bold-12">Tax ID</td>
+		<td class="text-bold-12">NPI</td>
+	</tr>
+	<tr>
+		<td><?php echo $this->formdata['hf_tax_id']?></td>
+		<td><?php echo $this->formdata['hf_npi']?></td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+
+</table>

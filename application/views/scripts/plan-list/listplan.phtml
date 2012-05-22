@@ -1,0 +1,195 @@
+<?php $this->placeholder('sidebar')->captureStart() ?>
+<script language="javascript">
+function updateprice(pval)
+{
+	provider = parseInt(pval);
+	document.getElementById("apid").value=provider;
+	
+	bundle_discount_type = parseFloat(document.getElementById("bundle_discount_type").value);
+	bundle_discount_per_cost = parseFloat(document.getElementById("bundle_discount_per_cost").value);
+	bundle_discount_per_setup = parseFloat(document.getElementById("bundle_discount_per_setup").value);
+	
+	
+	MonthlyVariableProductCostTotal = parseFloat(document.getElementById("MonthlyVariableProductCostTotal").value);
+	MonthlyVariableProductSetupFeeTotal = parseFloat(document.getElementById("MonthlyVariableProductSetupFeeTotal").value);
+	
+	MonthlyFixedProductCostTotal = parseFloat(document.getElementById("MonthlyFixedProductCostTotal").value);
+	MonthlyFixedProductSetupFeeTotal = parseFloat(document.getElementById("MonthlyFixedProductSetupFeeTotal").value);
+	
+	OnetimeVariableProductCostTotal = parseFloat(document.getElementById("OnetimeVariableProductCostTotal").value);
+	OnetimeVariableProductSetupFeeTotal = parseFloat(document.getElementById("OnetimeVariableProductSetupFeeTotal").value);
+	
+	OnetimeFixedProductCostTotal = parseFloat(document.getElementById("OnetimeFixedProductCostTotal").value);
+	OnetimeFixedProductSetupfeeTotal = parseFloat(document.getElementById("OnetimeFixedProductSetupfeeTotal").value);
+	
+	
+	if(bundle_discount_type==1) // % wise
+	{
+		//pcost = pcost - ((pcost * bundle_discount_per_cost)/100);
+		
+		MonthlyVariableProductCostTotal = MonthlyVariableProductCostTotal * provider;
+		MonthlyVariableProductCostTotal = MonthlyVariableProductCostTotal - ((MonthlyVariableProductCostTotal * bundle_discount_per_cost)/100);
+		
+		MonthlyVariableProductSetupFeeTotal = MonthlyVariableProductSetupFeeTotal * provider;
+		MonthlyVariableProductSetupFeeTotal = MonthlyVariableProductSetupFeeTotal - ((MonthlyVariableProductSetupFeeTotal * bundle_discount_per_setup)/100);
+		
+		OnetimeVariableProductCostTotal = OnetimeVariableProductCostTotal * provider;
+		OnetimeVariableProductSetupFeeTotal = OnetimeVariableProductSetupFeeTotal * provider;
+		
+		ProductSetupfeeTotal = (OnetimeVariableProductCostTotal + OnetimeVariableProductSetupFeeTotal + MonthlyFixedProductSetupFeeTotal);
+		ProductSetupfeeTotal = ProductSetupfeeTotal - ((ProductSetupfeeTotal * bundle_discount_per_setup)/100);
+	}
+	if(bundle_discount_type==2) // Flat discount
+	{
+		//pcost = pcost - bundle_discount_per_cost;
+		MonthlyVariableProductCostTotal = MonthlyVariableProductCostTotal * provider;
+		MonthlyVariableProductCostTotal = MonthlyVariableProductCostTotal -  bundle_discount_per_cost;
+		
+		MonthlyVariableProductSetupFeeTotal = MonthlyVariableProductSetupFeeTotal * provider;
+		//MonthlyVariableProductSetupFeeTotal = MonthlyVariableProductSetupFeeTotal;
+		
+		OnetimeVariableProductCostTotal = OnetimeVariableProductCostTotal * provider;
+		OnetimeVariableProductSetupFeeTotal = OnetimeVariableProductSetupFeeTotal * provider;
+		
+		//alert(bundle_discount_per_setup);
+		ProductSetupfeeTotal = OnetimeVariableProductCostTotal + OnetimeVariableProductSetupFeeTotal + MonthlyFixedProductSetupFeeTotal - bundle_discount_per_setup;
+	}
+	
+	
+	pcost = MonthlyVariableProductCostTotal + MonthlyFixedProductCostTotal + OnetimeVariableProductCostTotal + OnetimeVariableProductCostTotal;
+	setupfee = MonthlyVariableProductSetupFeeTotal + OnetimeVariableProductSetupFeeTotal + ProductSetupfeeTotal;
+	totalfee = pcost + setupfee;
+	
+	document.getElementById("pcost").value = pcost;
+	document.getElementById("totalfee").value = totalfee;
+	document.getElementById("totalamount").innerHTML = "$ "+pcost+"";
+	
+	document.getElementById("totalsetupfee").innerHTML="$ "+setupfee+"";
+	document.getElementById("gtotal").innerHTML = "$ "+totalfee+"";
+
+}
+</script>
+<link href="../../../../public/css/site.css" rel="stylesheet" type="text/css" />
+   
+<div class="leftpanel">
+<form method="post" action="<?php echo $this->baseUrl();?>/UserRegister/adduser/">
+<input type="hidden" name="_sec" value="plan">
+ <table width="100%" border="0" cellspacing="2" cellpadding="2">
+    <tr>
+      <td colspan="4" class="plan-title shadow"><?php echo $this->planname['hp_name'];?></td>
+    </tr>
+    <tr>
+      <td colspan="4" class="normal-text">This Plan includes following packages :</td>
+    </tr>
+    <tr>
+      <td width="3%" align="center" class="table-head shadow">#</td>
+      <td width="73%" class="table-head shadow">Package Name</td>
+      <td width="24%" align="right" nowrap="nowrap" class="table-head shadow">Setup Fee&nbsp;(one time)</td>
+      <td width="24%" align="right"  nowrap="nowrap" class="table-head shadow">Recurring Fee (monthly)</td>
+    </tr>
+    <?php
+    $plancost=0;
+	$setupfee=0;
+    $sino=1; 
+    foreach($this->productdetails as $productdtd)
+    {
+        
+        if($productdtd['payment_term']==1)//monthly
+        {
+    ?>
+    <tr>
+      <td align="center" valign="top" class="normal-text shadowlight"><?php echo $sino;?>.</td>
+      <td class="normal-text shadowlight"><span class="product"><?php echo $productdtd['product_name'];?>
+      </span><br />
+        <strong>Features : </strong>
+        <p><?php echo $productdtd['product_feature'];?></p></td>
+      <td align="right" valign="top" class="normal-text shadowlight">$ <?php echo $productdtd['setup_fee'];?></td>
+      <td align="right" valign="top" class="normal-text shadowlight">$ <?php echo $productdtd['cost'];?></td>
+    </tr>
+   <?php 
+   
+	   if($productdtd['cost']=="")
+	   	$productdtd['cost']=0;
+	   $setupfee = $setupfee + $productdtd['setup_fee'];
+	   $plancost = $plancost + $productdtd['cost'];
+        }
+        if($productdtd['payment_term']==0)//one time
+        {
+         ?>   
+           <tr>
+      <td align="center" valign="top" class="normal-text shadowlight"><?php echo $sino;?>.</td>
+      <td class="normal-text shadowlight"><span class="product"><?php echo $productdtd['product_name'];?>
+      </span><br />
+        <strong>Features : </strong>
+        <p><?php echo $productdtd['product_feature'];?></p></td>
+      <td align="right" valign="top" class="normal-text shadowlight">$ <?php echo $productdtd['setup_fee'] + $productdtd['cost'];?></td>
+      <td align="right" valign="top" class="normal-text shadowlight">-</td>
+    </tr> 
+       <?php 
+       if($productdtd['cost']=="")
+       	$productdtd['cost']=0;
+       $setupfee = $setupfee + $productdtd['setup_fee'] + $productdtd['cost'];
+              
+        }
+   ?>
+    <?php 
+    	
+    $sino = $sino + 1;
+    }
+	$gtotal = $setupfee + $plancost;
+    ?>
+     <tr>
+      <td align="center" valign="top" class="normal-text shadowlight">&nbsp;</td>
+      <td align="right" class="table-head shadowlight">Required Provider:<select name="provider" id="provider" onchange="updateprice(this.value)">
+        <?php 
+      for($i=1;$i<=100;$i++)
+      {
+          echo "<option value=$i>$i</option>";
+      }
+      ?>
+      </select>
+       <input type="hidden" name="pid" value="<?php echo $this->ecode($this->pid);?>" />
+       <input type="hidden" name="bundle_discount_type" id="bundle_discount_type" value="<?php echo $this->planname['bundle_discount_type'];?>" />
+       <input type="hidden" name="bundle_discount_per_cost" id="bundle_discount_per_cost" value="<?php echo $this->planname['bundle_discount_per_cost'];?>" />
+       <input type="hidden" name="bundle_discount_per_setup" id="bundle_discount_per_setup" value="<?php echo $this->planname['bundle_discount_per_setup'];?>" />
+       
+       <input type="hidden" name="MonthlyVariableProductCostTotal" id="MonthlyVariableProductCostTotal" value="<?php echo $this->MonthlyVariableProductCostTotal;?>" />
+       <input type="hidden" name="MonthlyVariableProductSetupFeeTotal" id="MonthlyVariableProductSetupFeeTotal" value="<?php echo $this->MonthlyVariableProductSetupFeeTotal;?>" />
+       <input type="hidden" name="MonthlyFixedProductCostTotal" id="MonthlyFixedProductCostTotal" value="<?php echo $this->MonthlyFixedProductCostTotal;?>" />
+       <input type="hidden" name="MonthlyFixedProductSetupFeeTotal" id="MonthlyFixedProductSetupFeeTotal" value="<?php echo $this->MonthlyFixedProductSetupFeeTotal; ?>" />
+       
+       <input type="hidden" name="OnetimeVariableProductCostTotal" id="OnetimeVariableProductCostTotal" value="<?php echo $this->OnetimeVariableProductCostTotal;?>" />
+       <input type="hidden" name="OnetimeVariableProductSetupFeeTotal" id="OnetimeVariableProductSetupFeeTotal" value="<?php echo $this->OnetimeVariableProductSetupFeeTotal;?>" />
+       <input type="hidden" name="OnetimeFixedProductCostTotal" id="OnetimeFixedProductCostTotal" value="<?php echo $this->OnetimeFixedProductCostTotal;?>" />
+       <input type="hidden" name="OnetimeFixedProductSetupfeeTotal" id="OnetimeFixedProductSetupfeeTotal" value="<?php echo $this->OnetimeFixedProductSetupfeeTotal;?>" />
+       
+      <input type="hidden" name="pcost" id="pcost" <?php echo $this->planname['bundle_cost'];?> />
+      <input type="hidden" name="totalfee" id="totalfee" <?php echo $this->planname['bundle_setup_cost'];?> />
+      <input type="hidden" name="apid" id="apid" value="1" />
+      </td>
+      <td align="right" class="table-head shadowlight"><span class="strike">$ <?php echo $setupfee;?></span> $ <?php echo $this->planname['bundle_setup_cost'];?></td>
+      <td align="right" valign="top" nowrap="nowrap" class="table-head shadowlight" id="monthlyfee"><span class="strike">$ <?php echo $plancost;?></span> $ <?php echo $this->planname['bundle_cost'];?></td>
+    </tr>
+     <tr>
+       <td colspan="3" align="right" valign="top" class="normal-text shadowlight">Setup Fee Total<br />
+        (One time fee)</td>
+       <td align="right" valign="top" class="normal-text shadowlight" id="totalsetupfee"> $ <?php echo $this->planname['bundle_setup_cost'];?></td>
+     </tr>
+     <tr>
+       <td colspan="3" align="right" valign="top" class="normal-text shadowlight">Recurring Fee<br />
+        (Monthly)</td>
+       <td align="right" valign="top" class="normal-text shadowlight" id="totalamount"> $ <?php echo $this->planname['bundle_cost'];?></td>
+     </tr>
+     <tr>
+       <td colspan="3" align="right" valign="top" class="normal-text shadowlight"><strong>Total Amount</strong></td>
+       <td align="right" valign="top" class="normal-text shadowlight b" id="gtotal">$ <?php echo $this->planname['bundle_cost']+$this->planname['bundle_setup_cost'];?></td>
+     </tr>
+     <tr>
+      <td colspan="4" align="right" valign="top" class="normal-text shadowlight">
+       <!-- <a href="<?php echo $this->url(array('controller'=>'UserRegister','action'=>'adduser', 'id'=>$this->ecode($this->pid)));?>" class="plan-register">Proceed To Registration</a>--> <input name="" type="submit" value="Proceed to Registration" />     </td>
+    </tr>
+  </table>
+  </form>
+</div>
+
+

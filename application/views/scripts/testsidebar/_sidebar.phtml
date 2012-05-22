@@ -1,0 +1,16 @@
+<?php $this->placeholder('sidebar')->captureStart() ?>   
+ <div style="width:295px ;  background-color:silver">  
+
+   <h4>Navigational menu for members</h4>  
+      <ul>
+        <li><a href="<?php echo $this->url(array('controller' => 'testsidebar','action' => 'listusers')); ?>">Articles List</a></li> 					
+		<li><a href="<?php echo $this->url(array('controller' => 'testsidebar','action' => 'index')); ?>">List all members</a></li> 
+		</ul>
+	  <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus   
+    consectetur aliquet odio ac consectetur. Nulla quis eleifend   
+    tortor. Pellentesque varius, odio quis bibendum lectus porttitor quam, et aliquet mauris orci eu augue.   
+       </p>   
+	  <a href="<?php echo $this->url(array('controller'=>'index'), 'default', true) ?>">Log-out</a>
+ </div>  
+<?php $this->placeholder('sidebar')->captureEnd() ?>
