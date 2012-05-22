@@ -106,10 +106,11 @@ class Admin_Model_DbTable_Users extends Zend_Db_Table_Abstract
 	{
 	    $db = Zend_Db_Table::getDefaultAdapter();
 	    
-	    $sql = 'select acl_resource,acl_action from hosted_facilities where hf_id='.$hf_id;
+	    $sql = 'select acl_resource,acl_action from acl_user_setting where hf_id='.$hf_id;
 	    $acl_dtd = $db->fetchAll($sql);
-	    
-	   
+	    echo "<pre>";
+	    print_r($acl_dtd);
+	    die;
 	   	$acl_resource = $acl_dtd[0]['acl_resource'];
 		$acl_action = $acl_dtd[0]['acl_action']; 	
     
@@ -164,19 +165,32 @@ class Admin_Model_DbTable_Users extends Zend_Db_Table_Abstract
 	    */
 	    $db = Zend_Db_Table::getDefaultAdapter();
 	    
-	    $sql = 'select acl_resource,acl_action from hosted_facilities where hf_id='.$hf_id;
+	    $sql = 'select acl_resource,acl_action from acl_user_setting where hf_id='.$hf_id;
 	    $acl_dtd = $db->fetchAll($sql);
 	     
 	    
 	    $acl_action = $acl_dtd[0]['acl_action'];
 	    $acl_resource = $acl_dtd[0]['acl_resource'];
 
-	    $data = array(
-	    		'acl_resource' => $id
-	    );
 	    
-	    $db->update('hosted_facilities', $data,'hf_id = "'.$hf_id.'"');
-	    
+	    $sql = 'select count(id) from acl_user_setting where hf_id='.$hf_id;
+	    if($db->fetchOne($sql)==0)
+	    {
+	        $data = array(
+	                'hf_id'=>$hf_id,
+	        		'acl_resource' => $id
+	        );
+	        
+	        $db->update('acl_user_setting', $data,'hf_id = "'.$hf_id.'"');
+	    }   
+	    else 
+	    { 
+		    $data = array(
+		    		'acl_resource' => $id
+		    );
+		    
+		    $db->update('acl_user_setting', $data,'hf_id = "'.$hf_id.'"');
+	    }
 	    /*
 	     * Udate End
 	     */
@@ -231,12 +245,24 @@ class Admin_Model_DbTable_Users extends Zend_Db_Table_Abstract
 	    */
 	    $db = Zend_Db_Table::getDefaultAdapter();
 	    
-	    $data = array(
-	    		'acl_action' => $id
-	    );
-	     
-	    $db->update('hosted_facilities', $data,'hf_id = "'.$hf_id.'"');
-	     
+	    $sql = 'select count(id) from acl_user_setting where hf_id='.$hf_id;
+	    if($db->fetchOne($sql)==0)
+	    {
+	        $data = array(
+	                'hf_id'=>$hf_id,
+	        		'acl_action' => $id
+	        );
+	         
+	        $db->insert('acl_user_setting', $data,'hf_id = "'.$hf_id.'"');
+	    }
+	    else
+	    {
+		    $data = array(
+		    		'acl_action' => $id
+		    );
+		     
+		    $db->update('acl_user_setting', $data,'hf_id = "'.$hf_id.'"');
+	    }
 	    /*
 	     * Udate End
 	    */
