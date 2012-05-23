@@ -2,16 +2,21 @@
 
 class Admin_IndexController extends Zend_Controller_Action
 {
+
     public function preDispatch()
     {
     	$auth = Zend_Auth::getInstance();
     	if (!$auth->hasIdentity()) {
     		$this->_redirect('/');
-    	} else {
+    	} 
+    	else 
+    	{
     		$useremail = $auth->getIdentity();
+    		
     		//$this->view->username = $userdata->username;
     	}
     }
+
     public function init()
     {
         /* Initialize action controller here */
@@ -57,6 +62,7 @@ class Admin_IndexController extends Zend_Controller_Action
                 return;
             }
 		}
+		
     }
 
     public function logoutAction()
@@ -65,11 +71,29 @@ class Admin_IndexController extends Zend_Controller_Action
 		
     }
 
+    public function menuClickAction()
+    {
+        /*
+         * For tracking menu Leftmenu tracking
+         */
+        $cont = $this->_getParam("cont"); // Controller
+        $act = $this->_getParam("act"); // Action 
+        $sec = $this->_getParam("sec"); // Menu Id
+        
+        $leftmenu = new Zend_Session_Namespace('leftmenuid');
+        $leftmenu->leftmenuid = $sec;
+        
+        $this->_redirect('/'.$cont.'/'.$act.'');
+        
+    }
+
 
 }
 
 
+
 ?>
+
 
 
 

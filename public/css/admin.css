@@ -174,10 +174,12 @@ input[type=submit]
 {
 	border: 1px solid #FFFFFF;
 	background-color: #D9ECFF;
-	width: 14%;
+	width: 175px;;
 	float: left;
 	min-height:498px;
-	padding:6px;
+	padding-top:15px;
+	background-image: url(../images/admin_menu_border.png);
+	background-repeat: repeat-y;
 }
 #leftmenu a
 {
@@ -398,4 +400,41 @@ input[type=text],input[type=password],select,textarea
 	font-weight: bold;
 	color: #0063C6;
 	text-decoration: none;
+}
+
+#list3 { border: 0px solid #111; }
+#list3 div.selected .title {
+	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #FFF;
+}
+#list3 div div {
+	border-left:8px solid #6699CC;
+	padding: 5px;
+	background-image: url(../images/admin_menu_border.png);
+	background-position: 183px;
+}
+#list3 div #menuactive {
+	display:block !important;
+	border-left:8px solid #6699CC;
+	padding: 5px;
+	background-image: url(../images/admin_menu_border.png);
+	background-position: 183px;
+}
+#list3 div div a {
+	padding-left: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #001F3E;
+}
+#list3 div.title {
+	border: 0px solid #3366AA;
+	background-color: #6699CC;
+	padding: 10px;
+	cursor: pointer;
+}
+#list3 div.selected {
+	border-bottom: none;
 }

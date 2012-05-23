@@ -102,6 +102,7 @@
             <controllerFile controllerName="Index">
               <actionMethod actionName="index"/>
               <actionMethod actionName="logout"/>
+              <actionMethod actionName="menuClick"/>
             </controllerFile>
             <controllerFile controllerName="Logout">
               <actionMethod actionName="index"/>
@@ -428,6 +429,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Users">
                 <viewScriptFile forActionName="setPermission"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="menuClick"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

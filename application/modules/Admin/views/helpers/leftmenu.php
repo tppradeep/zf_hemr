@@ -26,8 +26,8 @@ class Zend_View_Helper_leftmenu  extends Zend_View_Helper_Abstract
 				
 		
 		$rvalue ='<div id="leftmenu">';
-		$rvalue .='<h4>Admin Modules('.$session->displayname.')</h4>';
-		$rvalue .='<table width="100%" border="0">';
+		$rvalue .='<div id="list3"><div class="title11">Admin Modules('.$session->displayname.')</div>';
+		//$rvalue .='<table width="100%" border="0">';
 		
 		
 		/*
@@ -38,22 +38,47 @@ class Zend_View_Helper_leftmenu  extends Zend_View_Helper_Abstract
 		
 		for($i=0; $i<sizeof($row);$i++)
 		{
-			
-			$rvalue .='<tr>';
-			$rvalue .='<td>';
+		    $leftmenu = new Zend_Session_Namespace('leftmenuid');
+		     $storedId = $leftmenu->leftmenuid;
+		    
+		   // $leftmenu->leftmenuid = $sec;
+		//	$rvalue .='<tr>';
+		     if($storedId == $row[$i]['module_id'])
+		     {
+		     	$rvalue .='<div class="selected">';
+		     }
+		     else
+		     {
+		     	$rvalue .='<div>';
+		     }
+		   
+		            
+		     $rvalue .='<div class="title">'.$row[$i]['module_display_name'].'</div>';
+		    if($storedId == $row[$i]['module_id'])
+		    {
+		      $rvalue .='<div id="menuactive">';  
+		    }
+		    else 
+		    {
+			$rvalue .='<div>';
+		    }
 			
 			$rvalue .='<a href=';
-			$rvalue .= $this->view->url(array('controller' => $row[$i]['module_name'],'action' => $row[$i]['module_controller']),0,true);
+			//'sec'=>$row[$i]['module_id']
+			
+			//$rvalue .= $this->view->url(array('controller' => $row[$i]['module_name'],'action' => $row[$i]['module_controller']),0,true);
+			$rvalue .= $this->view->url(array('module'=>'Admin','controller' => 'Index','action' => 'menu-click','cont'=>$row[$i]['module_name'],'act'=>$row[$i]['module_controller'],'sec'=>$row[$i]['module_id']),0,true);
 		//	$rvalue .= $row[$i]['module_name'],null,true;
 			$rvalue .=' class="plan_list">';
 			$rvalue .= $row[$i]['module_display_name'];
 			$rvalue .= '</a>';
-			$rvalue .= '</td>';
-			$rvalue .='</tr>';
+			$rvalue .= '</div></div>';
+		//	$rvalue .='</tr>';
 		}
 		
-		$rvalue .='</table>';
-		$rvalue .= '</div>';
+		//$rvalue .='</table>';
+		$rvalue .='<div><div class="title">&nbsp;</div></div>';
+		$rvalue .= '</div></div>';
 		return $rvalue;  
 		
 	
