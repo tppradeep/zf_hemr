@@ -40,6 +40,7 @@ class Admin_Model_DbTable_Users extends Zend_Db_Table_Abstract
 	    $select = $db->delete('customer_selected_plan','hf_id='.$hf_id);
 	    $select = $db->delete('customer_products','hf_id='.$hf_id);
 	    $select = $db->delete('customer_invoice','hf_id='.$hf_id);
+	    $select = $db->delete('acl_user_setting','hf_id='.$hf_id);
 	    
 	}
 	public function userinvoice($hf_id)

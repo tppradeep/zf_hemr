@@ -51,7 +51,9 @@ class UserRegisterController extends Zend_Controller_Action
 	   	    */
 	   	     
 	   	    $hf_facility_identifier = $formData['hf_facility_identifier'];
+	   	    $hf_facility_suffix = $formData['hf_facility_suffix'];
 	   	    $hf_facility_name = $formData['hf_facility_name'];
+	   	    $hf_facility_lname = $formData['hf_facility_lname'];
 	   	    $hf_speciality = $formData['hf_speciality'];
 	   	    $dashboard_password = $formData['dashboard_password'];
 	   	    $dashboard_password_confirm = $formData['dashboard_password_confirm'];
@@ -74,7 +76,7 @@ class UserRegisterController extends Zend_Controller_Action
 	   	    $cusid=$customerId->customerId;
 	   	     
 	   	    $user = new Application_Model_DbTable_UserRegister();
-	   	    $uid=$user->addUser($hf_facility_identifier,$cusid,$hf_facility_name,$hf_speciality,$dashboard_password,$dashboard_password_confirm,$hf_email,$hf_address,$hf_city,$hf_state,$hf_zip,$hf_country,$hf_phone,$hf_fax,$hf_tax_id,$hf_npi,$pid,$apid,$bpcost,$pcost,$setupfee,$totalfee);
+	   	    $uid=$user->addUser($hf_facility_identifier,$cusid,$hf_facility_suffix,$hf_facility_name,$hf_facility_lname,$hf_speciality,$dashboard_password,$dashboard_password_confirm,$hf_email,$hf_address,$hf_city,$hf_state,$hf_zip,$hf_country,$hf_phone,$hf_fax,$hf_tax_id,$hf_npi,$pid,$apid,$bpcost,$pcost,$setupfee,$totalfee);
 	   	    if($uid=="schemaexist")
 	   	    {
 	   	    	$formData['error']="facility"; // Adding the error cause;

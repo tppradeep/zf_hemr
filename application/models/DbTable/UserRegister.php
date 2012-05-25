@@ -5,7 +5,7 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 
     protected $_name = 'hosted_facilities';
 	
-	public function addUser($hf_facility_identifier,$cusid,$hf_facility_name,$hf_speciality,$dashboard_password,$dashboard_password_confirm,$hf_email,$hf_address,$hf_city,$hf_state,$hf_zip,$hf_country,$hf_phone,$hf_fax,$hf_tax_id,$hf_npi,$id,$apid,$bpcost,$pcost,$setupfee,$totalfee)
+	public function addUser($hf_facility_identifier,$cusid,$hf_facility_suffix,$hf_facility_name,$hf_facility_lname,$hf_speciality,$dashboard_password,$dashboard_password_confirm,$hf_email,$hf_address,$hf_city,$hf_state,$hf_zip,$hf_country,$hf_phone,$hf_fax,$hf_tax_id,$hf_npi,$id,$apid,$bpcost,$pcost,$setupfee,$totalfee)
 	{
 	    
 		$db = Zend_Db_Table::getDefaultAdapter();
@@ -19,7 +19,9 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		$data = array(
 		        'customer_id' => $cusid,
 				'hf_facility_identifier' => $hf_facility_identifier,
+		        'hf_facility_suffix'=>$hf_facility_suffix,
 				'hf_facility_name' => $hf_facility_name,
+		        'hf_facility_lname'=>$hf_facility_lname,
 				'hf_speciality' => $hf_speciality,
 				'dashboard_password' => $dashboard_password,
 				'hf_email' => $hf_email,
@@ -70,7 +72,15 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 ///////////////////////////////////////////////////////////		
 		$numRows = $db->insert('hosted_facilities', $data);
 		$uid=$db->lastInsertId();
-	
+		
+		
+		$data = array(
+				'hf_id' => $uid,
+				'acl_resource' => 'Profile,Changepassword,Plan,Products,Invoice',
+				'acl_action'=>'18,17,16,13,15,14,11,19'
+		
+		);
+		$numRows = $db->insert('acl_user_setting', $data);
 		/*
 		 * Sending Mail with User Login Details
 		*/
@@ -101,8 +111,14 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		$mail->addTo($emailto, $nameto);
 		$mail->setSubject('Welcome To ZH Healthcare!');
 		 
-		
-		$mail->send($transport);
+		try
+		{
+			$mail->send($transport);
+		}
+		catch(Zend_Exception $e)
+		{
+		    
+		}
 		
 		//die;
 		/*

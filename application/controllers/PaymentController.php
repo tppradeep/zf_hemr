@@ -158,7 +158,14 @@ class PaymentController extends Zend_Controller_Action
     	$mail->setFrom('pradeep@zhservices.com', 'ZH Healthcare');
     	$mail->addTo($emailto, $nameto);
     	$mail->setSubject('Invoice'.$invoice_number);
-    	$mail->send($transport);
+    	try
+		{
+			$mail->send($transport);
+		}
+		catch(Zend_Exception $e)
+		{
+		    
+		}
     	
     	if(strtolower($payment_status)=="completed")
     	{
@@ -505,7 +512,14 @@ class PaymentController extends Zend_Controller_Action
     	$at->encoding    = Zend_Mime::ENCODING_BASE64;
     	$at->filename    = $invoicedetails['invoice_number'].'.pdf';
     	
-    	$mail->send($transport);
+    	try
+		{
+			$mail->send($transport);
+		}
+		catch(Zend_Exception $e)
+		{
+		    
+		}
     	
     	/*
     	 * Mail Send End

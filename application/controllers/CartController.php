@@ -74,7 +74,14 @@ class CartController extends Zend_Controller_Action
     	$mail->setFrom('info@zhservices.com', 'ZH Healthcare');
     	$mail->addTo($emailto, $nameto);
     	$mail->setSubject($planname.' Registered Successfully');
-    	$mail->send($transport);
+    	try
+		{
+			$mail->send($transport);
+		}
+		catch(Zend_Exception $e)
+		{
+		    
+		}
     }
 
     public function addAdditionalProductAction()

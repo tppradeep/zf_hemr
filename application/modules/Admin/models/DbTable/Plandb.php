@@ -83,22 +83,43 @@ class Admin_Model_DbTable_Plandb extends Zend_Db_Table_Abstract
 			$discount_end_date=$fenddate[2]."/".$fenddate[0]."/".$fenddate[1];
 		}
 		*/
-		$data = array(
-				'customer_id'=>$customerId->customerId,
-				'hp_name' => $hp_name,
-				'hp_caption' => $hp_caption,
-				'hp_sortorder' => $hp_sortorder,
-				'hp_status' => $hp_status,
-		        'bundle_discount_type'=>$bundle_discount_type,
-		        'bundle_discount_per_cost'=>$bundle_discount_per_cost,
-		        'bundle_discount_per_setup'=>$bundle_discount_per_setup,
-		        'bundle_cost'=>$bundle_discount_cost,
-		        'bundle_setup_cost'=>$bundle_discount_setup,
-				'discount'=>$discount,
-				'discount_start_date'=>$discount_start_date,
-				'discount_end_date'=>$discount_end_date,
-		        'Imagename'=>$Imagename
-		);
+		if($Imagename!="")
+		{
+			$data = array(
+					'customer_id'=>$customerId->customerId,
+					'hp_name' => $hp_name,
+					'hp_caption' => $hp_caption,
+					'hp_sortorder' => $hp_sortorder,
+					'hp_status' => $hp_status,
+			        'bundle_discount_type'=>$bundle_discount_type,
+			        'bundle_discount_per_cost'=>$bundle_discount_per_cost,
+			        'bundle_discount_per_setup'=>$bundle_discount_per_setup,
+			        'bundle_cost'=>$bundle_discount_cost,
+			        'bundle_setup_cost'=>$bundle_discount_setup,
+					'discount'=>$discount,
+					'discount_start_date'=>$discount_start_date,
+					'discount_end_date'=>$discount_end_date,
+			        'Imagename'=>$Imagename
+			);
+		}
+		else
+		{
+		    $data = array(
+		    		'customer_id'=>$customerId->customerId,
+		    		'hp_name' => $hp_name,
+		    		'hp_caption' => $hp_caption,
+		    		'hp_sortorder' => $hp_sortorder,
+		    		'hp_status' => $hp_status,
+		    		'bundle_discount_type'=>$bundle_discount_type,
+		    		'bundle_discount_per_cost'=>$bundle_discount_per_cost,
+		    		'bundle_discount_per_setup'=>$bundle_discount_per_setup,
+		    		'bundle_cost'=>$bundle_discount_cost,
+		    		'bundle_setup_cost'=>$bundle_discount_setup,
+		    		'discount'=>$discount,
+		    		'discount_start_date'=>$discount_start_date,
+		    		'discount_end_date'=>$discount_end_date
+		    );
+		}
 		$this->update($data,'hp_id='.(int)$hp_id);
 	}
 	public function addPlanImg($pid,$Imagename)

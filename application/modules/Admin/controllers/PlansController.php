@@ -166,8 +166,10 @@ class Admin_PlansController extends Zend_Controller_Action
     	
     	
     		$formData = $this->getRequest()->getPost();
+    		
     	
-    		    	
+    	
+    	
     		$hp_id = $formData['hp_id'];
     		$hp_name = $formData['hp_name'];
     		$hp_caption = $formData['hp_caption'];
@@ -182,6 +184,7 @@ class Admin_PlansController extends Zend_Controller_Action
     		$bundle_discount_type = $formData['bundle_price_type'];
     		$setup_discount = $formData['setup_discount'];
     		$cost_discount = $formData['cost_discount'];
+    		$Imagename="";
     		
     		if($bundle_discount_type==0) // No discount
     		{
@@ -218,47 +221,51 @@ class Admin_PlansController extends Zend_Controller_Action
     		$imgwithpath = str_replace("application", "public", APPLICATION_PATH).'\\uploads\\plans\\';
     		
     		$upload = new Zend_File_Transfer_Adapter_Http();
-    		$upload->addValidator('Count', false, array('min' =>1, 'max' => 1))
-    		->addValidator('IsImage', false, 'jpeg,gif,jpg,png')
+    		$upload->addValidator('IsImage', false, 'jpeg,gif,jpg,png')
     		->addValidator('Size', false, array('max' => '5551200kB'))
     		->setDestination($imgwithpath);
     		if (!$upload->isValid())
     		{
-    			throw new Exception('Bad image data: '.implode(',', $upload->getMessages()));
+    			//throw new Exception('Bad image data: '.implode(',', $upload->getMessages()));
     		}
-    		 
-    		try {
-    			$upload->receive();
-    		}
-    		catch (Zend_File_Transfer_Exception $e)
+    		else
     		{
-    			throw new Exception('Bad image data: '.$e->getMessage());
+	    		try {
+	    			$upload->receive();
+	    			
+	    			$Imagename = $upload->getFileName('image_name',false);
+	    			
+	    			$fileext=explode(".", $Imagename);
+	    			 
+	    			$fullPathNameFile=$imgwithpath."\\".$Imagename;
+	    			$locationFile=$imgwithpath."\\".$hp_id.".".$fileext[1];
+	    			rename($fullPathNameFile, $locationFile);
+	    			 
+	    			
+	    			require_once 'Zend/Filter/ImageSize.php';
+	    			require_once 'Zend/Filter/ImageSize/Strategy/Crop.php';
+	    			
+	    			//echo $imgwithpath = $imgwithpath.$Imagename;
+	    			
+	    			$filter = new Zend_Filter_ImageSize();
+	    			$output = $filter->setHeight(215)
+	    			->setWidth(190)
+	    			->setThumnailDirectory($imgwithpath)
+	    			->setOverwriteMode(Zend_Filter_ImageSize::OVERWRITE_ALL)
+	    			->setStrategy(new Zend_Filter_Imagesize_Strategy_Crop())
+	    			->filter($locationFile);
+	    			 
+	    			// Delete Original and give name to resize image
+	    			unlink($fullPathNameFile);
+	    			rename($imgwithpath."\\".$hp_id."-190x215.".$fileext[1], $locationFile);
+	    			$Imagename=$hp_id.".".$fileext[1];
+	    		}
+	    		catch (Zend_File_Transfer_Exception $e)
+	    		{
+	    			//throw new Exception('Bad image data: '.$e->getMessage());
+	    		}
+	    		
     		}
-    		$Imagename = $upload->getFileName('image_name',false);
-			
-    		$fileext=explode(".", $Imagename);
-    		
-    		$fullPathNameFile=$imgwithpath."\\".$Imagename;
-    		$locationFile=$imgwithpath."\\".$hp_id.".".$fileext[1];
-    		rename($fullPathNameFile, $locationFile);
-    		
-    		 
-    		require_once 'Zend/Filter/ImageSize.php';
-    		require_once 'Zend/Filter/ImageSize/Strategy/Crop.php';
-    		 
-    		//echo $imgwithpath = $imgwithpath.$Imagename;
-    		 
-    		$filter = new Zend_Filter_ImageSize();
-    		$output = $filter->setHeight(215)
-    		->setWidth(190)
-    		->setThumnailDirectory($imgwithpath)
-    		->setOverwriteMode(Zend_Filter_ImageSize::OVERWRITE_ALL)
-    		->setStrategy(new Zend_Filter_Imagesize_Strategy_Crop())
-    		->filter($locationFile);
-    		
-    		// Delete Original and give name to resize image
-    		unlink($fullPathNameFile);
-    		rename($imgwithpath."\\".$hp_id."-190x215.".$fileext[1], $locationFile);
     		
     		/*
     		 * * * * * * * * * * * * * * * *
@@ -266,7 +273,7 @@ class Admin_PlansController extends Zend_Controller_Action
     		* * * * * * * * * * * * * * * *
     		*/
     		
-    		$Imagename=$hp_id.".".$fileext[1];
+    		
     		
     		// calling model db to insert values (Planfeatures.php)
     		$pss = new Admin_Model_DbTable_Plandb();
