@@ -7,12 +7,12 @@ class Application_Model_DbTable_Index extends Zend_Db_Table_Abstract
 
 	public function getcms($sec)
 	{
-		$row = $this->fetchRow('cms_sec = "'.$sec.'"');
-		if (!$row) 
-		{
-			throw new Exception("Could not find row $id");
-		}
-		return $row->toArray();
+	    $customerId = new Zend_Session_Namespace('customerId');
+	    $cust_id=$customerId->customerId;
+	    
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    $sql = 'select cms_title,cms_details from cms where cms_sec="'.$sec.'" and customer_id='.$cust_id.'';
+		return $db->fetchRow($sql);
 	}
 	public function planlist()
 	{

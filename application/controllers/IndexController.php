@@ -23,7 +23,7 @@ class IndexController extends Zend_Controller_Action
 		/*
 		 * catching login error
 		 */
-		$this->view->index = $cmsObj->getcms('Login page content');
+		$this->view->index = $cmsObj->getcms('homepage');
 		
 		//$loginError = $this->view->Dcode($this->_getParam('emes'));
 		//$this->view->loginerror = $loginError;

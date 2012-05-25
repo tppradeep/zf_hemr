@@ -288,9 +288,7 @@ input[type=text],input[type=password],select,textarea
 	margin-right: auto;
 	margin-left: auto;
 	width: auto;
-	border: 1px solid #F00;
 	text-align: center;
-	background-color: #FFF;
 	padding: 8px;
 }
 .sub-head

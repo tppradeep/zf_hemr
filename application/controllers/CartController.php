@@ -64,6 +64,9 @@ class CartController extends Zend_Controller_Action
     	$emailto = trim($userdata['hf_email']);
     	$nameto = $userdata['hf_facility_name'];
     	 
+		 $config = array('ssl' => 'tls', 'port' => 587, 'auth' => 'login', 'username' => 'pradeep@zhservices.com', 'password' => 'pradulmon');
+		$transport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', $config);
+		
     	$mail = new Zend_Mail();
     	$mail->setType(Zend_Mime::MULTIPART_RELATED);
     	//$mail->setBodyText('Invoice Details attached');
@@ -71,7 +74,7 @@ class CartController extends Zend_Controller_Action
     	$mail->setFrom('info@zhservices.com', 'ZH Healthcare');
     	$mail->addTo($emailto, $nameto);
     	$mail->setSubject($planname.' Registered Successfully');
-    	$mail->send();
+    	$mail->send($transport);
     }
 
     public function addAdditionalProductAction()

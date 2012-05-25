@@ -1,0 +1,66 @@
+<?php
+include_once  "/ckeditor/ckeditor.php";
+$CKEditor = new CKEditor();
+// Path to the CKEditor directory.
+$CKEditor->basePath = $this->baseUrl().'/ckeditor/';
+// Replace a textarea element with an id (or name) of "textarea_id" on last of page.
+
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+?>
+<script language="javascript" type="text/javascript">
+    jQuery(document).ready(function(){
+                // binds form submission and fields to the validation engine
+                jQuery("#cmsadd").validationEngine();
+            });
+</script>
+<div id="right_panel">
+  <form id="cmsadd" name="cmsadd" method="post" action="">
+  <input type="hidden" name="cms_id" value="<?php echo $this->cmsview['cms_id']?>"?>
+    <table width="100%" border="0" cellspacing="4" cellpadding="4">
+      <tr>
+        <td colspan="3" class="list-table-header shadow">Update Cms</td>
+      </tr>
+      <tr>
+        <td class="label line">Cms Section</td>
+        <td>:</td>
+        <td class="label line"><?php echo $this->cmsview['cms_sec'];?></td>
+      </tr>
+      <tr>
+        <td width="19%" class="label line">Cms Title</td>
+        <td width="1%">:</td>
+        <td width="80%" class="label line">
+        <input name="cms_title" type="text" id="cms_title" size="50" maxlength="250"  class="validate[required]" value="<?php echo $this->cmsview['cms_title'];?>"/></td>
+      </tr>
+      <tr>
+        <td class="label line">Cms Details</td>
+        <td>:</td>
+        <td class="label line">
+        <textarea name="cms_details" id="cms_details" cols="45" rows="5"  class="validate[required]"><?php echo $this->cmsview['cms_details'];?></textarea></td>
+      </tr>
+      <tr>
+        <td class="label line">Status</td>
+        <td>:</td>
+        <td class="label line">
+          <p>
+            <label>
+              <input name="status" type="radio" id="status_0" value="1" <?php if($this->cmsview['status']=="1"){echo 'checked="checked"';}?> />
+              Active</label>
+          
+            <label>
+              <input type="radio" name="status" value="0" id="status_1"  <?php if($this->cmsview['status']=="0"){echo 'checked="checked"';}?>/>
+              Disable</label>
+            <br />
+        </p></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td><input type="submit" name="button" id="button" value="Update" class="shadow" /></td>
+      </tr>
+    </table>
+  </form>
+</div>
+<?php 
+$CKEditor->replace("cms_details");
+?>
+<div class="clear"></div>
