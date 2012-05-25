@@ -6,7 +6,7 @@ class PaymentController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-        $this->_helper->layout->setLayout('user');
+        //$this->_helper->layout->setLayout('user');
     }
 
     public function indexAction()
@@ -147,14 +147,18 @@ class PaymentController extends Zend_Controller_Action
     	$emailto = trim($invoiceaddress[0]['hf_email']);
     	$nameto = $invoiceaddress[0]['hf_facility_name'];
     	
+    	$config = array('ssl' => 'tls', 'port' => 587, 'auth' => 'login', 'username' => 'pradeep@zhservices.com', 'password' => 'pradulmon');
+    	
+    	$transport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', $config);
+    	
     	$mail = new Zend_Mail();
     	$mail->setType(Zend_Mime::MULTIPART_RELATED);
     	//$mail->setBodyText('Invoice Details attached');
     	$mail->setBodyHtml($emailbody);
-    	$mail->setFrom('info@zhservices.com', 'ZH Healthcare');
+    	$mail->setFrom('pradeep@zhservices.com', 'ZH Healthcare');
     	$mail->addTo($emailto, $nameto);
     	$mail->setSubject('Invoice'.$invoice_number);
-    	$mail->send();
+    	$mail->send($transport);
     	
     	if(strtolower($payment_status)=="completed")
     	{
@@ -482,11 +486,14 @@ class PaymentController extends Zend_Controller_Action
     	$emailto = trim($invoiceaddress['hf_email']);
     	$nameto = $invoiceaddress['hf_facility_name'];
     	
+    	$config = array('ssl' => 'tls', 'port' => 587, 'auth' => 'login', 'username' => 'pradeep@zhservices.com', 'password' => 'pradulmon');
+    	
+    	$transport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', $config);
     	$mail = new Zend_Mail();
     	$mail->setType(Zend_Mime::MULTIPART_RELATED);
     	//$mail->setBodyText('Invoice Details attached');
     	$mail->setBodyHtml($emailbody);
-    	$mail->setFrom('info@zhservices.com', 'ZH Services');
+    	$mail->setFrom('pradeep@zhservices.com', 'ZH Services');
     	$mail->addTo($emailto, $nameto);
     	$mail->setSubject('Invoice'.$invoicedetails['invoice_number']);
     	
@@ -498,7 +505,7 @@ class PaymentController extends Zend_Controller_Action
     	$at->encoding    = Zend_Mime::ENCODING_BASE64;
     	$at->filename    = $invoicedetails['invoice_number'].'.pdf';
     	
-    	$mail->send();
+    	$mail->send($transport);
     	
     	/*
     	 * Mail Send End

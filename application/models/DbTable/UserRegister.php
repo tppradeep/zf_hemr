@@ -88,19 +88,23 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		 
 		$emailto = trim($hf_email);
 		$nameto = $hf_facility_name;
-		 
+
+		$config = array('ssl' => 'tls', 'port' => 587, 'auth' => 'login', 'username' => 'pradeep@zhservices.com', 'password' => 'pradulmon');
+		$transport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', $config);
+		
+				
 		$mail = new Zend_Mail();
 		$mail->setType(Zend_Mime::MULTIPART_RELATED);
 		//$mail->setBodyText('Invoice Details attached');
 		$mail->setBodyHtml($emailbody);
-		$mail->setFrom('info@zhservices.com', 'ZH Healthcare');
+		$mail->setFrom('pradeep@zhservices.com', 'ZH Healthcare');
 		$mail->addTo($emailto, $nameto);
 		$mail->setSubject('Welcome To ZH Healthcare!');
 		 
 		
-		$mail->send();
+		$mail->send($transport);
 		
-		
+		//die;
 		/*
 		 * Sending Mail with User Login Details End
 		*/

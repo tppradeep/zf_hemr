@@ -34,10 +34,10 @@ class Admin_PlansController extends Zend_Controller_Action
     public function indexAction()
     {
         //***************ACCESS CHECK*************************//
-        $acl = Zend_Registry::get('acl');
-        if(!$acl->isAllowed($this->user_role, 'Plans')){
-        	$this->_redirect('Admin/admin/noaccess');
-        }
+      //  $acl = Zend_Registry::get('acl');
+       // if(!$acl->isAllowed($this->user_role, 'Plans')){
+       // 	$this->_redirect('Admin/admin/noaccess');
+      //  }
         //***************END ACCESS CHECK*************************//
         
        

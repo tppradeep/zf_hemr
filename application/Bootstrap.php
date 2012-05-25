@@ -14,6 +14,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
 		$MailLegal = new Zend_Session_Namespace('maillegal');
 		$MailLegal->maillegal='<p><font face="Verdana, Geneva, sans-serif" size="1" color="#666666">DO NOT read, copy or disseminate this communication unless you are the intended addressee. This e-mail communication may contain confidential and/or privileged information intended only for the addressee. If you are not the intended recipient, please note that any dissemination, distribution, or copying of this communication is strictly prohibited. If you have received this communication in error, please notify the sender immediately by return e-mail, and delete it from your computer.</font></p>';
+		
+		
 	}
 	
     function _initViewHelpers ()

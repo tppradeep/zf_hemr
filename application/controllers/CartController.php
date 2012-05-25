@@ -5,12 +5,13 @@ class CartController extends Zend_Controller_Action
 
     public function init()
     {
-        /* Initialize action controller here */
+       // $this->view->checkacl('0','0','0','1'); // Just for initiallization for helper call
+        //$this->view->checkaclresource('0','0',0); // Just for initiallization for helper call
     }
 
     public function indexAction()
     {
-        $this->_helper->layout->setLayout('user'); 
+        //$this->_helper->layout->setLayout('user'); 
         // action body
         $pid = $this->view->Dcode($this->_getParam('Pid'));
         $uid = $this->view->Dcode($this->_getParam("uID"));
