@@ -28,16 +28,28 @@ Update Profile
 		</td>
 	</tr>
 	<tr>
-		<td class="form-label-main">&nbsp;</td>
-		<td class="form-label-main">&nbsp;</td>
+	  <td class="form-label-main">Suffix</td>
+	  <td class="form-label-main">First Name
+      <?php $this->DisplayHelp('UserRegistrtion','name');?></td>
+    </tr>
+	<tr>
+		<td class="form-label-main"><span class="write-box" style="width:65px;">
+		  <select name="hf_facility_suffix" tabindex="2">
+		    <option value="Dr." <?php echo($this->formdata['hf_facility_suffix']=='Dr.')?'selected="selected"':'';?>>Dr.</option>
+		    <option value="Mr." <?php echo($this->formdata['hf_facility_suffix']=='Mr.')?'selected="selected"':'';?>>Mr.</option>
+		    <option value="Miss." <?php echo($this->formdata['hf_facility_suffix']=='Miss.')?'selected="selected"':'';?>>Miss.</option>
+		    <option value="Mrs." <?php echo($this->formdata['hf_facility_suffix']=='Mrs.')?'selected="selected"':'';?>>Mrs.</option>
+	    </select>
+		</span></td>
+		<td class="form-label-main"><input name="hf_facility_name" type="text" id="hf_facility_name" value="<?php echo $this->formdata['hf_facility_name']?>" size="40" maxlength="150" class="validate[required]" tabindex="2"/></td>
 	</tr>
 	<tr>
-		<td class="form-label-main">Name <?php $this->DisplayHelp('UserRegistrtion','name');?></td>
+		<td class="form-label-main">Last Name </td>
 		<td class="form-label-main">Speciality <?php $this->DisplayHelp('UserRegistrtion','Speciality');?>
 		</td>
 	</tr>
 	<tr>
-		<td><input name="hf_facility_name" type="text" id="hf_facility_name" value="<?php echo $this->formdata['hf_facility_name']?>" size="40" maxlength="150" class="validate[required]" tabindex="2"/></td>
+		<td><input name="hf_facility_lname" type="text" id="hf_facility_lname" value="<?php echo $this->formdata['hf_facility_lname']?>" size="40" maxlength="150" class="validate[required]" tabindex="2"/></td>
 		<td><input name="hf_speciality" type="text" id="hf_speciality" value="<?php echo $this->formdata['hf_speciality']?>" size="40" maxlength="150" class="validate[required]" tabindex="3"/></td>
 	</tr>
 	<tr>

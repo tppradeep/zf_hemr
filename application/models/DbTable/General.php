@@ -55,6 +55,24 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	    $sql = "select Name from reseller_details where id='.$cusid.'";
 	    return $db->fetchOne($sql);
 	}
+	public function SpecialityList()
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    $sql ="select sp_name from speciality where status=1 order by listing_order asc";
+	    return $db->fetchAll($sql);
+	}
+	public function listprice($idplan)
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    $sql ='call listprice('.$idplan.')';
+	    return $db->fetchOne($sql);
+	}
+	public function statelist($countrycode)
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    $sql ='select State_name from state where Country_Code="'.$countrycode.'"';
+	    return $db->fetchAll($sql);
+	}
 
 }
 

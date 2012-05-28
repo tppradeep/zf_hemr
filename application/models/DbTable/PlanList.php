@@ -57,14 +57,15 @@ class Application_Model_DbTable_PlanList extends Zend_Db_Table_Abstract
 	    $row = $db->fetchAll($select);
 
 	    $output='';
+	    $currency = new Zend_Currency('en_US');
 	    foreach($row as $plandtd)
 	    {
 	        $output .=" <td valign='top'><div class='table-head white shadow'>".$plandtd['hp_name']."</div>";
 	        $output .=" <table width='100%' border='0' cellspacing='2' cellpadding='2'>
 	        	        <tr>
 	        			<td width='3%' align='center' class='product-head shadow'>#</td>
-	        			<td width='73%' class='product-head shadow'>Package Includes</td>
-	        			<td width='24%' align='right' class='product-head shadow'>Cost</td>
+	        			<td width='73%' colspan='2' class='product-head shadow'>Package Includes</td>
+	        			<!--td width='24%' align='right' class='product-head shadow'>Cost</td-->
 	        			</tr>";
 	        
 	        $plancost=0;
@@ -81,7 +82,7 @@ class Application_Model_DbTable_PlanList extends Zend_Db_Table_Abstract
 	        {
 	        	$output .=' <tr>
 	        				<td align="center" valign="top" class="normal-text shadowlight">'.$sino.'.</td>
-      						<td class="normal-text shadowlight"><span class="product">'.$productdtd['product_name'];
+      						<td colspan="2" class="normal-text shadowlight"><span class="product">'.$productdtd['product_name'];
 	        	if($productdtd['payment_term']==1)
 	        	{
 	        		$output .= "(Monthly Payment)";
@@ -90,7 +91,7 @@ class Application_Model_DbTable_PlanList extends Zend_Db_Table_Abstract
 	        	$output .='</span><br />
         					<strong>Features : </strong>
         					<p>'.$productdtd['product_feature'].'</p></td>
-      						<td align="right" valign="top" class="normal-text shadowlight">$ '.$productdtd['cost'].'</td>
+      						<!--td align="right" valign="top" class="normal-text shadowlight">'.$currency->toCurrency($productdtd['cost']).'</td-->
     						</tr>';
 	        	
 	        	if($productdtd['cost']=="")
@@ -100,8 +101,9 @@ class Application_Model_DbTable_PlanList extends Zend_Db_Table_Abstract
 	        	
 	        }
 	        	$output .=' <tr>
-      						<td class="product-head shadowlight" colspan="2">Plan Amount :</td>
-      						<td align="right" valign="top" class="product-head shadowlight">$ '.$plancost.'</td>
+      						<td class="product-head shadowlight"></td>
+	        	       		<td class="product-head shadowlight"  nowrap>Plan Amount :</td>
+      						<td align="right" valign="top" class="product-head shadowlight">'.$currency->toCurrency($plancost).'</td>
     						</tr>
      						<tr>
       						<td colspan="3" align="right" valign="top">

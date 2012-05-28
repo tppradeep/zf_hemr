@@ -17,8 +17,11 @@ class PlanListController extends Zend_Controller_Action
     {
         $pid = $this->view->Dcode($this->_getParam('id'));
         $planname = new Application_Model_DbTable_PlanList();
+      
         $this->view->pid = $pid;
         $this->view->planname = $planname->planname($pid);
+        
+        
 		$this->view->productdetails = $planname->productdetails($pid);
 		
 		$MonthlyVariableProductCostTotal=0;

@@ -43,9 +43,10 @@ class Admin_Model_DbTable_Planconfig extends Zend_Db_Table_Abstract
         /*
          * Adding selected products into the plan
          */
-       
+      
         $db = Zend_Db_Table::getDefaultAdapter();
         $db->delete('plan_products','idplan='.$id); // Deleting Existing and Adding new feature
+      //  die;
         foreach($formData as $pid)
         {
             $select = $db->select()

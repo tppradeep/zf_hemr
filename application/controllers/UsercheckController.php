@@ -21,8 +21,8 @@ class UsercheckController extends Zend_Controller_Action
 			
 			$db = Zend_Db_Table::getDefaultAdapter();
 			
-			if($usertype==1)// Customer
-			{
+		//	if($usertype==1)// Customer
+	//		{
 				$adapter = new Zend_Auth_Adapter_DbTable(
 	                $db,
 	                'hosted_facilities',
@@ -61,13 +61,13 @@ class UsercheckController extends Zend_Controller_Action
 					/*
 					 * presently redirecting to index page. this section has to modify with login error section
 					 */
-					$emes=$this->view->Ecode("not");
-					$this->_redirect("/?emes=".$emes."");	
-				}
-			}
+		//			$emes=$this->view->Ecode("not");
+		//			$this->_redirect("/?emes=".$emes."");	
+	//			}
+		//	}
 			//==================================================
-			if($usertype==2)// Reseller ie admin login
-			{
+	//		if($usertype==2)// Reseller ie admin login
+	//		{
 			    $db = Zend_Db_Table::getDefaultAdapter();
 			    	
 			    $adapter = new Zend_Auth_Adapter_DbTable(
