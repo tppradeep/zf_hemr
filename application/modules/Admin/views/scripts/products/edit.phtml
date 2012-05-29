@@ -28,13 +28,13 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
         <td width="19%" class="label line">Product Name</td>
         <td width="1%">:</td>
         <td width="80%" class="label line">
-        <input name="product_name" type="text" id="product_name" size="50" maxlength="150"  class="validate[required]" value="<?php echo $this->productview['product_name'];?>"/></td>
+        <input name="product_name" type="text" id="product_name" size="50" maxlength="150"  class="validate[required]" value="<?php echo stripslashes($this->productview['product_name']);?>"/></td>
       </tr>
       <tr>
         <td class="label line">Product Description</td>
         <td>:</td>
         <td class="label line">
-        <textarea name="product_feature" id="product_feature" cols="45" rows="5"  class="validate[required]"><?php echo $this->productview['product_feature'];?></textarea></td>
+        <textarea name="product_feature" id="product_feature" cols="45" rows="5"  class="validate[required]"><?php echo stripslashes($this->productview['product_feature']);?></textarea></td>
       </tr>
        <tr>
         <td class="label line">Payment Term</td>

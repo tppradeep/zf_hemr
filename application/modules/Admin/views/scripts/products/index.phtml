@@ -81,7 +81,7 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
   ?>
   <tr>
     <td height="22" class="normal-text  line" align="center"><?php echo $sino;?>.</td>
-    <td class="normal-text line"><?php echo $product['product_name']?></td>
+    <td class="normal-text line"><?php echo stripslashes($product['product_name']);?></td>
     <td class="normal-text line" align="right"><?php echo $product['cost'];?></td>
     <td class="normal-text line" align="center"><?php echo $product['setup_fee'];?></td>
     <td class="normal-text line" align="center">

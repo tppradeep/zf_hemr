@@ -636,3 +636,46 @@ img
 {
 	border:0;
 }
+/*Steps Right Side Section*/
+#steps
+{
+	border: 1px solid #666;
+	width: 293px;
+	margin-left: 4px;
+}
+#steps dl 
+{
+
+	display: block;
+	clear: both;
+}
+#steps dl dt
+{
+	list-style-image: none;
+	list-style-type: none;
+	display: block;
+	float: left;
+	width: 20px;
+	margin-left: 10px;
+	margin-top: 20px;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	color: #3D6DBE;
+	text-decoration: none;
+}
+#steps dl dd
+{
+	list-style-image: none;
+	list-style-type: none;
+	display: block;
+	float: left;
+	width: 253px;
+	margin-left: 10px;
+	margin-top: 20px;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	color: #3D6DBE;
+	text-decoration: none;
+}

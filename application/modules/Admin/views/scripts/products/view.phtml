@@ -6,13 +6,13 @@
       <tr>
         <td width="19%" class="label line b">Product Name</td>
         <td width="1%">:</td>
-        <td width="80%" class="label line"><?php echo $this->productview['product_name'];?></td>
+        <td width="80%" class="label line"><?php echo stripslashes($this->productview['product_name']);?></td>
       </tr>
       <tr>
         <td class="label line b">Product Description</td>
         <td>:</td>
         <td class="label line"><label for="product_feature"></label>
-       <?php echo $this->productview['product_feature'];?></td>
+       <?php echo stripslashes($this->productview['product_feature']);?></td>
       </tr>
       <tr>
         <td class="label line b">Product Cost</td>

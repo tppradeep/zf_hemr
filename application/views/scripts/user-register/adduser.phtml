@@ -171,20 +171,9 @@ if($this->formdata['error']!="")
     <td>
     <div class="label-box">
     <div class="label-no">8</div>
-    <div class="reg-label">City</div>
-    <div class="clear"></div>
-    <div class="write-box" style="width:325px;"><input name="hf_city" type="text" id="hf_city" maxlength="150" class="validate[required]" value="<?php echo $this->formdata['hf_city']?>" tabindex="10"  style="width:315px;"/></div>
-    <div class="clear"></div>
-    </div>
-    </td>
-  </tr>
-   <tr>
-    <td>
-    <div class="label-box">
-    <div class="label-no">11</div>
     <div class="reg-label2">Country</div>
     <div class="clear"></div>
-    <div class="write-box" style="width:325px;"><select name="hf_country" id="hf_country"  class="validate[required]" tabindex="13"  style="width:315px;" onchange="checkstate(this.value)" >
+    <div class="write-box" style="width:325px;"><select name="hf_country" id="hf_country"  class="validate[required]" tabindex="10"  style="width:315px;" onchange="checkstate(this.value)" >
           <?php 
 		  $selcountry=$this->formdata['hf_country'];
 		  if($selcountry=="")
@@ -216,7 +205,7 @@ if($this->formdata['error']!="")
     <div class="label-no">9</div>
     <div class="reg-label">State / Province / Region</div>
     <div class="clear"></div>
-     <div id="usastate" class="write-box" style="width:auto;"><select name="hf_state">
+     <div id="usastate" class="write-box" style="width:auto;"><select name="hf_state" tabindex="11">
        <?php
 	   foreach($this->state as $st)
 	   {
@@ -224,7 +213,18 @@ if($this->formdata['error']!="")
 	   }
 	   ?>
      </select></div>
-    <div id="otherstate" class="write-box" style="width:125px;visibility:hidden;"><input name="hf_state_other" type="text" id="hf_state_other" maxlength="150" value="<?php echo $this->formdata['hf_state']?>" tabindex="11"  style="width:115px;"/></div>
+    <div id="otherstate" class="write-box" style="width:125px;visibility:hidden;"><input name="hf_state_other" type="text" id="hf_state_other" maxlength="150" value="<?php echo $this->formdata['hf_state']?>" tabindex="12"  style="width:115px;"/></div>
+    <div class="clear"></div>
+    </div>
+    </td>
+  </tr>
+    <tr>
+    <td>
+    <div class="label-box">
+    <div class="label-no">10</div>
+    <div class="reg-label">City</div>
+    <div class="clear"></div>
+    <div class="write-box" style="width:325px;"><input name="hf_city" type="text" id="hf_city" maxlength="150" class="validate[required]" value="<?php echo $this->formdata['hf_city']?>" tabindex="13"  style="width:315px;"/></div>
     <div class="clear"></div>
     </div>
     </td>
@@ -232,10 +232,10 @@ if($this->formdata['error']!="")
    <tr>
     <td>
     <div class="label-box">
-    <div class="label-no">10</div>
+    <div class="label-no">11</div>
     <div class="reg-label2">Postal / Zip Code</div>
     <div class="clear"></div>
-    <div class="write-box" style="width:125px;"><input name="hf_zip" type="text" id="hf_zip" maxlength="150" class="validate[required]" value="<?php echo $this->formdata['hf_zip']?>" tabindex="12"  style="width:115px;"/></div>
+    <div class="write-box" style="width:125px;"><input name="hf_zip" type="text" id="hf_zip" maxlength="150" class="validate[required]" value="<?php echo $this->formdata['hf_zip']?>" tabindex="14"  style="width:115px;"/></div>
     <div class="clear"></div>
     </div>
     </td>
@@ -247,7 +247,7 @@ if($this->formdata['error']!="")
     <div class="label-no">12</div>
     <div class="reg-label2">Phone Number<?php $this->DisplayHelp('UserRegistrtion','PhoneNumber');?></div> <!--div class="reg-label2" style="margin-left:65px;">Fax<?php $this->DisplayHelp('UserRegistrtion','Fax');?></div-->
     <div class="clear"></div>
-    <div class="write-box" style="width:125px;"><input name="hf_phone" type="text" id="hf_phone" value="<?php echo $this->formdata['hf_phone']?>" size="10" maxlength="15" class="validate[required]" tabindex="14" style="width:115px;"/></div>
+    <div class="write-box" style="width:125px;"><input name="hf_phone" type="text" id="hf_phone" value="<?php echo $this->formdata['hf_phone']?>" size="10" maxlength="15" class="validate[required]" tabindex="15" style="width:115px;"/></div>
      <!--div class="write-box" style="width:125px;"><input name="hf_fax" type="text" id="hf_fax" value="<?php echo $this->formdata['hf_fax']?>0" size="10" maxlength="15"  tabindex="15" style="width:115px;"/></div-->
     <div class="clear"></div>
     </div>
@@ -267,7 +267,7 @@ if($this->formdata['error']!="")
   </tr-->
    <tr>
     <td style="padding-left:250px;padding-top:15px;">
-   <input type="submit" name="Submit" value="Register Details" class="user-submit" tabindex="18" />
+   <input type="submit" name="Submit" value="Register Details" class="user-submit" tabindex="16" />
     </td>
   </tr>
 </table>

@@ -82,7 +82,7 @@ class Application_Model_DbTable_PlanList extends Zend_Db_Table_Abstract
 	        {
 	        	$output .=' <tr>
 	        				<td align="center" valign="top" class="normal-text shadowlight">'.$sino.'.</td>
-      						<td colspan="2" class="normal-text shadowlight"><span class="product">'.$productdtd['product_name'];
+      						<td colspan="2" class="normal-text shadowlight"><span class="product">'.stripslashes($productdtd['product_name']);
 	        	if($productdtd['payment_term']==1)
 	        	{
 	        		$output .= "(Monthly Payment)";
@@ -90,7 +90,7 @@ class Application_Model_DbTable_PlanList extends Zend_Db_Table_Abstract
 
 	        	$output .='</span><br />
         					<strong>Features : </strong>
-        					<p>'.$productdtd['product_feature'].'</p></td>
+        					<p>'.stripslashes($productdtd['product_feature']).'</p></td>
       						<!--td align="right" valign="top" class="normal-text shadowlight">'.$currency->toCurrency($productdtd['cost']).'</td-->
     						</tr>';
 	        	
@@ -102,12 +102,17 @@ class Application_Model_DbTable_PlanList extends Zend_Db_Table_Abstract
 	        }
 	        	$output .=' <tr>
       						<td class="product-head shadowlight"></td>
-	        	       		<td class="product-head shadowlight"  nowrap>Plan Amount :</td>
-      						<td align="right" valign="top" class="product-head shadowlight">'.$currency->toCurrency($plancost).'</td>
+	        	       		<td class="product-head shadowlight strike" nowrap>List Price :</td>
+      						<td align="right" valign="top" class="product-head shadowlight strike">'.$currency->toCurrency($plancost).'</td>
     						</tr>
+      						<tr>
+      						<td class="product-head shadowlight"></td>
+	        	       		<td class="product-head shadowlight" nowrap>Plan Price :</td>
+      						<td align="right" valign="top" class="product-head shadowlight">'.$currency->toCurrency($plandtd['bundle_cost']).'</td>
+    						</tr>        
      						<tr>
       						<td colspan="3" align="right" valign="top">
-        					<a href="../UserRegister/adduser/id/'.base64_encode($plandtd['hp_id']).'" class="plan-register">Proceed To Registration</a></td>
+        					<a href="../PlanList/listplan/id/'.base64_encode($plandtd['hp_id']).'" class="plan-register">Proceed To Registration</a></td>
     						</tr>
   							</table>
 	        	

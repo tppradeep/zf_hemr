@@ -32,9 +32,9 @@ class Admin_Model_DbTable_Products extends Zend_Db_Table_Abstract
         $db = Zend_Db_Table::getDefaultAdapter();
         
         $data = array(
-                'product_name'=>$product_name,
+                'product_name'=>addslashes($product_name),
                 'customer_id'=>$customerId->customerId,
-        		'product_feature' => $product_feature,
+        		'product_feature' => addslashes($product_feature),
         		'cost' => $cost,
                 'setup_fee'=>$setup_fee,
         		'payment_term' => $payment_term,
@@ -73,8 +73,8 @@ class Admin_Model_DbTable_Products extends Zend_Db_Table_Abstract
        $db = Zend_Db_Table::getDefaultAdapter();
         
         $data = array(
-                'product_name'=>$product_name,
-        		'product_feature' => $product_feature,
+                'product_name'=>addslashes($product_name),
+        		'product_feature' => addslashes($product_feature),
         		'cost' => $cost,
                 'setup_fee'=>$setup_fee,
         		'payment_term' => $payment_term,

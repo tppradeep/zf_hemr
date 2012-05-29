@@ -39,8 +39,8 @@ class Admin_Model_DbTable_Plandb extends Zend_Db_Table_Abstract
 		
 		$data = array(
 				'customer_id'=>$customerId->customerId,
-				'hp_name' => $hp_name,
-				'hp_caption' => $hp_caption,
+				'hp_name' => addslashes($hp_name),
+				'hp_caption' => addslashes($hp_caption),
 				'hp_sortorder' => $hp_sortorder,
 				'hp_status'=>$hp_status,
 				'discount'=>$discount,
@@ -87,8 +87,8 @@ class Admin_Model_DbTable_Plandb extends Zend_Db_Table_Abstract
 		{
 			$data = array(
 					'customer_id'=>$customerId->customerId,
-					'hp_name' => $hp_name,
-					'hp_caption' => $hp_caption,
+					'hp_name' => addslashes($hp_name),
+					'hp_caption' => addslashes($hp_caption),
 					'hp_sortorder' => $hp_sortorder,
 					'hp_status' => $hp_status,
 			        'bundle_discount_type'=>$bundle_discount_type,
@@ -106,8 +106,8 @@ class Admin_Model_DbTable_Plandb extends Zend_Db_Table_Abstract
 		{
 		    $data = array(
 		    		'customer_id'=>$customerId->customerId,
-		    		'hp_name' => $hp_name,
-		    		'hp_caption' => $hp_caption,
+		    		'hp_name' => addslashes($hp_name),
+		    		'hp_caption' => addslashes($hp_caption),
 		    		'hp_sortorder' => $hp_sortorder,
 		    		'hp_status' => $hp_status,
 		    		'bundle_discount_type'=>$bundle_discount_type,

@@ -50,11 +50,11 @@ class Admin_Model_DbTable_Imagegallery extends Zend_Db_Table_Abstract
     	$db = Zend_Db_Table::getDefaultAdapter();
     	
     	$data = array(
-    			'page_help_id' => $page_help_id,
-    			'image_title' => $image_title,
-    			'image_description' => $desc,
-    			'image_name' => $Imagename,
-    			'sortorder' => $sortorder,
+    			'page_help_id' => addslashes($page_help_id),
+    			'image_title' => addslashes($image_title),
+    			'image_description' => addslashes($desc),
+    			'image_name' => addslashes($Imagename),
+    			'sortorder' => addslashes($sortorder),
     			'status'=>$status
     	);
     	$numRows = $db->insert('page_help_images', $data);
@@ -79,8 +79,8 @@ class Admin_Model_DbTable_Imagegallery extends Zend_Db_Table_Abstract
     {
        
         $data = array(
-        		'image_title' => $image_title,
-        		'image_description' => $desc,
+        		'image_title' => addslashes($image_title),
+        		'image_description' => addslashes($desc),
         		'sortorder'=> $sortorder,
         		'status' => $status
         );

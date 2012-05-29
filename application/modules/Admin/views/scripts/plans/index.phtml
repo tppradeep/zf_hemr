@@ -92,8 +92,8 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
 		$total =$this->ps[$i]['bundle_cost']+$this->ps[$i]['bundle_setup_cost'];
 		echo($i%2==0)? "<tr class='list-tr-bg2'>": "<tr class='list-tr-bg'>";
 		
-		echo "<td class='list-table-details shadowlight'>&nbsp;".$this->ps[$i]['hp_name']."</td>";
-		echo "<td align=center class='list-table-details shadowlight'>".$this->ps[$i]['hp_caption']."</td>";
+		echo "<td class='list-table-details shadowlight'>&nbsp;".stripslashes($this->ps[$i]['hp_name'])."</td>";
+		echo "<td align=center class='list-table-details shadowlight'>".stripslashes($this->ps[$i]['hp_caption'])."</td>";
 		echo "<td align=center class='list-table-details shadowlight'>".$this->pscost[$i]['cost']."</td>";
 		echo "<td align=center class='list-table-details shadowlight'>".$this->pscost[$i]['setupfee']."</td>";
 		echo "<td align=center class='list-table-details shadowlight'><img src='".$this->baseUrl()."/uploads/plans/".$this->ps[$i]['Imagename']."' width='38' height='43'></td>";

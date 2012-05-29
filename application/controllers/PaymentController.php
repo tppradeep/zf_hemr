@@ -132,17 +132,21 @@ class PaymentController extends Zend_Controller_Action
     	 	/*
     	 	 * Sending Mail with Payment Status
     	 	 */
+    	 	/*
+    	 	 * Email Template Section
+    	 	*/
     	 	$MailLegal = new Zend_Session_Namespace('maillegal');
     	 	$mailbottom=$MailLegal->maillegal;
     	 	
-    	 	$emailbody='<p><font color="#104D96" size="2" face="Verdana, Geneva, sans-serif"><strong>Hi,</strong><br />
-						</font><font color="#104D96" size="2" face="Verdana, Geneva, sans-serif"><br />
-						Thanks for making the payment for Invoice No : '.$invoice_number.'. The  payment is Successful and your Plan will be activated within 12 Hours.</font></p>
-						<p><font color="#104D96" size="2" face="Verdana, Geneva, sans-serif"><br />
-						  For your information, All the payment is on advance mode, so  if your plan contains any monthly payment section, the amount will deduct  advance on each month and will rise invoice for your reference. If your payment  is not successful after three attempt, your plan will be deactivated. Please  let us know if any changes in your Paypal authorization details.<br />
-						  <br />
-						  <strong>Regards,<br />
-						  ZH Healthcare Support Team</strong></font></p>'.$mailbottom;
+    	 	$gendb = new Application_Model_DbTable_General();
+    	 	$emldata = $gendb->emailtemplate('invoice_details');
+    	 	$emailsubject =  str_replace('__invoiceno__', $invoice_number, $emldata['Subject']);
+    	 	$emailbody = $emldata['content'];
+    	 	$emailbody = str_replace('__invoiceno__', $invoice_number, $emailbody);
+    	 	
+    	 	$emailbody=$emailbody.$mailbottom;
+    	 
+    	 
     	
     	$emailto = trim($invoiceaddress[0]['hf_email']);
     	$nameto = $invoiceaddress[0]['hf_facility_name'];
@@ -157,7 +161,7 @@ class PaymentController extends Zend_Controller_Action
     	$mail->setBodyHtml($emailbody);
     	$mail->setFrom('pradeep@zhservices.com', 'ZH Healthcare');
     	$mail->addTo($emailto, $nameto);
-    	$mail->setSubject('Invoice'.$invoice_number);
+    	$mail->setSubject($emailsubject);
     	try
 		{
 			$mail->send($transport);
@@ -479,16 +483,22 @@ class PaymentController extends Zend_Controller_Action
     	 * Sending Mail to User of Invoice Details
     	 */
     	
+    	/*
+    	 * Email Template Section
+    	*/
     	$MailLegal = new Zend_Session_Namespace('maillegal');
     	$mailbottom=$MailLegal->maillegal;
-    	$emailbody='<font face="Verdana, Geneva, sans-serif" size="2" color="#104D96">
-			<p><strong>Hi '.$invoiceaddress['hf_facility_name'].',</strong></p>
-			<p><br />
-			  Thanks for completing the plan registration. The Invoice ( Invoice No : '.$invoicedetails['invoice_number'].') generated against your order is attached with this mail. The invoice is not  processed to payment.  Once you had  completed your payment, and then will get another mail with payment  confirmation.</p>
-			<p><br />
-			  <strong>Regards,<br />
-			  ZH Healthcare Support Team</strong></p>
-			</font>'.$mailbottom;
+    	 
+    	$gendb = new Application_Model_DbTable_General();
+    	$emldata = $gendb->emailtemplate('invoice_attachement_mail');
+    	$emailsubject =  str_replace('__invoiceno__', $invoicedetails['invoice_number'], $emldata['Subject']);
+    	$emailbody = $emldata['content'];
+		$emailbody = str_replace('__username__', $invoiceaddress['hf_facility_name'], $emailbody);
+    	$emailbody = str_replace('__invoiceno__', $invoicedetails['invoice_number'], $emailbody);
+    	 
+    	$emailbody=$emailbody.$mailbottom;
+    	
+    	
     	
     	$emailto = trim($invoiceaddress['hf_email']);
     	$nameto = $invoiceaddress['hf_facility_name'];
@@ -502,7 +512,7 @@ class PaymentController extends Zend_Controller_Action
     	$mail->setBodyHtml($emailbody);
     	$mail->setFrom('pradeep@zhservices.com', 'ZH Services');
     	$mail->addTo($emailto, $nameto);
-    	$mail->setSubject('Invoice'.$invoicedetails['invoice_number']);
+    	$mail->setSubject($emailsubject);
     	
     	
     	$myImage = file_get_contents($invoicepath);

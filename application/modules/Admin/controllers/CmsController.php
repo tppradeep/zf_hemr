@@ -27,6 +27,7 @@ class Admin_CmsController extends Zend_Controller_Action
          if ($this->getRequest()->isPost())
          {
              $formData = $this->getRequest()->getPost();
+             
              $cmsdb->updatecms($formData);
              $this->_redirect('Admin/Cms/index/st/2');
          }

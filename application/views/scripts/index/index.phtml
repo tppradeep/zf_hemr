@@ -29,7 +29,7 @@ foreach($this->plans as $plans)
 
 <div class="plan shadowlight">
 <div class="imgbox"><a href="PlanList/listplan/id/<?php echo $this->Ecode($plans['hp_id']);?>"><img src="<?php echo $img;?>" width="190" height="215" /></a></div>
-<div class="plan-name"><a href="PlanList/listplan/id/<?php echo $this->Ecode($plans['hp_id']);?>"><?php echo $plans['hp_name'];?></a>
+<div class="plan-name"><a href="PlanList/listplan/id/<?php echo $this->Ecode($plans['hp_id']);?>"><?php echo stripslashes($plans['hp_name']);?></a>
 </div>
 <div class="price">
 <span class="strike">List Price : <?php echo $currency->toCurrency($plans['listprice']);?></span>

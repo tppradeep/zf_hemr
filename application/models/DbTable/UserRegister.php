@@ -20,17 +20,17 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		        'customer_id' => $cusid,
 				'hf_facility_identifier' => $hf_facility_identifier,
 		        'hf_facility_suffix'=>$hf_facility_suffix,
-				'hf_facility_name' => $hf_facility_name,
-		        'hf_facility_lname'=>$hf_facility_lname,
-				'hf_speciality' => $hf_speciality,
+				'hf_facility_name' => addslashes($hf_facility_name),
+		        'hf_facility_lname'=> addslashes($hf_facility_lname),
+				'hf_speciality' => addslashes($hf_speciality),
 				'dashboard_password' => $dashboard_password,
-				'hf_email' => $hf_email,
-				'hf_address' => $hf_address,
-				'hf_city' => $hf_city,
-				'hf_state' => $hf_state,
-				'hf_zip' => $hf_zip,
-				'hf_country' => $hf_country,
-				'hf_phone' => $hf_phone,
+				'hf_email' => addslashes($hf_email),
+				'hf_address' => addslashes($hf_address),
+				'hf_city' => addslashes($hf_city),
+				'hf_state' => addslashes($hf_state),
+				'hf_zip' => addslashes($hf_zip),
+				'hf_country' => addslashes($hf_country),
+				'hf_phone' => addslashes($hf_phone),
 				'hf_fax' => $hf_fax,
 				'hf_tax_id' => $hf_tax_id,
 				'hf_npi' => $hf_npi,
@@ -84,18 +84,23 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		/*
 		 * Sending Mail with User Login Details
 		*/
+		
+		/*
+		 * Retriving subject and content from template - sec : new_user_register
+		 */
+		
+		$gn = new Application_Model_DbTable_General();
+		$emldata = $gn->emailtemplate('new_user_register');
+		
 		$MailLegal = new Zend_Session_Namespace('maillegal');
 		$mailbottom=$MailLegal->maillegal;
-		 
-		$emailbody='<p><font color="#104D96" size="2" face="Verdana, Geneva, sans-serif"><p>Hi '.$hf_facility_name.',<br />
-					  Welcome to HZ Healthcare. Your registration with ZH completed successfully.  Please note your access details for future reference<br />
-					  User ID : '.$hf_email.'<br />
-					  Password : '.$mailuserpwd.'<br />
-					  If your invoice is not successful, you can login to your  account area and in pending invoice section, you can find the Invoice and can  proceed to payment. Only after the successful payment, your plan will setup and  access details will mail to you.<br />
-						<br />
-						<strong>Regards,<br />
-						ZH Healthcare Support Team</strong></font></p>'.$mailbottom;
-		 
+		$emailbody = $emldata['content'];
+		$emailbody = str_replace('__name__', $hf_facility_name, $emailbody);
+		$emailbody = str_replace('__email__', $hf_email, $emailbody);
+		$emailbody = str_replace('__userpwd__', $mailuserpwd, $emailbody);
+		
+		$emailbody=$emailbody.$mailbottom;
+
 		$emailto = trim($hf_email);
 		$nameto = $hf_facility_name;
 
@@ -109,7 +114,7 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		$mail->setBodyHtml($emailbody);
 		$mail->setFrom('pradeep@zhservices.com', 'ZH Healthcare');
 		$mail->addTo($emailto, $nameto);
-		$mail->setSubject('Welcome To ZH Healthcare!');
+		$mail->setSubject($emldata['Subject']);
 		 
 		try
 		{

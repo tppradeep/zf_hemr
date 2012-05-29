@@ -54,10 +54,10 @@ class Admin_Model_DbTable_PageHelp extends Zend_Db_Table_Abstract
     	$db = Zend_Db_Table::getDefaultAdapter();
     
     	$data = array(
-    			'module' => $module,
-    			'section' => $section,
-    			'title' => $title,
-    			'description' => $details
+    			'module' => addslashes($module),
+    			'section' =>addslashes($section),
+    			'title' => addslashes($title),
+    			'description' => addslashes($details)
     	);
     	$numRows = $db->insert('page_help', $data);
     	return $db->lastInsertId();
@@ -80,10 +80,10 @@ class Admin_Model_DbTable_PageHelp extends Zend_Db_Table_Abstract
     public function updateHelp($id,$module,$section,$title,$details) // Updating function for Help
     {
     	$data = array(
-    			'module' => $module,
-    			'section' => $section,
-    			'title'=> $title,
-    			'description' => $details
+    			'module' =>addslashes($module),
+    			'section' => addslashes($section),
+    			'title'=> addslashes($title),
+    			'description' => addslashes($details)
     	);
     
     	$this->update($data,'page_help_id='.(int)$id);

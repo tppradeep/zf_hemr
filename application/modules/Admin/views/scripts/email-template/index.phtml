@@ -1,0 +1,109 @@
+	<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/themes/base/jquery.ui.all.css">
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/external/jquery.bgiframe-2.1.2.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.core.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.widget.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.mouse.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.button.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.draggable.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.position.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.dialog.js"></script>
+	<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/demo/demos.css">
+	
+	
+		
+	<script>
+	$(function() {
+		$("#dialog-confirm").addClass("hidevisible");  
+		});
+	
+	
+	function del(delid)
+	{
+		$(function() {
+		$( "#dialog-confirm" ).addClass("shovisible");
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+			$( "#dialog-confirm" ).dialog({
+				resizable: false,
+				height:180,
+				modal: true,
+				buttons: {
+					"Delete all items": function() {
+						$( this ).dialog( "close" );
+						window.location.href="<?php echo $this->baseUrl();?>/Admin/Products/delete/id/"+delid+"";
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		});
+	}
+	
+	</script>
+<?php
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+?>
+
+
+
+
+<div id="right_panel">
+ <div id="dialog-confirm" title="Delete Record?">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+
+<!-- div class="addnew">
+    <?php echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Products','action'=>'add'),0,true).'" class="add">';?>
+    Add New Product
+    <?php echo "</a>";?>
+</div-->
+    
+<table width="100%" border="0" cellspacing="3" cellpadding="2" id="grid">
+  <thead>
+  <tr>
+    <td width="4%" height="20" align="center" class="invoice-table-title b table-head-bg white">#</td>
+    <td width="15%" class="invoice-table-title b table-head-bg">Template Section</td>
+    <td width="15%" align="left" class="invoice-table-title b table-head-bg">Subject</td>
+    <td width="60%" align="left" nowrap="nowrap" class="invoice-table-title b table-head-bg">Content</td>
+    <td width="6%" class="invoice-table-title b table-head-bg"></td>
+  </tr>
+  </thead>
+  <tbody>
+  <?php 
+  $sino=1;
+  foreach($this->emaillist as $eml)
+  {
+  ?>
+  <tr>
+    <td height="22" class="normal-text shadowlight" align="center"><?php echo $sino;?>.</td>
+    <td class="normal-text shadowlight"><?php echo stripslashes($eml['template_sec']);?></td>
+    <td class="normal-text shadowlight" align="left"><?php echo stripslashes($eml['Subject']);?></td>
+    <td class="normal-text shadowlight" align="left"><?php echo stripslashes($eml['content']);?></td>
+   
+    <td class="normal-text shadowlight" align="center" nowrap="nowrap">
+ 
+    <?php 
+    
+    echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'EmailTemplate','action'=>'edit', 'id'=>$this->Ecode($eml['template_id'])),0,true).'">';
+    echo "<img src='".$this->baseUrl()."/images/edit.png' alt='Edit' title='Edit'  style='cursor:pointer;' />";
+    echo '</a>&nbsp;';
+    ?>
+    </td>
+  </tr>
+  <?php 
+  $sino = ++$sino;
+  }
+  ?>
+  </tbody>
+</table>
+  </div>
+ <script type="text/javascript">
+                //<![CDATA[
+ $(document).ready(function() {
+	    oTable = $('#grid').dataTable({
+	        "bJQueryUI": true,
+	        "sPaginationType": "full_numbers"
+	    });
+	} );
+                //]]>
+                </script>

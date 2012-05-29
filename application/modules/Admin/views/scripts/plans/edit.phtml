@@ -87,12 +87,12 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
   <tr>
     <td class="label line">Plan Name </td>
     <td class="label line">:</td>
-    <td class="line"><input name="hp_name" type="text" id="hp_name" size="60" maxlength="150"  class="validate[required]" value="<?php echo $this->planedit['hp_name'];?>"/></td>
+    <td class="line"><input name="hp_name" type="text" id="hp_name" size="60" maxlength="150"  class="validate[required]" value="<?php echo stripslashes($this->planedit['hp_name']);?>"/></td>
   </tr>
   <tr>
     <td class="label line">Plan Caption </td>
     <td class="label line">:</td>
-    <td class="line"><input name="hp_caption" type="text" id="hp_caption" size="60" maxlength="150"  class="validate[required]" value="<?php echo $this->planedit['hp_caption'];?>"/></td>
+    <td class="line"><input name="hp_caption" type="text" id="hp_caption" size="60" maxlength="150"  class="validate[required]" value="<?php echo stripslashes($this->planedit['hp_caption']);?>"/></td>
   </tr>
   <tr>
     <td class="label line">Sort Order </td>
@@ -105,7 +105,7 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
     <td class="line">
 	  <label>
           <input name="hp_status" type="radio" value="1" <?php echo($this->planedit['hp_status']==1)?'checked="checked"':"";?>/>
-          Status</label>
+          Active</label>
         <label>
           <input type="radio" name="hp_status" value="0"  <?php echo($this->planedit['hp_status']==0)?'checked="checked"':""?>/>
           Disable</label>

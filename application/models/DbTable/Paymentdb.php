@@ -283,7 +283,7 @@ class Application_Model_DbTable_Paymentdb extends Zend_Db_Table_Abstract
 					'hf_id' => $hf_id,
 					'invoice_number' => $invoice_number,
 			        'cartsessionid'=> session_id(),
-					'particulars' => $particulars,
+					'particulars' => addslashes($particulars),
 					'amount' => $PlanMonthlyPayment_sum,
 			        'setupfee'=>$setupfee,
 					'payment_status' => $payment_status,

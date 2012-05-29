@@ -53,13 +53,16 @@ class CartController extends Zend_Controller_Action
     	$MailLegal = new Zend_Session_Namespace('maillegal');
     	$mailbottom=$MailLegal->maillegal;
     	
-    	$emailbody='<div class="normal-text" style="width:90%;margin-left:15px;">
-					<p>Hi '.$username.', </p>
-					<p>Thanks for registering with ZH Healthcare. Your plan registration ('.$planname.') completed successfully. </p>
-					<p>We required 24 hours to setup the plan environment for you. Once the plan setup is completed, you will notify through your registered email address.	  </p>
-					<p>Regards,</p>
-					<p> ZH Healthcare Support Team </p>
-					</div>'.$mailbottom;
+    	/*
+    	 * Email Template Section
+    	 */
+    	$emldata = $userdeatils->emailtemplate('plan_register');
+    	$emailsubject =  str_replace('__planname__', $planname, $emldata['Subject']);
+    	$emailbody = $emldata['content'];
+    	$emailbody = str_replace('__username__', $username, $emailbody);
+    	$emailbody = str_replace('__planname__', $planname, $emailbody);
+		
+    	$emailbody=$emailbody.$mailbottom;
     	 
     	$emailto = trim($userdata['hf_email']);
     	$nameto = $userdata['hf_facility_name'];
@@ -73,7 +76,7 @@ class CartController extends Zend_Controller_Action
     	$mail->setBodyHtml($emailbody);
     	$mail->setFrom('info@zhservices.com', 'ZH Healthcare');
     	$mail->addTo($emailto, $nameto);
-    	$mail->setSubject($planname.' Registered Successfully');
+    	$mail->setSubject($emailsubject);
     	try
 		{
 			$mail->send($transport);

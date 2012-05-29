@@ -73,6 +73,12 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	    $sql ='select State_name from state where Country_Code="'.$countrycode.'"';
 	    return $db->fetchAll($sql);
 	}
+	public function emailtemplate($template_sec)
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    $sql ='select Subject,content from email_template where template_sec="'.$template_sec.'"';
+	    return $db->fetchRow($sql);
+	}
 
 }
 

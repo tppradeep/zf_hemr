@@ -83,7 +83,7 @@ class Admin_Model_DbTable_Planconfig extends Zend_Db_Table_Abstract
 	        	    {
 		        	    $data = array(
 		        	    		'idplan'=>$id,
-		        	    		'idproducts'=>$SPI['sub_idproducts'],
+		        	    		'idproducts'=>addslashes($SPI['sub_idproducts']),
 		        	    		'added_date'=>date('Y-m-d')
 		        	    );
 		        	    $numRows = $db->insert('plan_products', $data);

@@ -1,0 +1,52 @@
+<?php
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+include_once  "/ckeditor/ckeditor.php";
+
+// Create a class instance.
+$CKEditor = new CKEditor();
+
+// Path to the CKEditor directory.
+$CKEditor->basePath = $this->baseUrl().'/ckeditor/';
+
+// Replace a textarea element with an id (or name) of "textarea_id".
+?>
+<script language="javascript" type="text/javascript">
+    jQuery(document).ready(function(){
+                // binds form submission and fields to the validation engine
+                jQuery("#help").validationEngine();
+            });
+  </script>
+<p>&nbsp;</p>
+<form method="post" action="" id="help">
+<input type="hidden" name="id" value="<?php echo $this->TmpDtd['template_id'];?>"/>
+<table width="75%" border="0" cellspacing="3" cellpadding="0" align="center">
+  <tr>
+    <td colspan="3" class="list-table-header">Update Email Template</td>
+    </tr>
+  <tr>
+    <td class="label line">Section</td>
+    <td class="label line">:</td>
+    <td class="line"><?php echo $this->TmpDtd['template_sec'];?></td>
+  </tr>
+    <tr>
+    <td class="label line">Subject</td>
+    <td class="label line">:</td>
+    <td class="line"><input name="Subject" type="text" id="Subject" size="50" maxlength="50"  class="validate[required]" value="<?php echo $this->TmpDtd['Subject'];?>"/></td>
+  </tr>
+  <tr>
+    <td class="label line">Content</td>
+    <td class="label line">:</td>
+    <td class="label line" align="left">&nbsp;<textarea name="contents" cols="4" rows="2" id="contents" style="width:428px;height:153px;"><?php echo stripslashes($this->TmpDtd['content']);?></textarea>
+      <br />
+      <span class="note">[Note : Do not delete or edit content coming in between &quot;__&quot; mark. for example __username__. These are placeholders and will replace the actual data while execution.]</span></td>
+  </tr>
+  <tr>
+    <td align="right">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><input type="submit" name="Submit" value="Update" /></td>
+  </tr>
+</table>
+</form>
+<?php 
+$CKEditor->replace("contents");
+?>

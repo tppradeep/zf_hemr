@@ -23,10 +23,10 @@ class Admin_Model_DbTable_Cms extends Zend_Db_Table_Abstract
     {
         $db = Zend_Db_Table::getDefaultAdapter();
         
-        $cms_id = $formData['cms_id'];
-        $cms_title = $formData['cms_title'];
-        $cms_details = $formData['cms_details'];
-        $status = $formData['status'];
+        $cms_id = addslashes($formData['cms_id']);
+        $cms_title = addslashes($formData['cms_title']);
+        $cms_details = addslashes($formData['cms_details']);
+        $status = addslashes($formData['status']);
         
         $sql ='update cms set cms_title="'.$cms_title.'",cms_details="'.$cms_details.'",status="'.$status.'" where cms_id='.$cms_id.'';
         

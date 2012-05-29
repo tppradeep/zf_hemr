@@ -37,7 +37,17 @@ Cufon.replace('.cart-head', { fontFamily: 'Bodonitown', hover: true });
 Cufon.replace('.cart-title', { fontFamily: 'Enigmatic Regular', hover: true });
 
 </script>
-
+<link rel="stylesheet" type="text/css" media="all" href="<?php echo $this->baseUrl();?>/css/jquery.modalbox-basic.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<?php echo $this->baseUrl();?>/css/jquery.modalbox.css" />
+<script type="text/javascript">
+/* <![CDATA[ */
+	var pageType 	= "Modalbox";
+	var webRoot 	= "<?php echo $this->baseUrl();?>";
+	var isLocalhost = false;
+/* ]]> */
+</script>
+<script src="<?php echo $this->baseUrl();?>/js/modelbox.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl();?>/js/jquery.modalbox-1.4.0-min.js"></script>
 <script type="text/javascript">
 	//javascript: window.history.forward(1);
 </script>
@@ -61,14 +71,6 @@ Cufon.replace('.cart-title', { fontFamily: 'Enigmatic Regular', hover: true });
   }
 
 
-$(document).ready(function(){
-    $('#bannerright').flash(
-        { src: '<?php echo $this->baseUrl();?>/banner/banner.swf',
-          width: 299,
-          height: 337 },
-        { version: 8 }
-    );
-});
 </script> 
 
 </head>
@@ -88,7 +90,20 @@ $(document).ready(function(){
 
 </div>
 </div>
- <div class="right-nav-bottom"></div>
+ <div class="right-nav-bottom">
+<div id="steps">
+<dl>
+	<dt>1</dt>
+    <dd>Select Plan</dd>
+    <dt>2</dt>
+    <dd>Register Yourself</dd>
+    <dt>3</dt>
+    <dd>Make Your Payment</dd>
+    <dt>4</dt>
+    <dd>Plan Activation</dd>
+</dl>
+</div>
+ </div>
 	</div>
   
    
