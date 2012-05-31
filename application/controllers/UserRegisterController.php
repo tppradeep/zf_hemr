@@ -61,6 +61,10 @@ class UserRegisterController extends Zend_Controller_Action
 		   	    $hf_facility_suffix = $formData['hf_facility_suffix'];
 		   	    $hf_facility_name = $formData['hf_facility_name'];
 		   	    $hf_facility_lname = $formData['hf_facility_lname'];
+		   	    
+		   	    $userfullname = new Zend_Session_Namespace('UserFullName');
+		   	    $userfullname->UserFullName = $hf_facility_suffix.' '.$hf_facility_name.' '.$hf_facility_lname;
+		   	    
 		   	    $hf_speciality = $formData['hf_speciality'];
 		   	    if($hf_speciality=="Other")
 		   	    {
@@ -147,13 +151,33 @@ class UserRegisterController extends Zend_Controller_Action
   
     }
 
+    public function emailcheckAction()
+    {
+        $this->_helper->layout()->disableLayout();
+        $fieldValue = $this->_getParam('fieldValue');
+        $fieldId = $this->_getParam('fieldId');
+        
+        $GnDb = new Application_Model_DbTable_General();
+        $email = $GnDb->emailchecking($fieldValue);
+        if($email==1)
+        {
+            echo '["'.$fieldId.'",true]';
+        }
+        else
+        {
+            echo '["'.$fieldId.'",false]';
+        }
+    }
+
 
 }
 
 
 
 
+
 ?>
+
 
 
 

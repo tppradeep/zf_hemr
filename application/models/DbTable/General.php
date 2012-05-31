@@ -79,6 +79,33 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	    $sql ='select Subject,content from email_template where template_sec="'.$template_sec.'"';
 	    return $db->fetchRow($sql);
 	}
-
+	public function ProductDetails($pid)
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    $sql = "select product_feature from products where idproducts=".$pid;
+	    return $db->fetchRow($sql);
+	}
+	public function emailchecking($eid)
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    $sql ='select count(hf_id) as hf_id from hosted_facilities where hf_email="'.$eid.'"';
+	    if($db->fetchone($sql)==0)
+	    {
+	        // check admin side
+	        $sql ='select count(AdminId) as hf_id from admin_details where AdminEmail="'.$eid.'"';
+	        if($db->fetchone($sql)==0)
+	        {
+	        	return 1;
+	        }
+	        else
+	        {
+	            return 0;
+	        }
+	    }
+	    else
+	    {
+	        return 0;
+	    }
+	}
 }
 

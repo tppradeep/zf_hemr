@@ -391,7 +391,7 @@ class PaymentController extends Zend_Controller_Action
 	    	
 	    	$invoicePDF .='<tr>
 	    		<td height="50" class="normal-text b line">&nbsp;</td>
-	    		<td class="normal-text line">Plan Setup Fee </td>
+	    		<td class="normal-text line">Plan Onetime Fee </td>
 	    		<td class="normal-text line">:</td>
 	    		<td align="right" class="normal-text b line">';
 	    	
@@ -510,7 +510,7 @@ class PaymentController extends Zend_Controller_Action
     	$mail->setType(Zend_Mime::MULTIPART_RELATED);
     	//$mail->setBodyText('Invoice Details attached');
     	$mail->setBodyHtml($emailbody);
-    	$mail->setFrom('pradeep@zhservices.com', 'ZH Services');
+    	$mail->setFrom('pradeep@zhservices.com', 'ZH Healthcare');
     	$mail->addTo($emailto, $nameto);
     	$mail->setSubject($emailsubject);
     	

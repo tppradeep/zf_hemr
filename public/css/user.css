@@ -2,8 +2,9 @@ body,html {
 	margin: 0 5px;
 	font-family: Verdana,sans-serif;
 	background-image: url(../images/bg.gif);
-	background-repeat: repeat;
+	background-repeat: repeat-x;
 	background-attachment: fixed;
+	background-color: #4396ca;	
 }
 h1 {
 font-size: 1.4em;
@@ -32,12 +33,19 @@ float: left;
 }
 form #submitbutton {
 margin-left: 100px;
-}#header {
-	background-image: url(../images/header.jpg);
-	height: 208px;
+}
+#header {
+	background-image: url(../images/logobanner.png);
+	height: 50px;
 	width: 1000px;
 	margin-right: auto;
 	margin-left: auto;
+}
+#logo_image
+{
+	width:300px;
+	height=162px;
+	background-image: url(../images/header_image.jpg);
 }
 #main {
 	height:auto;
@@ -45,8 +53,10 @@ margin-left: 100px;
 	width: 1000px;
 	margin-right: auto;
 	margin-left: auto;
-	background-color: #EDEDED;
-	
+	background-color: #FFF;
+	background-image: url(../images/right_nav_bg.png);
+	background-repeat: repeat-y;
+	background-position: right top;	
 }
 #main  {
 	
@@ -65,7 +75,7 @@ margin-left: 100px;
 }
 .content {
 	float: left;
-	width: 740px;
+	width: 700px;
 	padding-top: 5px;
 }
 #main #login {
@@ -191,11 +201,11 @@ margin-left: 100px;
 }
 #dashboard
 {
-	border: 1px solid #FFCECE;
+	border: 0px solid #FFCECE;
 	background-color: #FFF;
 	min-height:180px;
 	min-width:90%;
-	margin-top: 5px;
+	margin-top: 2px;
 	padding: 5px;
 }
 .invoice-title,.invoice-table-title
@@ -256,8 +266,8 @@ margin-left: 100px;
 }
 #main .usermenu {
 	float: right;
-	width: 249px;
-	padding-right: 6px;
+	width: 297px;
+	padding-right: 3px;
 }
 .red {
 	color: #F00;

@@ -108,13 +108,13 @@
                     "alertText": "* This user is already taken",
                     "alertTextLoad": "* Validating, please wait"
                 },
-				"ajaxUserCallPhp": {
-                    "url": "../../facility/fc/",
+				"ajaxUserEmail": {
+                    "url": "../emailcheck/",
                     // you may want to pass extra data on the ajax call
                     "extraData": "",
                     // if you provide an "alertTextOk", it will show as a green prompt when the field validates
-                    "alertTextOk": "* This facility identifier is available.",
-                    "alertText": "* The facility identifier you provided is already taken.Please enter another facility name",
+                    "alertTextOk": "* This Email Address is available.",
+                    "alertText": "* The Email address entered is already taken.Please enter another email address",
                     "alertTextLoad": "* Validating, please wait"
                 },
 				"ajaxDUserId": {

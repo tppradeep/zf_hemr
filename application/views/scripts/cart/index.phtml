@@ -32,23 +32,6 @@ function RemoveAdditionalProductFromCart(idcart)
 }
 </script>
 <table width="94%" border="0" align="center" cellpadding="2" cellspacing="2">
- <?php
- if($this->planname !="")
- {
- ?>
-  <tr>
-    <td align="center">
-    <div class="reg-steps">STEP:I - Choose Plan<br />
-	<span class="normal-text"><?php echo $this->escape($this->planname);?></span></div>
-    <div class="reg-steps">STEP:II - Create Account<br />
-	<span class="normal-text"><?php echo $this->escape($this->username['hf_facility_name']);?>(<?php echo $this->escape($this->username['hf_email']);?>)</span>
-	</div>
-    <div class="reg-steps" style="line-height:40px;">STEP:III - Payment</div>
-    </td>
-  </tr>
-  <?php
- }
-  ?>
   <tr>
     <td align="left" class="cart-head">My Cart</td>
   </tr>
@@ -107,7 +90,7 @@ function RemoveAdditionalProductFromCart(idcart)
 		?>
        <tr>
        <td class="normal-text shadowlight"> <?php echo $sino;?>.a</td>
-       <td class="normal-text shadowlight" colspan="2"> Setup Fee</td>
+       <td class="normal-text shadowlight" colspan="2"> Onetime Fee</td>
         <td class="normal-text shadowlight" align="right">
         <?php 
         echo $currency->toCurrency($cart['setupfee']);
@@ -190,7 +173,7 @@ function RemoveAdditionalProductFromCart(idcart)
     <td width="3%" class="cart-title shadow">#</td>
     <td width="70%" class="cart-title shadow">Product Name</td>
     <td width="12%" align="right" class="cart-title shadow">Cost / Provider</td>
-    <td width="12%" align="right" class="cart-title shadow">Setup Fee</td>
+    <td width="12%" align="right" class="cart-title shadow">Onetime Fee</td>
     <!--td width="12%" align="left" nowrap="nowrap" class="cart-title shadow">Payment Term</td-->
     <td width="7%" class="cart-title shadow">Features</td>
     <td width="7%" class="cart-title shadow">Providers</td>

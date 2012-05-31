@@ -77,7 +77,7 @@
       ?>
        <tr>
 	    <td height="35" class="normal-text b line">&nbsp;</td>
-	    <td class="normal-text line">Plan Setup Fee </td>
+	    <td class="normal-text line">Plan Onetime Fee </td>
 	    <td class="normal-text line">:</td>
 	    <td align="right" class="normal-text b line"><?php 
 	    $OneTimeFee = new Zend_Currency('en_US');
@@ -94,7 +94,7 @@
 	 
 	  <tr>
 	    <td height="35" class="normal-text b line">&nbsp;</td>
-	    <td class="normal-text line"><?php echo substr($this->invoicedetails['particulars'],0,-1);?> + Setup Fee</td>
+	    <td class="normal-text line"><?php echo substr($this->invoicedetails['particulars'],0,-1);?> + Onetime Fee</td>
 	    <td class="normal-text line">:</td>
 	    <td align="right" class="normal-text b line"><?php 
 	    $OneTimeFee = new Zend_Currency('en_US');

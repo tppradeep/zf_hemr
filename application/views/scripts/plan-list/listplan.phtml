@@ -84,13 +84,20 @@ function updateprice(pval)
     <tr>
       <td width="3%" align="center" class="table-head shadow">#</td>
       <td width="73%" class="table-head shadow">Package Name</td>
-      <td width="24%" align="right" nowrap="nowrap" class="table-head shadow">Setup Fee&nbsp;(one time)</td>
+      <?php
+	  if($this->planname['bundle_setup_cost']!=0){
+	  ?>
+      <td width="24%" align="right" nowrap="nowrap" class="table-head shadow">Onetime Fee&nbsp;</td>
+      <?php } ?>
       <td width="24%" align="right"  nowrap="nowrap" class="table-head shadow">Recurring Fee (monthly)</td>
     </tr>
     <?php
     $plancost=0;
 	$setupfee=0;
     $sino=1; 
+    
+    $currency = new Zend_Currency('en_US');
+    
     foreach($this->productdetails as $productdtd)
     {
         
@@ -103,8 +110,12 @@ function updateprice(pval)
       </span><br />
         <strong>Features : </strong>
         <p><?php echo $productdtd['product_feature'];?></p></td>
-      <td align="right" valign="top" class="normal-text shadowlight">$ <?php echo $productdtd['setup_fee'];?></td>
-      <td align="right" valign="top" class="normal-text shadowlight">$ <?php echo $productdtd['cost'];?></td>
+       <?php
+	  if($this->planname['bundle_setup_cost']!=0){
+	  ?>
+      <td align="right" valign="top" class="normal-text shadowlight"><?php echo $currency->toCurrency($productdtd['setup_fee']);?></td>
+      <?php } ?>
+      <td align="right" valign="top" class="normal-text shadowlight"><?php echo $currency->toCurrency($productdtd['cost']);?></td>
     </tr>
    <?php 
    
@@ -122,7 +133,7 @@ function updateprice(pval)
       </span><br />
         <strong>Features : </strong>
         <p><?php echo $productdtd['product_feature'];?></p></td>
-      <td align="right" valign="top" class="normal-text shadowlight">$ <?php echo $productdtd['setup_fee'] + $productdtd['cost'];?></td>
+      <td align="right" valign="top" class="normal-text shadowlight"> <?php echo $currency->toCurrency($productdtd['setup_fee'] + $productdtd['cost']);?></td>
       <td align="right" valign="top" class="normal-text shadowlight">-</td>
     </tr> 
        <?php 
@@ -167,25 +178,35 @@ function updateprice(pval)
       <input type="hidden" name="totalfee" id="totalfee" <?php echo $this->planname['bundle_setup_cost'];?> />
       <input type="hidden" name="apid" id="apid" value="1" />
       </td>
-      <td align="right" class="table-head shadowlight"><span class="strike">$ <?php echo $setupfee;?></span> $ <?php echo $this->planname['bundle_setup_cost'];?></td>
-      <td align="right" valign="top" nowrap="nowrap" class="table-head shadowlight" id="monthlyfee"><span class="strike">$ <?php echo $plancost;?></span> $ <?php echo $this->planname['bundle_cost'];?></td>
+        <?php
+	  if($this->planname['bundle_setup_cost']!=0){
+	  ?>
+      <td align="right" class="table-head shadowlight"><span class="strike">$ <?php echo $setupfee;?></span> <?php echo $currency->toCurrency($this->planname['bundle_setup_cost']);?></td>
+      <?php } ?>
+      <td align="right" valign="top" nowrap="nowrap" class="table-head shadowlight" id="monthlyfee"><span class="strike"><?php echo $currency->toCurrency($plancost);?></span> <?php echo $currency->toCurrency($this->planname['bundle_cost']);?></td>
     </tr>
+      <?php
+	  $colspan=2;
+	  if($this->planname['bundle_setup_cost']!=0){
+		  $colspan=3;
+	  ?>
      <tr>
-       <td colspan="3" align="right" valign="top" class="normal-text shadowlight">Setup Fee Total<br />
-        (One time fee)</td>
-       <td align="right" valign="top" class="normal-text shadowlight" id="totalsetupfee"> $ <?php echo $this->planname['bundle_setup_cost'];?></td>
+       <td colspan="3" align="right" valign="top" class="normal-text shadowlight">Onetime Fee Total
+        </td>
+       <td align="right" valign="top" class="normal-text shadowlight" id="totalsetupfee"> <?php echo $currency->toCurrency($this->planname['bundle_setup_cost']);?></td>
      </tr>
+     <?php } ?>
      <tr>
-       <td colspan="3" align="right" valign="top" class="normal-text shadowlight">Recurring Fee<br />
+       <td colspan="<?php echo  $colspan;?>" align="right" valign="top" class="normal-text shadowlight">Recurring Fee<br />
         (Monthly)</td>
-       <td align="right" valign="top" class="normal-text shadowlight" id="totalamount"> $ <?php echo $this->planname['bundle_cost'];?></td>
+       <td align="right" valign="top" class="normal-text shadowlight" id="totalamount"> <?php echo $currency->toCurrency($this->planname['bundle_cost']);?></td>
      </tr>
      <tr>
-       <td colspan="3" align="right" valign="top" class="normal-text shadowlight"><strong>Total Amount</strong></td>
-       <td align="right" valign="top" class="normal-text shadowlight b" id="gtotal">$ <?php echo $this->planname['bundle_cost']+$this->planname['bundle_setup_cost'];?></td>
+       <td colspan="<?php echo  $colspan;?>" align="right" valign="top" class="normal-text shadowlight"><strong>Total Amount</strong></td>
+       <td align="right" valign="top" class="normal-text shadowlight b" id="gtotal"> <?php echo $currency->toCurrency($this->planname['bundle_cost']+$this->planname['bundle_setup_cost']);?></td>
      </tr>
      <tr>
-      <td colspan="4" align="right" valign="top" class="normal-text shadowlight">
+      <td colspan="4" align="right" valign="top">
        <!-- <a href="<?php echo $this->url(array('controller'=>'UserRegister','action'=>'adduser', 'id'=>$this->ecode($this->pid)));?>" class="plan-register">Proceed To Registration</a>--> <input name="" type="submit" value="Proceed to Registration" />     </td>
     </tr>
   </table>

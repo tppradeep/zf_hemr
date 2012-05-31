@@ -1,3 +1,4 @@
+<link href="css/site.css" rel="stylesheet" type="text/css" />
 <div id="header">
 <?php
 $sess = new Zend_Session_Namespace('user');

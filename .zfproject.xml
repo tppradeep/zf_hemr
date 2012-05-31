@@ -22,11 +22,13 @@
           <actionMethod actionName="adduser"/>
           <actionMethod actionName="facility"/>
           <actionMethod actionName="userregister"/>
+          <actionMethod actionName="emailcheck"/>
         </controllerFile>
         <controllerFile controllerName="PlanList">
           <actionMethod actionName="index"/>
           <actionMethod actionName="listplan"/>
           <actionMethod actionName="compareplans"/>
+          <actionMethod actionName="productDetails"/>
         </controllerFile>
         <controllerFile controllerName="PlanListSideBar">
           <actionMethod actionName="index"/>
@@ -753,6 +755,12 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Acl">
             <viewScriptFile forActionName="resellerRoleList"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="PlanList">
+            <viewScriptFile forActionName="productDetails"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="UserRegister">
+            <viewScriptFile forActionName="emailcheck"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

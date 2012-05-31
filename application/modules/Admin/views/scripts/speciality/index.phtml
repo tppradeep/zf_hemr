@@ -29,7 +29,7 @@
 				buttons: {
 					"Delete all items": function() {
 						$( this ).dialog( "close" );
-						window.location.href="<?php echo $this->baseUrl();?>/Admin/Products/delete/id/"+delid+"";
+						window.location.href="<?php echo $this->baseUrl();?>/Admin/Speciality/delete/id/"+delid+"";
 					},
 					Cancel: function() {
 						$( this ).dialog( "close" );
@@ -52,11 +52,11 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
 	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
 </div>
 
-<!-- div class="addnew">
-    <?php echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Products','action'=>'add'),0,true).'" class="add">';?>
-    Add New Product
+<div class="addnew">
+    <?php echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Speciality','action'=>'add'),0,true).'" class="add">';?>
+    Add New Speciality
     <?php echo "</a>";?>
-</div-->
+</div>
     
 <table width="100%" border="0" cellspacing="3" cellpadding="2" id="grid">
   <thead>
@@ -91,6 +91,7 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
     echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Speciality','action'=>'edit', 'id'=>$this->Ecode($sp['id'])),0,true).'">';
     echo "<img src='".$this->baseUrl()."/images/edit.png' alt='Edit' title='Edit'  style='cursor:pointer;' />";
     echo '</a>&nbsp;';
+    echo "<img src='".$this->baseUrl()."/images/delete.gif' alt='Delete' title='Delete' onClick='del(".$sp['id'].")'   style='cursor:pointer;'/>";
     ?>
     </td>
   </tr>

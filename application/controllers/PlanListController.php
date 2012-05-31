@@ -21,6 +21,10 @@ class PlanListController extends Zend_Controller_Action
         $this->view->pid = $pid;
         $this->view->planname = $planname->planname($pid);
         
+        $P_name = $planname->planname($pid);
+        
+        $SelectedPlan = new Zend_Session_Namespace('SelectedPlan');
+        $SelectedPlan->SelectedPlan = $P_name['hp_name'];
         
 		$this->view->productdetails = $planname->productdetails($pid);
 		
@@ -113,7 +117,7 @@ class PlanListController extends Zend_Controller_Action
 
     public function compareplansAction()
     {
-        $this->_helper->layout->setLayout('user_noright'); 
+       // $this->_helper->layout->setLayout('user_noright'); 
         
         
         $allplans = new Application_Model_DbTable_PlanList();
@@ -122,14 +126,26 @@ class PlanListController extends Zend_Controller_Action
        
         
     }
-	public function productdtd($pid)
-	{
+
+    public function productdtd($pid)
+    {
 	    
-	}
+    }
+
+    public function productDetailsAction()
+    {
+        $this->_helper->layout->setLayout('ajax');
+        $pid = $this->_getParam('id');
+        $GnDb = new Application_Model_DbTable_General();
+        $this->view->ProDtd = $GnDb->ProductDetails($pid);
+    }
+
 
 }
 
 
+
 ?>
+
 
 

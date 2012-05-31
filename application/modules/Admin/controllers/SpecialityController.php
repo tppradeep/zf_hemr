@@ -16,7 +16,14 @@ class Admin_SpecialityController extends Zend_Controller_Action
 
     public function addAction()
     {
-        // action body
+        $spdb = new Admin_Model_DbTable_Speciality();
+	    if ($this->getRequest()->isPost())
+	        {
+	            $formData = $this->getRequest()->getPost();
+	            unset($formData['Submit']);
+	            $spdb->addspeciality($formData);
+	            $this->_redirect('Admin/Speciality/index/st/1');
+	        }
     }
 
     public function editAction()
@@ -40,7 +47,10 @@ class Admin_SpecialityController extends Zend_Controller_Action
 
     public function deleteAction()
     {
-        // action body
+         $spdb = new Admin_Model_DbTable_Speciality();
+         $id=$this->_getParam('id');
+         $spdb->deletespeciality($id);
+         $this->_redirect('Admin/Speciality/index/st/3');
     }
 
 

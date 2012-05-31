@@ -32,8 +32,8 @@ foreach($this->plans as $plans)
 <div class="plan-name"><a href="PlanList/listplan/id/<?php echo $this->Ecode($plans['hp_id']);?>"><?php echo stripslashes($plans['hp_name']);?></a>
 </div>
 <div class="price">
-<span class="strike">List Price : <?php echo $currency->toCurrency($plans['listprice']);?></span>
-<br />Plan Price : <?php echo $currency->toCurrency($plans['bundle_cost']);?>
+<span class="strike">List Price : <?php echo $currency->toCurrency($plans['listprice']);?> (Per  Provider/Month)</span>
+<br />Plan Price : <?php echo $currency->toCurrency($plans['bundle_cost']);?> (Per  Provider/Month)
 </div>
 </div>
 <?php 
