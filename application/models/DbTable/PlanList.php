@@ -107,7 +107,7 @@ class Application_Model_DbTable_PlanList extends Zend_Db_Table_Abstract
 	    	{
 	    	
 	    		$output .= '<td align=center class="normal-text strike">';
-	    		$output .= 'List Price : '.$currency->toCurrency($PPL).'(Per Provider/Month)<br/>';
+	    		$output .= 'List Price : '.$currency->toCurrency($PPL).'';
 	    		$output .= '</td>';
 	    	}
 	    	$output .='</tr>';
@@ -118,7 +118,7 @@ class Application_Model_DbTable_PlanList extends Zend_Db_Table_Abstract
 	    		$output .= '<td align=center class="normal-text">';
 	    		$sql ='call listprice('.$PPL.')';
 	    		$listprice =  $db->fetchOne($sql);    		 
-	    		$output .= 'Plan Price : '.$currency->toCurrency($listprice).'(Per Provider/Month)';
+	    		$output .= 'Plan Price : '.$currency->toCurrency($listprice).'<br/>(Per Provider/Month)';
 	    		$output .= '</td>';
 	    	}
 	    	$output .='</tr>';

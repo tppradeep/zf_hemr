@@ -401,7 +401,7 @@ textarea{resize: none;}
 }
 .plan {
 	float: left;
-	height: 280px;
+	height: 290px;
 	width: 200px;
 	margin-left: 3px;
 	border: 1px solid #EBEBEB;
@@ -434,9 +434,9 @@ textarea{resize: none;}
 	font-weight: normal;
 	color: #333;
 	text-decoration: none;
-	width: 201px;
+	width: 111px;
 	margin-right: auto;
-	margin-left: auto;
+	margin-left: 62px;
 	padding-left: 0px;
 }
 .plan-outer {
@@ -644,9 +644,14 @@ img
 #steps .st-title
 {
 	padding-top: 15px;
+	padding-left:15px;
 	padding-bottom:6px;
-	 margin: -4px 15px -19px 29px;
+	margin: -4px -7px -19px 0;
+	background-image: url(../images/signupbg.png);
+	background-repeat: repeat-x;
+	background-position: bottom;
 }
+
 #steps dl 
 {
 	display: block;
