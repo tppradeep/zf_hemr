@@ -11,7 +11,7 @@ class Admin_Model_DbTable_Products extends Zend_Db_Table_Abstract
     	
     	$db = Zend_Db_Table::getDefaultAdapter();
     	$select = $db->select()
-    	->from(array('products'),array('idproducts','product_name','product_sort_order','product_status','cost','setup_fee','payment_term','added_date','ProductType'))
+    	->from(array('products'),array('idproducts','product_name','product_sort_order','product_status','cost','setup_fee','added_date','ProductType'))
     	->where('customer_id='.$customerId->customerId)
     	->order('product_sort_order');
     	
@@ -25,7 +25,7 @@ class Admin_Model_DbTable_Products extends Zend_Db_Table_Abstract
     	return $row;
     }
     
-    public function addProduct($product_name,$customer_id,$product_feature,$cost,$setup_fee,$payment_term,$product_sort_order,$product_status,$ProductType,$provider_cost_nature,$provider_setup_nature)
+    public function addProduct($product_name,$customer_id,$product_feature,$cost,$setup_fee,$product_sort_order,$product_status,$ProductType,$provider_cost_nature,$provider_setup_nature)
     {
         $customerId = new Zend_Session_Namespace('customerId');
          
@@ -37,7 +37,6 @@ class Admin_Model_DbTable_Products extends Zend_Db_Table_Abstract
         		'product_feature' => addslashes($product_feature),
         		'cost' => $cost,
                 'setup_fee'=>$setup_fee,
-        		'payment_term' => $payment_term,
         		'product_sort_order'=>$product_sort_order,
         		'product_status'=>$product_status,
                 'added_date'=>date('Y-m-d'),
@@ -55,7 +54,7 @@ class Admin_Model_DbTable_Products extends Zend_Db_Table_Abstract
          
         $db = Zend_Db_Table::getDefaultAdapter();
         $select = $db->select()
-        ->from(array('products'),array('idproducts','product_name','product_feature','product_sort_order','product_status','cost','setup_fee','payment_term','added_date','ProductType','provider_cost_nature','provider_setup_nature'))
+        ->from(array('products'),array('idproducts','product_name','product_feature','product_sort_order','product_status','cost','setup_fee','added_date','ProductType','provider_cost_nature','provider_setup_nature'))
         ->where('customer_id='.$customerId->customerId)
         ->where('idproducts='.$id);
          
@@ -68,7 +67,7 @@ class Admin_Model_DbTable_Products extends Zend_Db_Table_Abstract
          
         return $row;
     }
-    public function updateProduct($idproducts,$product_name,$customer_id,$product_feature,$cost,$setup_fee,$payment_term,$product_sort_order,$product_status,$ProductType,$provider_cost_nature,$provider_setup_nature)
+    public function updateProduct($idproducts,$product_name,$customer_id,$product_feature,$cost,$setup_fee,$product_sort_order,$product_status,$ProductType,$provider_cost_nature,$provider_setup_nature)
     {
        $db = Zend_Db_Table::getDefaultAdapter();
         
@@ -77,7 +76,6 @@ class Admin_Model_DbTable_Products extends Zend_Db_Table_Abstract
         		'product_feature' => addslashes($product_feature),
         		'cost' => $cost,
                 'setup_fee'=>$setup_fee,
-        		'payment_term' => $payment_term,
         		'product_sort_order'=>$product_sort_order,
         		'product_status'=>$product_status,
                 'ProductType'=>$ProductType,

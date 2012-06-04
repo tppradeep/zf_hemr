@@ -36,7 +36,6 @@ class Admin_ProductsController extends Zend_Controller_Action
 				$product_feature = $formData['product_feature'];
 				$cost = $formData['cost'];
 				$setup_fee = $formData['setup_fee'];
-				$payment_term=$formData['payment_term'];
 				$product_sort_order = $formData['product_sort_order'];
 				$product_status=$formData['product_status'];
 				$ProductType=$formData['ProductType'];
@@ -45,7 +44,7 @@ class Admin_ProductsController extends Zend_Controller_Action
 									
 				// calling model db to insert values			
 				$pfeature = new Admin_Model_DbTable_Products();
-				$pid=$pfeature->addProduct($product_name,$customer_id,$product_feature,$cost,$setup_fee,$payment_term,$product_sort_order,$product_status,$ProductType,$provider_cost_nature,$provider_setup_nature);
+				$pid=$pfeature->addProduct($product_name,$customer_id,$product_feature,$cost,$setup_fee,$product_sort_order,$product_status,$ProductType,$provider_cost_nature,$provider_setup_nature);
 				
 						
 				$this->_redirect('Admin/Products/index/st/1');
@@ -69,7 +68,6 @@ class Admin_ProductsController extends Zend_Controller_Action
 			$product_feature = $formData['product_feature'];
 			$cost = $formData['cost'];
 			$setup_fee = $formData['setup_fee'];
-			$payment_term=$formData['payment_term'];
 			$product_sort_order = $formData['product_sort_order'];
 			$product_status=$formData['product_status'];
 			$ProductType=$formData['ProductType'];
@@ -79,7 +77,7 @@ class Admin_ProductsController extends Zend_Controller_Action
     	
     		// calling model db to insert values (Planfeatures.php)
     		$pss = new Admin_Model_DbTable_Products();
-    		$pss->updateProduct($idproducts,$product_name,$customer_id,$product_feature,$cost,$setup_fee,$payment_term,$product_sort_order,$product_status,$ProductType,$provider_cost_nature,$provider_setup_nature);
+    		$pss->updateProduct($idproducts,$product_name,$customer_id,$product_feature,$cost,$setup_fee,$product_sort_order,$product_status,$ProductType,$provider_cost_nature,$provider_setup_nature);
     		 
     		$this->_redirect('Admin/Products/index/st/2');
     		 

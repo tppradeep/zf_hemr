@@ -24,7 +24,7 @@ class Admin_Model_DbTable_Planconfig extends Zend_Db_Table_Abstract
     	 
     	$db = Zend_Db_Table::getDefaultAdapter();
     	$select = $db->select()
-    	->from(array('products'),array('idproducts','product_name','product_sort_order','product_status','cost','payment_term','added_date'))
+    	->from(array('products'),array('idproducts','product_name','product_sort_order','product_status','cost','added_date'))
     	->where('customer_id='.$customerId->customerId)
     	->where('product_status=1')
     	->where('ProductType in (1,3)')

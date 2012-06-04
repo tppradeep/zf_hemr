@@ -25,7 +25,7 @@ class Application_Model_DbTable_PlanList extends Zend_Db_Table_Abstract
 	    //select p.idproducts,p.product_name,p.product_feature,p.cost,p.payment_term from products p, plan_products pp where pp.idproducts=p.idproducts and pp.idplan=1
 	    $db = Zend_Db_Table::getDefaultAdapter();
 	    $select = $db->select()
-	    -> from(array('p'=>'products'),array('p.idproducts','p.product_name','p.product_feature','p.cost','p.setup_fee','p.payment_term','provider_cost_nature','provider_setup_nature'))
+	    -> from(array('p'=>'products'),array('p.idproducts','p.product_name','p.product_feature','p.cost','p.setup_fee','provider_cost_nature','provider_setup_nature'))
 	    ->join(array('pp'=>'plan_products'),'pp.idproducts=p.idproducts')
 	    -> where('pp.idplan='.$pid);
 	    

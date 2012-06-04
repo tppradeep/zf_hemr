@@ -92,7 +92,7 @@ class Application_Model_DbTable_Cart extends Zend_Db_Table_Abstract
 	
 		
 		$select = $db->select()
-		-> from(array('products'),array('idproducts','product_name','product_feature','cost','setup_fee','payment_term'))
+		-> from(array('products'),array('idproducts','product_name','product_feature','cost','setup_fee'))
 		-> where('customer_id='.$cusid)
 		-> where('idproducts Not In ('.$SelProList.')');
 		

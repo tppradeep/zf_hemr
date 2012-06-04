@@ -187,8 +187,7 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		$select = $db->select()
 		-> from(array('p'=>'products'),array('sum(p.cost) as pcost','sum(p.setup_fee) as setupcost'))
 		->join(array('pp'=>'plan_products'),'pp.idproducts=p.idproducts')
-		-> where('pp.idplan='.$id)
-		-> where('p.payment_term=0');
+		-> where('pp.idplan='.$id);
 		
 		 $otm = $db->fetchRow($select);
 		 $one_time_payment = $otm['pcost'] * $provider;
@@ -215,35 +214,7 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		}
 		
 	
-		
-		$select = $db->select()
-		-> from(array('p'=>'products'),array('sum(p.cost) as pcost','sum(p.setup_fee) as setupcost'))
-		->join(array('pp'=>'plan_products'),'pp.idproducts=p.idproducts')
-		-> where('pp.idplan='.$id)
-		-> where('p.payment_term=1');
-		
-		$mp = $db->fetchRow($select);
-		$monthly_payment = $mp['pcost'] * $provider;
-		$productsetupfee= $productsetupfee + $mp['setupcost'];
-		
-		
-		if($bd_type==1 && $monthly_payment>0) // if in %
-		{
-			$monthly_payment = $monthly_payment - $monthly_payment * $bd_dpc / 100;
-			$productsetupfee = $productsetupfee - $productsetupfee * $db_dps / 100;
-						
-			$PlanCostTotalDiscount = $PlanCostTotalDiscount + round($monthly_payment * $bd_dpc / 100);
-			$PlanSetupTotalDiscount = $PlanSetupTotalDiscount + round($productsetupfee * $db_dps / 100);
-			
-		}
-		if($bd_type==2 && $monthly_payment>0) // if in price
-		{
-			$monthly_payment = $monthly_payment - $bd_dpc;
-			$productsetupfee = $productsetupfee - $db_dps ;
-			
-			$PlanCostTotalDiscount = $PlanCostTotalDiscount + $bd_dpc ;
-			$PlanSetupTotalDiscount = $PlanSetupTotalDiscount + $db_dps;
-		}
+	
 		
 	//	echo $PlanCostTotalDiscount;
 	//	echo "<br>";

@@ -73,7 +73,7 @@ class Admin_Model_DbTable_Users extends Zend_Db_Table_Abstract
 		//select p.idproducts,p.product_name,p.product_feature,p.cost,p.payment_term from products p, plan_products pp where pp.idproducts=p.idproducts and pp.idplan=1
 		$db = Zend_Db_Table::getDefaultAdapter();
 		$select = $db->select()
-		-> from(array('p'=>'customer_products'),array('p.idproducts','p.product_name','p.product_feature','p.cost','p.setup_fee','p.payment_term'))
+		-> from(array('p'=>'customer_products'),array('p.idproducts','p.product_name','p.product_feature','p.cost','p.setup_fee'))
 		-> where('p.hf_id='.$hf_id)
 		-> where('p.hp_id='.$pid);
 			

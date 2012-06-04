@@ -36,17 +36,8 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
         <td class="label line">
         <textarea name="product_feature" id="product_feature" cols="45" rows="5"  class="validate[required]"><?php echo stripslashes($this->productview['product_feature']);?></textarea></td>
       </tr>
-       <tr>
-        <td class="label line">Payment Term</td>
-        <td>:</td>
-        <td class="label line">
-          <select name="payment_term" id="payment_term">
-            <option value="0" <?php if($this->productview['payment_term']=="0"){echo 'selected="selected"';}?> >One Time</option>
-            <option value="1" <?php if($this->productview['payment_term']=="1"){echo 'selected="selected"';}?>>Monthly</option>
-        </select></td>
-      </tr>
       <tr>
-        <td class="label line">Product Cost</td>
+        <td class="label line">Product Cost (Monthly Recurring)</td>
         <td>:</td>
         <td class="label line">$
           <label for="cost"></label>

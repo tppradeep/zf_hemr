@@ -3,7 +3,7 @@
 //$this->headTitle($this->title); // for title
 
 ?>
- <script language="javascript" type="text/javascript">
+<script language="javascript" type="text/javascript">
     jQuery(document).ready(function(){
                 // binds form submission and fields to the validation engine
                 jQuery("#userregister").validationEngine();
@@ -36,8 +36,7 @@
 		}
 	}
   </script>
-  <link href="../../../../public/css/site.css" rel="stylesheet" type="text/css" />
-  
+<link href="../../../../public/css/site.css" rel="stylesheet" type="text/css" />
 <?php 
 //$this->Pre($this->formdata);
 if($this->formdata['error']!="")
@@ -56,43 +55,67 @@ if($this->formdata['error']!="")
 ?>
 <!-- form id="userregister" method="post" action="<?php echo $this->baseUrl();?>/UserRegister/userregister"-->
 <form id="userregister" method="post" action="">
-<input type="hidden" name="_sec" value="register">
-<input type="hidden" name="apid" id="apid" value="<?php echo $this->plandetails['apid'];?>" />
-<input type="hidden" name="pid" id="pid" value="<?php echo $this->plandetails['pid'];?>" />
-<input type="hidden" name="bpcost" id="bpcost" value="<?php echo $this->plandetails['bpcost'];?>" />
-<input type="hidden" name="btotalfee" id="btotalfee" value="<?php echo $this->plandetails['btotalfee'];?>" />
-<input type="hidden" name="pcost" id="pcost" value="<?php echo $this->plandetails['pcost'];?>" />
-<input type="hidden" name="setupfee" id="setupfee" value="<?php echo $this->plandetails['setupfee'];?>" />
-<input type="hidden" name="totalfee" id="totalfee" value="<?php echo $this->plandetails['totalfee'];?>" />
-
-<table width="94%" border="0" align="center" cellpadding="2" cellspacing="2">
+  <input type="hidden" name="_sec" value="register">
+  <input type="hidden" name="apid" id="apid" value="<?php echo $this->plandetails['apid'];?>" />
+  <input type="hidden" name="pid" id="pid" value="<?php echo $this->plandetails['pid'];?>" />
+  <input type="hidden" name="bpcost" id="bpcost" value="<?php echo $this->plandetails['bpcost'];?>" />
+  <input type="hidden" name="btotalfee" id="btotalfee" value="<?php echo $this->plandetails['btotalfee'];?>" />
+  <input type="hidden" name="pcost" id="pcost" value="<?php echo $this->plandetails['pcost'];?>" />
+  <input type="hidden" name="setupfee" id="setupfee" value="<?php echo $this->plandetails['setupfee'];?>" />
+  <input type="hidden" name="totalfee" id="totalfee" value="<?php echo $this->plandetails['totalfee'];?>" />
+  <table border="0" align="center" cellpadding="0" cellspacing="3">
+    <tr>
+      <td class="label-no">Organization Name</td>
+      <td class="label-no">:</td>
+      <td colspan="7"><input name="hf_organization" type="text" class="validate[required],custom[onlyLetterNumber]" id="hf_organization" tabindex="1" value="<?php echo $this->formdata['hf_organization']?>" size="45" maxlength="150"/></td>
+    </tr>
+    <tr>
+      <td class="label-no">Organization <br />
+      short name</td>
+      <td class="label-no">:</td>
+      <td colspan="4"><input name="hf_facility_identifier" type="text" id="hf_facility_identifier" maxlength="150" class="validate[required],custom[onlyLetterNumber]" value="<?php echo $this->formdata['hf_facility_identifier']?>" tabindex="1"/> <?php $this->DisplayHelp('UserRegistrtion','FacilityIdentifier');?></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!--tr>
+    <td>
+    <div class="label-box">
+    <div class="label-no">13</div>
+    <div class="reg-label2">Tax ID</div> <div class="reg-label2" style="margin-left:125px;">NPI</div>
+    <div class="clear"></div>
+    <div class="write-box" style="width:125px;"><input name="hf_tax_id" type="text" id="hf_tax_id" value="<?php echo $this->formdata['hf_tax_id']?>" size="10" maxlength="15" tabindex="16" style="width:115px;"/></div>
+      <div class="write-box" style="width:125px;"><input name="hf_npi" type="text" id="hf_npi" value="<?php echo $this->formdata['hf_npi']?>" size="10" maxlength="15"  tabindex="17" style="width:115px;"/></div>
+    <div class="clear"></div>
+    </div>
+    </td>
+  </tr-->
+     <tr>
+       <td align="left" class="label-no">Suffix</td>
+       <td align="left" class="label-no">:</td>
+       <td colspan="7" align="left" class="label-no">
+       <table border="0" align="left" cellpadding="0" cellspacing="0">
   <tr>
-    <td width="14%" nowrap="nowrap" class="label-no">Facility Identifier:
-     </td>
-    <td width="86%"><input name="hf_facility_identifier" type="text" id="hf_facility_identifier" maxlength="150" class="validate[required],custom[onlyLetterNumber]" value="<?php echo $this->formdata['hf_facility_identifier']?>" tabindex="1" style="width:315px;"/> <?php $this->DisplayHelp('UserRegistrtion','FacilityIdentifier');?></td>
-  </tr>
-  <tr>
-    <td colspan="2"><table border="0" cellspacing="1" cellpadding="1">
-      <tr>
-        <td class="label-no">Suffix:</td>
-        <td><select name="hf_facility_suffix" tabindex="2">
+    <td><select name="hf_facility_suffix" tabindex="2">
       <option value="Dr." selected="selected">Dr.</option>
       <option value="Mr.">Mr.</option>
       <option value="Miss.">Miss.</option>
       <option value="Mrs.">Mrs.</option>
     </select></td>
-        <td class="label-no">First Name:</td>
-        <td><input name="hf_facility_name" type="text" id="hf_facility_name" maxlength="150" class="validate[required],custom[onlyLetterwithSpaceandAppostophy]" value="<?php echo $this->formdata['hf_facility_name']?>" tabindex="3"  style="width:115px;"/></td>
-        <td class="label-no">Last name:</td>
-        <td><input name="hf_facility_lname" type="text" id="hf_facility_lname" maxlength="150" class="validate[required],custom[onlyLetterNumber]" value="<?php echo $this->formdata['hf_facility_lname']?>" tabindex="4"  style="width:115px;"/></td>
-      </tr>
-    </table></td>
+    <td class="label-no">First Name</td>
+    <td class="label-no">:</td>
+    <td><input name="hf_facility_name" type="text" class="validate[required],custom[onlyLetterwithSpaceandAppostophy]" id="hf_facility_name" tabindex="3" value="<?php echo $this->formdata['hf_facility_name']?>" size="15" maxlength="150"/></td>
+    <td class="label-no">Last Name</td>
+    <td class="label-no">:</td>
+    <td><input name="hf_facility_lname" type="text" class="validate[required],custom[onlyLetterNumber]" id="hf_facility_lname" tabindex="4" value="<?php echo $this->formdata['hf_facility_lname']?>" size="15" maxlength="150"/></td>
   </tr>
-   <tr>
-     <td colspan="2"><table border="0" cellspacing="0" cellpadding="2">
-       <tr>
-        <td class="label-no">Speciality:</td>
-         <td nowrap="nowrap"><select name="hf_speciality" onchange="checkoption(this.value)" style="width:175px;">
+</table>
+       </td>
+     </tr>
+     <tr>
+      <td class="label-no">Speciality</td>
+      <td class="label-no">:</td>
+      <td colspan="2"><select name="hf_speciality" onchange="checkoption(this.value)" style="width:200px;">
     <?php
 	foreach($this->speciality as $sp)
 	{
@@ -101,43 +124,41 @@ if($this->formdata['error']!="")
 	?>
       <option value="Other">other</option>
     </select><?php $this->DisplayHelp('UserRegistrtion','Speciality');?></td>
-         <td nowrap="nowrap" id="other" style="visibility:hidden;"><input name="hf_speciality_other" type="text" id="hf_speciality_other" maxlength="150" value="<?php echo $this->formdata['hf_speciality']?>" tabindex="5"  style="width:170px;"/></td>
-       </tr>
-     </table></td>
+      <td>&nbsp;</td>
+      <td colspan="2" id="other" style="visibility:hidden;"><input name="hf_speciality_other" type="text" id="hf_speciality_other" maxlength="150" value="<?php echo $this->formdata['hf_speciality']?>" tabindex="5"  /></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
-  
-   <tr>
-    <td colspan="2"><table width="100%" border="0" cellspacing="2" cellpadding="2">
-      <tr>
-        <td width="8%" nowrap="nowrap" class="label-no">Email ID:</td>
-        <td width="92%"><input name="hf_email" type="text" id="hf_email" maxlength="150" class="validate[required],custom[email],ajax[ajaxUserEmail]" value="<?php echo $this->formdata['hf_email']?>" tabindex="6"  style="width:315px;"/>
-         </td>
-      </tr>
-    </table></td>
+    <tr>
+      <td class="label-no">Email ID</td>
+      <td class="label-no">:</td>
+      <td colspan="7"><input name="hf_email" type="text" class="validate[required],custom[email],ajax[ajaxUserEmail]" id="hf_email" tabindex="6" value="<?php echo $this->formdata['hf_email']?>" size="45" maxlength="150"/></td>
+    </tr>
+    <tr>
+      <td class="label-no">Password</td>
+      <td class="label-no">:</td>
+      <td colspan="7" class="label-no"><table border="0" align="left" cellpadding="0" cellspacing="0">
+  <tr>
+    <td colspan="2"><input name="dashboard_password" type="password" class="validate[required],custom[onlyLetterNumber]" id="dashboard_password" tabindex="7" size="15" maxlength="150" /></td>
+    <td>&nbsp;</td>
+    <td colspan="2" align="right" class="label-no">Confirm Password</td>
+    <td class="label-no">:</td>
+    <td><input name="dashboard_password_confirm" type="password" class="validate[required],custom[onlyLetterNumber]" id="dashboard_password_confirm" tabindex="8" size="15" maxlength="150"/></td>
   </tr>
-   <tr>
-    <td colspan="2"><table border="0" cellspacing="2" cellpadding="2">
-      <tr>
-        <td nowrap="nowrap" class="label-no">Password:</td>
-        <td nowrap="nowrap"><input name="dashboard_password" type="password" id="dashboard_password" maxlength="150" class="validate[required],custom[onlyLetterNumber]" tabindex="7"  style="width:175px;"/></td>
-        <td nowrap="nowrap" class="label-no">Confirm Password:</td>
-        <td nowrap="nowrap"><input name="dashboard_password_confirm" type="password" id="dashboard_password_confirm" maxlength="150" class="validate[required],custom[onlyLetterNumber]" tabindex="8"  style="width:175px;"/></td>
-      </tr>
-    </table></td>
-  </tr>
-   <tr>
-    <td colspan="2"><table border="0" cellspacing="2" cellpadding="2">
-        <tr>
-          <td class="label-no">Address:</td>
-          <td><textarea name="hf_address" id="hf_address" rows="5"  tabindex="9" class="validate[required]" style="width:319px;border-color:#FFF;border:1px;"><?php echo $this->formdata['hf_address']?></textarea></td>
-        </tr>
-      </table></td>
-  </tr>
-   <tr>
-    <td colspan="2"><table border="0" cellspacing="2" cellpadding="2">
-        <tr>
-          <td class="label-no">Country:</td>
-          <td><select name="hf_country" id="hf_country"  class="validate[required]" tabindex="10"  style="width:315px;" onchange="checkstate(this.value)" >
+</table></td>
+    </tr>
+    <tr>
+      <td class="label-no">Address</td>
+      <td class="label-no">:</td>
+      <td colspan="4"><textarea name="hf_address" id="hf_address" rows="5"  tabindex="9" class="validate[required]" style="width:219px;border-color:#FFF;border:1px;"><?php echo $this->formdata['hf_address']?></textarea></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="label-no">Country</td>
+      <td class="label-no">:</td>
+      <td colspan="5"><select name="hf_country" id="hf_country"  class="validate[required]" tabindex="10"  style="width:315px;" onchange="checkstate(this.value)" >
           <?php 
 		  $selcountry=$this->formdata['hf_country'];
 		  if($selcountry=="")
@@ -158,15 +179,14 @@ if($this->formdata['error']!="")
 		   
 		  }
 		  ?>
-        </select></td>
-        </tr>
-      </table></td>
-  </tr>
-   <tr>
-    <td colspan="2"><table border="0" cellspacing="2" cellpadding="2">
-        <tr>
-          <td class="label-no">State / Province / Region</td>
-          <td><select name="hf_state" tabindex="11">
+      </select></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="label-no">State </td>
+      <td class="label-no">:</td>
+      <td colspan="2"><select name="hf_state" tabindex="11">
        <?php
 	   foreach($this->state as $st)
 	   {
@@ -174,45 +194,58 @@ if($this->formdata['error']!="")
 	   }
 	   ?>
      </select></td>
-          <td id="otherstate" class="write-box" style="visibility:hidden;"><input name="hf_state_other" type="text" id="hf_state_other" maxlength="150" value="<?php echo $this->formdata['hf_state']?>" tabindex="12"  style="width:115px;"/></td>
-        </tr>
-      </table></td>
-  </tr>
-   <tr>
-    <td colspan="2"><table border="0" cellspacing="2" cellpadding="2">
-      <tr>
-        <td class="label-no">City</td>
-        <td><input name="hf_city" type="text" id="hf_city" maxlength="150" class="validate[required]" value="<?php echo $this->formdata['hf_city']?>" tabindex="13"  style="width:315px;"/></td>
-      </tr>
-    </table></td>
-  </tr>
+      <td>&nbsp;</td>
+      <td colspan="2" id="otherstate" class="write-box" style="visibility:hidden;"><input name="hf_state_other" type="text" id="hf_state_other" maxlength="150" value="<?php echo $this->formdata['hf_state']?>" tabindex="12"/></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
     <tr>
-    <td colspan="2"><table border="0" cellspacing="2" cellpadding="2">
-      <tr>
-        <td class="label-no">Postal / zip Code:</td>
-        <td><input name="hf_zip" type="text" id="hf_zip" maxlength="150" class="validate[required]" value="<?php echo $this->formdata['hf_zip']?>" tabindex="14"  style="width:115px;"/></td>
-        <td class="label-no">Phone Number:</td>
-        <td><input name="hf_phone" type="text" id="hf_phone" value="<?php echo $this->formdata['hf_phone']?>" size="10" maxlength="15" class="validate[required]" tabindex="15" style="width:115px;"/><?php $this->DisplayHelp('UserRegistrtion','PhoneNumber');?></td>
-      </tr>
-    </table></td>
-  </tr>
-   <!--tr>
-    <td>
-    <div class="label-box">
-    <div class="label-no">13</div>
-    <div class="reg-label2">Tax ID</div> <div class="reg-label2" style="margin-left:125px;">NPI</div>
-    <div class="clear"></div>
-    <div class="write-box" style="width:125px;"><input name="hf_tax_id" type="text" id="hf_tax_id" value="<?php echo $this->formdata['hf_tax_id']?>" size="10" maxlength="15" tabindex="16" style="width:115px;"/></div>
-      <div class="write-box" style="width:125px;"><input name="hf_npi" type="text" id="hf_npi" value="<?php echo $this->formdata['hf_npi']?>" size="10" maxlength="15"  tabindex="17" style="width:115px;"/></div>
-    <div class="clear"></div>
-    </div>
-    </td>
-  </tr-->
-   <tr>
-    <td colspan="2" style="padding-left:250px;padding-top:15px;">
-   <input type="submit" name="Submit" value="Register Details" class="user-submit" tabindex="16" />
-    </td>
-  </tr>
-</table>
+      <td class="label-no">City</td>
+      <td class="label-no">:</td>
+      <td colspan="3"><input name="hf_city" type="text" id="hf_city" maxlength="150" class="validate[required]" value="<?php echo $this->formdata['hf_city']?>" tabindex="13"/></td>
+      <td colspan="2" class="label-no">&nbsp;</td>
+      <td class="label-no">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="label-no">Postal / zip Code</td>
+      <td class="label-no">:</td>
+      <td><input name="hf_zip" type="text" id="hf_zip" maxlength="150" class="validate[required]" value="<?php echo $this->formdata['hf_zip']?>" tabindex="14"  style="width:115px;"/></td>
+      <td colspan="3">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="label-no">Phone Number</td>
+      <td class="label-no">:</td>
+      <td><input name="hf_phone" type="text" id="hf_phone" value="<?php echo $this->formdata['hf_phone']?>" size="10" maxlength="15" class="validate[required]" tabindex="15" style="width:115px;"/><?php $this->DisplayHelp('UserRegistrtion','PhoneNumber');?></td>
+      <td colspan="3">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td >&nbsp;</td>
+      <td >&nbsp;</td>
+      <td >&nbsp;</td>
+      <td >&nbsp;</td>
+      <td >&nbsp;</td>
+      <td >&nbsp;</td>
+      <td >&nbsp;</td>
+      <td >&nbsp;</td>
+      <td >&nbsp;</td>
+    </tr>
+    <tr>
+      <td >&nbsp;</td>
+      <td >&nbsp;</td>
+      <td ><input type="submit" name="Submit" value="Register Details" class="user-submit" tabindex="16" /></td>
+      <td >&nbsp;</td>
+      <td >&nbsp;</td>
+      <td >&nbsp;</td>
+      <td >&nbsp;</td>
+      <td >&nbsp;</td>
+      <td >&nbsp;</td>
+    </tr>
+  </table>
 </form>
-

@@ -525,15 +525,14 @@ textarea{resize: none;}
 	color: #46536d;
 	font-family: Verdana, Geneva, sans-serif;
 	font-size: 11px;
-	font-weight: bold;
+	font-weight: normal;
 	background-color: #FFF;
-	float: left;
 	height: auto;
 	width: auto;
-	padding-top: 4px;
-	padding-right: 8px;
-	padding-bottom: 4px;
-	padding-left: 8px;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
 }
 .reg-label {
 	font-family: Verdana, Geneva, sans-serif;

@@ -21,7 +21,6 @@ class Application_Model_DbTable_Paymentdb extends Zend_Db_Table_Abstract
 		
 		$select = $db->select()
 		->from(array('h' => 'customer_products'),array('count(h.idcustomer_products)'))
-		->where('h.payment_term=0')
 		->where('h.cost>0')
 		->where('h.hp_id='.$pid)
 		->where('h.hf_id='.$hf_id);
@@ -34,7 +33,6 @@ class Application_Model_DbTable_Paymentdb extends Zend_Db_Table_Abstract
 		
 		$select = $db->select()
 		->from(array('h' => 'customer_products'),array('sum(h.cost)'))
-		->where('h.payment_term=0')
 		->where('h.hp_id='.$pid)
 		->where('h.hf_id='.$hf_id);
 		
@@ -73,7 +71,6 @@ class Application_Model_DbTable_Paymentdb extends Zend_Db_Table_Abstract
 		
 		$select = $db->select()
 			->from(array('h' => 'customer_products'),array('count(h.idcustomer_products)'))
-			->where('h.payment_term=1')
 			->where('h.cost>0')
 			->where('h.hp_id='.$pid)
 			->where('h.hf_id='.$hf_id);
@@ -85,7 +82,6 @@ class Application_Model_DbTable_Paymentdb extends Zend_Db_Table_Abstract
 		
 		$select = $db->select()
 		->from(array('h' => 'customer_products'),array('sum(h.cost)'))
-		->where('h.payment_term=1')
 		->where('h.hp_id='.$pid)
 		->where('h.hf_id='.$hf_id);
 	
@@ -270,10 +266,7 @@ class Application_Model_DbTable_Paymentdb extends Zend_Db_Table_Abstract
 		        $ProDtd=$row->fetchAll();
 		        	
 		         
-		        if($ProDtd[0]['payment_term']==0)// One time Payment
-		        	$PlanOneTimePayment_sum = $PlanOneTimePayment_sum + $CD['unit_price']*$CD['qty'];
-		        if($ProDtd[0]['payment_term']==1)// One time Payment
-		        	$PlanMonthlyPayment_sum = $PlanMonthlyPayment_sum + $CD['unit_price']*$CD['qty'];
+		       	$PlanMonthlyPayment_sum = $PlanMonthlyPayment_sum + $CD['unit_price']*$CD['qty'];
 		        $setupfee = $setupfee + $ProDtd[0]['setup_fee'];
 		       // $amount = $amount + ($CD['qty'] * $CD['unit_price']);
 		    }

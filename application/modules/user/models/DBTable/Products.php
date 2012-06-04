@@ -7,7 +7,7 @@ class User_Model_DbTable_Products extends Zend_Db_Table_Abstract
 
 	public function cart_product_list($path,$UserPermission)
 	{
-	    //select idproducts,product_name,product_feature,cost,payment_term from 
+	    //select idproducts,product_name,product_feature,cost from 
 	    //products where customer_id=1 and product_status='1'  and idproducts not 
 	    //in(select idproducts from customer_products where hf_id='119') order by product_sort_order
 	    
@@ -64,16 +64,10 @@ class User_Model_DbTable_Products extends Zend_Db_Table_Abstract
 	        $output.=' <tr>
     <td height="25" class="normal-text shadowlight">'.$sino.'.</td>
     <td class="normal-text shadowlight">'.$PL['product_name'].'</td>
-    <td align="right" class="normal-text shadowlight">'.$currency->toCurrency($PL['cost']).'</td>
-    <td align="right" class="normal-text shadowlight">'.$currency->toCurrency($PL['setup_fee']).'</td>
+    <td align="right" class="normal-text shadowlight">'.$currency->toCurrency($PL['cost']).'(Monthly Recurring)</td>
+    <td align="right" class="normal-text shadowlight">'.$currency->toCurrency($PL['setup_fee']).'(Onetime Fee)</td>
      <td align="center" class="normal-text shadowlight">';
-     if($PL['payment_term']==0)
-         {
-             $output.="One Time";
-         }
-         else {
-             $output.="Monthly";
-         }
+
     $output.='</td><td align="center" class="normal-text shadowlight">
      <a class="openmodalbox" href="javascript:void(0);"	rel="ajax: '.$path.'/user/Products/productfeature/id/'.base64_encode($PL['idproducts']).'">
       <img src="'.$path.'/images/expand.png" width="16" height="16" title="View Features" alt="View Features" />
