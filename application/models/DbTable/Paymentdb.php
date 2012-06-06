@@ -247,8 +247,8 @@ class Application_Model_DbTable_Paymentdb extends Zend_Db_Table_Abstract
 		    if($CD['plan_id']!=0) // It means the cart item is a plan so discount settings required to apply
 		    {
 		        $particulars = $particulars.$CD['description'].",";
-		        $PlanOneTimePayment_sum = $PlanOneTimePayment_sum + $this->PlanOneTimePayment_sum($CD['plan_id'],$hf_id,$CD['qty']);
-		        $PlanMonthlyPayment_sum = $PlanMonthlyPayment_sum + $this->PlanMonthlyPayment_sum($CD['plan_id'],$hf_id,$CD['qty']);
+		        $PlanOneTimePayment_sum = $PlanOneTimePayment_sum + ($CD['setupfee']-$CD['setupfee_discount']);
+		        $PlanMonthlyPayment_sum = $PlanMonthlyPayment_sum + ($CD['unit_price']-$CD['discount']);
 		        $discountplan = $discountplan + $CD['discount'] + $CD['setupfee_discount'];
 		      //  $amount = $amount + ($CD['qty'] * $CD['unit_price'])- $CD['discount'];
 		        
@@ -265,9 +265,25 @@ class Application_Model_DbTable_Paymentdb extends Zend_Db_Table_Abstract
 		        $row = $db->query("CALL product_payment_term($productid)"); // Its a procedure call
 		        $ProDtd=$row->fetchAll();
 		        	
-		         
-		       	$PlanMonthlyPayment_sum = $PlanMonthlyPayment_sum + $CD['unit_price']*$CD['qty'];
-		        $setupfee = $setupfee + $ProDtd[0]['setup_fee'];
+		        if($ProDtd['provider_cost_nature']==1)
+		        {
+		       		$PlanMonthlyPayment_sum = $PlanMonthlyPayment_sum + $CD['unit_price']*$CD['qty'];
+		        }
+		        if($ProDtd['provider_cost_nature']==0)
+		        {
+		        	$PlanMonthlyPayment_sum = $PlanMonthlyPayment_sum + $CD['unit_price'];
+		        }
+		        
+		        //Setup fee section
+		        if($ProDtd['provider_setup_nature']==1)
+		        {
+		       		 $setupfee = $setupfee + $ProDtd[0]['setup_fee']*$CD['qty'];
+		        }
+		        if($ProDtd['provider_setup_nature']==0)
+		        {
+		        	$setupfee = $setupfee + $ProDtd[0]['setup_fee'];
+		        }
+		       
 		       // $amount = $amount + ($CD['qty'] * $CD['unit_price']);
 		    }
 		}

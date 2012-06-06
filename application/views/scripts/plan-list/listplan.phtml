@@ -221,7 +221,11 @@ $(document).ready(function() {
        <?php
 	   if($setupfee > $this->planname['bundle_setup_cost'])
 	   {
-			echo '<span class="strike">$ '.$setupfee.'</span>';
+			echo '<span class="strike">'.$currency->toCurrency($setupfee).'</span>';
+	   }
+	    if($setupfee = $this->planname['bundle_setup_cost'])
+	   {
+			echo $currency->toCurrency($setupfee);
 	   }
 	   ?>
        </td>
@@ -230,7 +234,7 @@ $(document).ready(function() {
         <?php
 	   if($plancost > $this->planname['bundle_cost'])
 	   {
-			echo '<span class="strike">$ '.$plancost.'</span>';
+			echo '<span class="strike">'.$currency->toCurrency($plancost).'</span>';
 	   }
 	   ?>
        </td>

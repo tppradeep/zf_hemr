@@ -84,7 +84,7 @@ if($this->formdata['error']!="")
       <td class="label-no">Organization <br />
       short name</td>
       <td class="label-no">:</td>
-      <td colspan="4"><input name="hf_facility_identifier" type="text" id="hf_facility_identifier" maxlength="150" class="validate[required],custom[onlyLetterNumber]" value="<?php echo $this->formdata['hf_facility_identifier']?>" tabindex="1"/> <?php $this->DisplayHelp('UserRegistrtion','FacilityIdentifier');?></td>
+      <td colspan="4"><input name="hf_facility_identifier" type="text" id="hf_facility_identifier" maxlength="150" class="validate[required],custom[onlyLetterNumber],ajax[ajaxHostedIdentifier]" value="<?php echo $this->formdata['hf_facility_identifier']?>" tabindex="1"/> <?php $this->DisplayHelp('UserRegistrtion','FacilityIdentifier');?></td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>

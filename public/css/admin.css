@@ -427,4 +427,6 @@ input[type=text],input[type=password],select,textarea
 }
 #list3 div.selected {
 	border-bottom: none;
+}.border {
+	border: 1px solid #D6D6D6;
 }

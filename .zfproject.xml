@@ -23,6 +23,7 @@
           <actionMethod actionName="facility"/>
           <actionMethod actionName="userregister"/>
           <actionMethod actionName="emailcheck"/>
+          <actionMethod actionName="hostedidentifiercheck"/>
         </controllerFile>
         <controllerFile controllerName="PlanList">
           <actionMethod actionName="index"/>
@@ -780,6 +781,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="UserRegister">
             <viewScriptFile forActionName="emailcheck"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="UserRegister">
+            <viewScriptFile forActionName="hostedidentifiercheck"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

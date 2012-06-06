@@ -120,7 +120,7 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		 
 		try
 		{
-			$mail->send($transport);
+			//$mail->send($transport);
 		}
 		catch(Zend_Exception $e)
 		{
@@ -167,16 +167,7 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 	 	$db_dps=$row['bundle_discount_per_setup'];
 //	echo "<br>";
 	
-		$dd=date("Y-m-d");
-	
-		if(($dd>$discount_start_date)&&($dd<$discount_end_date))
-		{
-		    $discount_per = $discount;
-		}
-		else
-		{
-		    $discount_per=0;
-		}
+
 		
 		// Calcuating One Time Payment and Monthely Payment
 		
@@ -186,52 +177,76 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		$productsetupfee=0;
 		$PlanCostTotalDiscount=0;
 		$PlanSetupTotalDiscount=0;
+		$plancost=0;
+		$plansetupfee=0;
 		$select = $db->select()
 		-> from(array('p'=>'products'),array('sum(p.cost) as pcost','sum(p.setup_fee) as setupcost'))
 		->join(array('pp'=>'plan_products'),'pp.idproducts=p.idproducts')
 		-> where('pp.idplan='.$id);
+		 //$otm = $db->fetchRow($select);
+		 
+		$sql = 'select cost,setup_fee,provider_cost_nature,provider_setup_nature from products p ,plan_products pp where pp.idplan='.$id.' and pp.idproducts=p.idproducts';
 		
-		 $otm = $db->fetchRow($select);
-		 $one_time_payment = $otm['pcost'] * $provider;
-		 $productsetupfee = $otm['setupcost'];
+		$PlanTotal = $db->fetchAll($sql);
+		/*
+		 * The follwoing section is to calcualte weather the product price is incrementing with additional provider or not. 
+		 * Based on that product cost and setup fee calculating for the plan with selected provider
+		 */
+		foreach($PlanTotal as $PT)
+		{
+		    // Cost Section
+		    if($PT['provider_cost_nature']==1)//increment with provider
+		    {
+		        $plancost = $plancost + $PT['cost'] * $provider;
+		    }
+		    if($PT['provider_cost_nature']==0)//increment with provider
+		    {
+		    	$plancost = $plancost + $PT['cost'];
+		    }
+		    // Setup Fee section
+		    if($PT['provider_setup_nature']==1) // increment with provider
+		    {
+		        $plansetupfee = $plansetupfee + $PT['setup_fee'] * $provider;
+		    }
+		    if($PT['provider_setup_nature']==0) // increment with provider
+		    {
+		    	$plansetupfee = $plansetupfee + $PT['setup_fee'];
+		    }
+		    
+		}
+
 		 
 		
-		
-		if($bd_type==1 && $one_time_payment>0) // if in %
+		if($bd_type==1) // if in %
 		{
-		    $one_time_payment = $one_time_payment - $one_time_payment * $bd_dpc / 100;
+		    $monthly_payment = $plancost - $plancost * $bd_dpc / 100;
 		   
-		    $productsetupfee = $productsetupfee - $productsetupfee * $db_dps / 100;
-		    
-		    $PlanCostTotalDiscount = $one_time_payment * $bd_dpc / 100;
-		    $PlanSetupTotalDiscount = $productsetupfee * $db_dps / 100;
+		    $one_time_payment = $plansetupfee - $plansetupfee * $db_dps / 100;
+		   
+		    $PlanCostTotalDiscount = $plancost * $bd_dpc / 100;
+		    $PlanSetupTotalDiscount = $plansetupfee * $db_dps / 100;
 		}
-		if($bd_type==2 && $one_time_payment>0) // if in price
+		if($bd_type==2) // if in price
 		{
-			$one_time_payment = $one_time_payment - $bd_dpc;
-			$productsetupfee = $productsetupfee - $db_dps ;
+			$monthly_payment = ($plancost) - ($bd_dpc*$provider);
+			$one_time_payment = ($plansetupfee)-($db_dps*$provider);
 			
-			$PlanCostTotalDiscount = $bd_dpc ;
-			$PlanSetupTotalDiscount = $db_dps;
+			$PlanCostTotalDiscount = $bd_dpc * $provider ;
+			$PlanSetupTotalDiscount = $db_dps * $provider;
 		}
 		
 	
-	
+		
 		
 	//	echo $PlanCostTotalDiscount;
 	//	echo "<br>";
 	//	echo $PlanSetupTotalDiscount;
 		//die;
+		$dd=date('Y-m-d');
+		$total_discount = $PlanCostTotalDiscount + $PlanSetupTotalDiscount;
+		$total_amount = $one_time_payment + $monthly_payment;
 		
-		
-		$total_amount = $one_time_payment + $monthly_payment + $productsetupfee;
-		
-		
-		if($discount_per>0)
-		{
-		    $discount_amt=($total_amount*$discount_per)/100;
-		    $total_amount=$total_amount-$discount_amt;
-		}
+	
 		
 		$customer_selected_plan_data = array(
 				'plan_id' => $id,
@@ -241,9 +256,9 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 				'dashboard_userid' => $hf_email,
 				'one_time_payment'=> $one_time_payment,
 		        'monthly_payment'=>$monthly_payment,
-		        'setupfee'=>$productsetupfee,
-		        'discount_percentage'=>$discount_per,
-		        'discount_amount'=>$discount_amt,
+		        'setupfee'=>$one_time_payment,
+		        'discount_percentage'=>$bd_dpc,
+		        'discount_amount'=>$total_discount,
 		        'total_payment'=>$total_amount,
 				'created_date' => $dd,
 				'payment_status' => 0,
@@ -282,7 +297,6 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 					'product_feature' => $record['product_feature'],
 					'cost' => $record['cost'],
 			        'setup_fee'=>$record['setup_fee'],
-					'payment_term'=>$record['payment_term'],
 			        'product_sort_order'=>$record['product_sort_order'],
 			        'product_status'=>$record['product_status']
 					
@@ -296,7 +310,8 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		
 		
 	
-		$carttotal = $otm['pcost']+$mp['pcost']+($otm['setupcost']+$mp['setupcost']-$PlanSetupTotalDiscount);
+	$carttotal = $plancost+$plansetupfee-$total_discount;
+	
 		
 		$cartdata = array(
 		        'cartsession'=>session_id(),
@@ -304,8 +319,8 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 				'hf_id' => $uid,
 		        'description'=>$planname." Subscription",
 		        'qty'=>$provider,
-				'unit_price' => $otm['pcost']+$mp['pcost'],
-		        'setupfee'=> $otm['setupcost']+$mp['setupcost'],
+				'unit_price' => $plancost,
+		        'setupfee'=> $plansetupfee,
 		        'discount'=>$PlanCostTotalDiscount,
 		        'setupfee_discount'=>$PlanSetupTotalDiscount,
 		        'total'=>$carttotal,
@@ -313,11 +328,7 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		        'cart_date' => $dd
 		
 		);
-			
-			
-		
 			$db->insert('cart', $cartdata);
-	
 		
 		return $uid;
 		

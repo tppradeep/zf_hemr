@@ -107,5 +107,18 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	        return 0;
 	    }
 	}
+	public function identifierchecking($identifier)
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    $sql ='select count(hf_id) as hf_id from hosted_facilities where hf_facility_identifier="'.$identifier.'"';
+	    if($db->fetchone($sql)==0)
+	    {
+    		return 1;
+	    }
+	    else
+	    {
+	    	return 0;
+	    }
+	}
 }
 

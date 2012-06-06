@@ -117,7 +117,7 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
     <td class="line"><input name="image_name" type="file" id="image_name" size="50" maxlength="50"/></td>
   </tr>
     <tr>
-      <td align="left">Actual Plan Cost</td>
+      <td align="left" class="label line">Actual Plan Cost</td>
       <td>&nbsp;</td>
       <td>
       <table border="0" cellspacing="4" cellpadding="2">
@@ -134,7 +134,7 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
       </table></td>
     </tr>
     <tr>
-     <td align="left" valign="top" nowrap="nowrap">Plan Bundle Price Discount
+     <td align="left" valign="top" nowrap="nowrap" class="label">Plan Bundle Price Discount
        <select name="bundle_price_type" id="bundle_price_type"  onblur="costcalculation();" onchange="costcalculation();">
        	 <option value="0" <?php if($this->planedit['bundle_discount_type']==0) echo "selected=selected";?>>None</option>	
          <option value="1" <?php if($this->planedit['bundle_discount_type']==1 || $this->planedit['bundle_discount_type']=='') echo "selected=selected";?>>In %</option>
@@ -143,15 +143,15 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
      <td valign="top">:</td>
      <td><table width="682" border="0" cellpadding="2" cellspacing="2">
        <tr>
-         <td width="141" valign="bottom" nowrap="nowrap">Cost Section Discount</td>
-         <td width="147" valign="bottom" nowrap="nowrap">Setup Section Discount</td>
-         <td width="374" align="center" class="list-table-header">Effective Plan Cost</td>
-       </tr>
-       <tr>
-         <td valign="top"><input type="text" name="cost_discount" id="cost_discount" value="<?php echo $this->planedit['bundle_discount_per_cost'];?>" onblur="costcalculation()" /></td>
-         <td valign="top"><input type="text" name="setup_discount" id="setup_discount" value="<?php echo $this->planedit['bundle_discount_per_setup'];?>" onblur="costcalculation()"/></td>
-         <td width="374" style="padding-left:15px;"><p>Setup Cost : $<span id="setupcost">
-		 <?php 
+         <td width="212" valign="middle" nowrap="nowrap" class="border">Cost Section Discount / Provider</td>
+         <td width="218" valign="middle" nowrap="nowrap" class="border">Setup Section Discount / Provider</td>
+         <td width="230" rowspan="3" align="center" valign="top"><table border="0" cellpadding="2" cellspacing="2" class="border">
+           <tr>
+             <td width="374" align="center" class="list-table-header border">Effective Plan Cost</td>
+           </tr>
+           <tr>
+             <td width="374" nowrap="nowrap" style="padding-left:15px;">Setup Cost : $<span id="setupcost">
+               <?php 
 		 $tpcost=0;
 		 $tscost=0;
 		  if($this->planedit['bundle_setup_cost'] > 0)
@@ -164,8 +164,10 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
 		 	echo $this->plancost['setupfee'];
 			$tscost = $this->plancost['setupfee'];
 		  }
-			?></span><br />
-           Product Cost : $<span id="productcost"><?php 
+			?>
+               </span><br />
+               Product Cost : $<span id="productcost">
+                 <?php 
 		   if($this->planedit['bundle_cost'] > 0)
 		   {
 			  echo $this->planedit['bundle_cost'];
@@ -177,13 +179,18 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
 			   $tpcost=$this->plancost['cost'];
 		   }
 		   
-		   ?></span></p>
-           <p class="b label shadowlight">Total Cost : $<span id="totalcost"><?php echo $tscost + $tpcost;?></span></p></td>
+		   ?>
+               </span>
+               <p class="b label shadowlight">Total Cost : $<span id="totalcost"><?php echo $tscost + $tpcost;?></span></p></td>
+           </tr>
+         </table></td>
+       </tr>
+       <tr>
+         <td valign="top" class="border"><input type="text" name="cost_discount" id="cost_discount" value="<?php echo $this->planedit['bundle_discount_per_cost'];?>" onblur="costcalculation()" /></td>
+         <td valign="top" class="border"><input type="text" name="setup_discount" id="setup_discount" value="<?php echo $this->planedit['bundle_discount_per_setup'];?>" onblur="costcalculation()"/></td>
          </tr>
        <tr>
-         <td colspan="3" valign="top"><span class="paginationControl red"><strong>Note :</strong> You can Enter the discount in percentage or can enter  how flat discount providing for a plan<br />
-In case if you are entering in percentage, you have to  select the Plan Bundle Price in % (default) and required to enter the  percentage amount in cost and setup section.<br />
-If you are providing flat discount, then you have to select  Plan bundle Price in price and have to enter the discount amount on cost and  setup section. For example, if your plan cost comes $230 and you are planning to  give it in $200 then in &ldquo;Cost section discount&rdquo; you have to enter $30. So the  effective price of the plan cost will be $200.</span></td>
+         <td colspan="2" valign="top">&nbsp;</td>
          </tr>
      </table></td>
    </tr>
@@ -217,10 +224,10 @@ if($this->planedit['discount_end_date']!='')
     <tr>
      <td colspan="3" align="left" class="label red">[Note : Plan has no individual cost. Plan cost will be the sum of products added into the plan. So Plan cost will vary depends on the cost of products in that plan. However we can set a discount on plan in percentage. This will be the treated as a discount on gross products in this plan.]</td>
     </tr-->
-   <tr>
-    <td align="right">&nbsp;</td>
-    <td>&nbsp;</td>
-    <td><input type="submit" name="Submit" value="Update" /></td>
-  </tr>
+    <tr>
+      <td align="right">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td><input type="submit" name="Submit" value="Update" /></td>
+    </tr>
 </table>
 </form>

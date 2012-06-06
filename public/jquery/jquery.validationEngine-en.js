@@ -121,13 +121,13 @@
                     "alertText": "* The Email address entered is already taken.Please enter another email address",
                     "alertTextLoad": "* Validating, please wait"
                 },
-				"ajaxDUserId": {
-                    "url": "ajax_pages/dashboard_userid_check.php",
+				"ajaxHostedIdentifier": {
+                    "url": "../hostedidentifiercheck/",
                     // you may want to pass extra data on the ajax call
                     "extraData": "",
                     // if you provide an "alertTextOk", it will show as a green prompt when the field validates
-                    "alertTextOk": "* This User Id is available.",
-                    "alertText": "* This User Id is taken by another user. Please change your User Id",
+                    "alertTextOk": "* This Organization short name is available.",
+                    "alertText": "* This Organization short name is taken by another user. Please change your Organization Short Name",
                     "alertTextLoad": "* Validating, please wait"
                 },
                 "ajaxNameCall": {

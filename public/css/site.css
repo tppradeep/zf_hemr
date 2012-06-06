@@ -651,10 +651,13 @@ img
 	padding-top: 15px;
 	padding-left:15px;
 	padding-bottom:6px;
-	margin: -4px -7px -19px 0;
 	background-image: url(../images/signupbg.png);
 	background-repeat: repeat-x;
 	background-position: bottom;
+	margin-top: -4px;
+	margin-right: -7px;
+	margin-bottom: -11px;
+	margin-left: 0;
 }
 
 

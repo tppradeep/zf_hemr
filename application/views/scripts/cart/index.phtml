@@ -55,7 +55,7 @@ function RemoveAdditionalProductFromCart(idcart)
         <td width="2%" class="cart-title shadow">#</td>
         <td width="31%" class="cart-title shadow">Particulars</td>
         <td width="9%" align="center" class="cart-title shadow">Providers Selected</td>
-        <td width="12%" align="right" class="cart-title shadow">Cost / Provider</td>
+        <td width="12%" align="right" class="cart-title shadow">Cost</td>
         <td width="12%" align="right" class="cart-title shadow">Onetime Fee</td>
          <td width="7%" align="right" class="cart-title shadow">Discount</td>
         <td width="38%" align="right" class="cart-title shadow">Total</td>
@@ -78,7 +78,18 @@ function RemoveAdditionalProductFromCart(idcart)
         echo $currency->toCurrency($cart['unit_price']);
         ?>
         </td>
-        <td class="normal-text shadowlight" align="right">&nbsp;</td>
+        <td class="normal-text shadowlight" align="right">
+         <?
+		if($cart['setupfee']>0)
+		{
+			echo $currency->toCurrency($cart['setupfee']);
+		}
+		else
+		{
+			echo "$0.00";	
+		}
+		?>
+        </td>
         <td class="normal-text shadowlight" align="right">
         <?php 
         echo $currency->toCurrency($cart['discount']);
@@ -86,8 +97,8 @@ function RemoveAdditionalProductFromCart(idcart)
         </td>
         <td class="normal-text shadowlight" align="right">
         <?php 
-         echo $currency->toCurrency(($cart['unit_price']*$cart['qty'])-$cart['discount']);
-         $gtotal = $gtotal + (($cart['unit_price']*$cart['qty'])-$cart['discount']);
+         echo $currency->toCurrency(($cart['unit_price'])+$cart['setupfee']-$cart['discount']);
+         $gtotal = $gtotal + (($cart['unit_price'])+$cart['setupfee']-$cart['discount']);
         ?>
         </td>
         <td class="normal-text shadowlight" align="right">
@@ -98,32 +109,8 @@ function RemoveAdditionalProductFromCart(idcart)
 		}
 		?>
         </td>
-        <?
-		if($cart['setupfee']>0)
-		{
-		?>
-       <tr>
-       <td class="normal-text shadowlight"> <?php echo $sino;?>.a</td>
-       <td class="normal-text shadowlight" colspan="2"> Onetime Fee</td>
-        <td class="normal-text shadowlight" align="right">
-        <?php 
-        echo $currency->toCurrency($cart['setupfee']);
-        ?>
-        </td>
-        <td class="normal-text shadowlight" align="right">&nbsp;</td>
-        <td class="normal-text shadowlight" align="right">
-        <?php 
-        echo $currency->toCurrency($cart['setupfee_discount']);
-        ?>
-        </td>
-       <td nowrap="nowrap" class="normal-text shadowlight" align="right"><?php echo  $currency->toCurrency($cart['setupfee']-$cart['setupfee_discount']);
-	    $gsetupfee = $gsetupfee + ($cart['setupfee']-$cart['setupfee_discount']);
-	   ?></td>
-       <td nowrap="nowrap" class="normal-text shadowlight" align="right">&nbsp;</td>
-       </tr>
-       <?
-		}
-	   ?>
+        </tr>
+       
      
     
       <?php 

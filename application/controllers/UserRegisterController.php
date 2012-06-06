@@ -169,9 +169,28 @@ class UserRegisterController extends Zend_Controller_Action
         else
         {
             echo '["'.$fieldId.'",false]';
-        }
+        
+    	}
     }
-
+  
+    public function hostedidentifiercheckAction()
+    {
+    	$this->_helper->layout()->disableLayout();
+        $fieldValue = $this->_getParam('fieldValue');
+        $fieldId = $this->_getParam('fieldId');
+        
+        $GnDb = new Application_Model_DbTable_General();
+        $idval = $GnDb->identifierchecking($fieldValue);
+        if($idval==1)
+        {
+            echo '["'.$fieldId.'",true]';
+        }
+        else
+        {
+            echo '["'.$fieldId.'",false]';
+        
+    	}
+    }
 
 }
 
@@ -179,7 +198,9 @@ class UserRegisterController extends Zend_Controller_Action
 
 
 
+
 ?>
+
 
 
 
