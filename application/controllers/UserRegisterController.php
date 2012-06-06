@@ -15,6 +15,9 @@ class UserRegisterController extends Zend_Controller_Action
 
     public function adduserAction()
     {
+        $cmsObj = new Application_Model_DbTable_Index();
+        $this->view->cms = $cmsObj->getcms('Register User');
+        
     	$Gndb = new Application_Model_DbTable_General();
     	$this->view->country = $Gndb->countrylist();
     	$this->view->speciality = $Gndb->SpecialityList();
@@ -56,7 +59,7 @@ class UserRegisterController extends Zend_Controller_Action
 		   	    /*
 		   	     * Plan Details End
 		   	    */
-		   	     
+		   	    $hf_organization = $formData['hf_organization'];
 		   	    $hf_facility_identifier = $formData['hf_facility_identifier'];
 		   	    $hf_facility_suffix = $formData['hf_facility_suffix'];
 		   	    $hf_facility_name = $formData['hf_facility_name'];
@@ -87,9 +90,9 @@ class UserRegisterController extends Zend_Controller_Action
 		   	        $hf_state = $formData['hf_state_other'];
 		   	    }
 		   	    $hf_phone = $formData['hf_phone'];
-		   	    $hf_fax = $formData['hf_fax'];
-		   	    $hf_tax_id = $formData['hf_tax_id'];
-		   	    $hf_npi = $formData['hf_npi'];
+		   	    $hf_fax = 0;
+		   	    $hf_tax_id = 0;
+		   	    $hf_npi = 0;
 		   	     
 		   	    //$formData['error']="";
 		   	     
@@ -99,7 +102,7 @@ class UserRegisterController extends Zend_Controller_Action
 		   	    $cusid=$customerId->customerId;
 		   	     
 		   	    $user = new Application_Model_DbTable_UserRegister();
-		   	    $uid=$user->addUser($hf_facility_identifier,$cusid,$hf_facility_suffix,$hf_facility_name,$hf_facility_lname,$hf_speciality,$dashboard_password,$dashboard_password_confirm,$hf_email,$hf_address,$hf_city,$hf_state,$hf_zip,$hf_country,$hf_phone,$hf_fax,$hf_tax_id,$hf_npi,$pid,$apid,$bpcost,$pcost,$setupfee,$totalfee);
+		   	    $uid=$user->addUser($hf_organization,$hf_facility_identifier,$cusid,$hf_facility_suffix,$hf_facility_name,$hf_facility_lname,$hf_speciality,$dashboard_password,$dashboard_password_confirm,$hf_email,$hf_address,$hf_city,$hf_state,$hf_zip,$hf_country,$hf_phone,$hf_fax,$hf_tax_id,$hf_npi,$pid,$apid,$bpcost,$pcost,$setupfee,$totalfee);
 		   	    if($uid=="schemaexist")
 		   	    {
 		   	    	$formData['error']="facility"; // Adding the error cause;

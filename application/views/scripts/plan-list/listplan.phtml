@@ -9,12 +9,12 @@ function updateprice(pval)
 	{
 		document.getElementById("checkout").innerHTML="<span class='error'>Please select the number of providers to proceed checkout</span>";
 		
-	document.getElementById("pcost").value = 0;
-	document.getElementById("totalfee").value = 0;
-	document.getElementById("totalamount").innerHTML = "$ 0.00";
-	
-	document.getElementById("setupfee").innerHTML="$ 0.00";
-	document.getElementById("gtotal").innerHTML = "$ 0.00";
+		document.getElementById("pcost").value = 0;
+		document.getElementById("totalfee").value = 0;
+		document.getElementById("totalamount").innerHTML = "$ 0.00";
+		
+		document.getElementById("setupfee").innerHTML="$ 0.00";
+		document.getElementById("gtotal").innerHTML = "$ 0.00";
 	}
 	else
 	{
@@ -31,59 +31,59 @@ function updateprice(pval)
 		FixedProductCostTotal = parseFloat(document.getElementById("FixedProductCostTotal").value);
 		FixedProductSetupFeeTotal = parseFloat(document.getElementById("FixedProductSetupFeeTotal").value);
 	
-	if(bundle_discount_type==1) // % wise
-	{
-		if(VariableProductCostTotal>0)
+		if(bundle_discount_type==1) // % wise
 		{
-				VariableProductCostTotal = VariableProductCostTotal * provider;
-				VariableProductCostTotal = VariableProductCostTotal - ((VariableProductCostTotal * bundle_discount_per_cost)/100);
+			if(VariableProductCostTotal>0)
+			{
+					VariableProductCostTotal = VariableProductCostTotal * provider;
+					VariableProductCostTotal = VariableProductCostTotal - ((VariableProductCostTotal * bundle_discount_per_cost)/100);
+			}
+			else
+			{
+					VariableProductCostTotal=0;
+			}
+			if(VariableProductSetupFeeTotal>0)
+			{
+				VariableProductSetupFeeTotal = VariableProductSetupFeeTotal * provider;
+				VariableProductSetupFeeTotal = VariableProductSetupFeeTotal - ((VariableProductSetupFeeTotal * bundle_discount_per_setup)/100);
+			}
+			else
+			{
+				VariableProductSetupFeeTotal=0;	
+			}
+			FixedProductSetupFeeTotal = FixedProductSetupFeeTotal - ((FixedProductSetupFeeTotal * bundle_discount_per_setup)/100);
 		}
-		else
+		if(bundle_discount_type==2) // Flat discount
 		{
+			if(VariableProductCostTotal>0)
+			{
+				VariableProductCostTotal = (VariableProductCostTotal * provider) -  (bundle_discount_per_cost * provider);
+			}
+			else
+			{
 				VariableProductCostTotal=0;
+			}
+			if(VariableProductSetupFeeTotal > 0)
+			{
+				VariableProductSetupFeeTotal = (VariableProductSetupFeeTotal * provider) - (bundle_discount_per_setup * provider);
+			}
+			else
+			{
+				VariableProductSetupFeeTotal=0;
+			}
+			
+			FixedProductSetupFeeTotal = (FixedProductSetupFeeTotal) - (bundle_discount_per_setup * provider);
+			
 		}
-		if(VariableProductSetupFeeTotal>0)
-		{
-			VariableProductSetupFeeTotal = VariableProductSetupFeeTotal * provider;
-			VariableProductSetupFeeTotal = VariableProductSetupFeeTotal - ((VariableProductSetupFeeTotal * bundle_discount_per_setup)/100);
-		}
-		else
-		{
-			VariableProductSetupFeeTotal=0;	
-		}
-		FixedProductSetupFeeTotal = FixedProductSetupFeeTotal - ((FixedProductSetupFeeTotal * bundle_discount_per_setup)/100);
-	}
-	if(bundle_discount_type==2) // Flat discount
-	{
-		if(VariableProductCostTotal>0)
-		{
-			VariableProductCostTotal = (VariableProductCostTotal * provider) -  (bundle_discount_per_cost * provider);
-		}
-		else
-		{
-			VariableProductCostTotal=0;
-		}
-		if(VariableProductSetupFeeTotal > 0)
-		{
-			VariableProductSetupFeeTotal = (VariableProductSetupFeeTotal * provider) - (bundle_discount_per_setup * provider);
-		}
-		else
-		{
-			VariableProductSetupFeeTotal=0;
-		}
+		TotalOneTimeFee = FixedProductSetupFeeTotal + VariableProductSetupFeeTotal;
+		TotalVariableFee = FixedProductCostTotal + VariableProductCostTotal;
+		pcost = VariableProductCostTotal + FixedProductCostTotal;
+		setupfee = VariableProductSetupFeeTotal + FixedProductSetupFeeTotal;
+		totalfee = pcost + setupfee;
 		
-		FixedProductSetupFeeTotal = (FixedProductSetupFeeTotal) - (bundle_discount_per_setup * provider);
-		
-	}
-	TotalOneTimeFee = FixedProductSetupFeeTotal + VariableProductSetupFeeTotal;
-	TotalVariableFee = FixedProductCostTotal + VariableProductCostTotal;
-	pcost = VariableProductCostTotal + FixedProductCostTotal;
-    setupfee = VariableProductSetupFeeTotal + FixedProductSetupFeeTotal;
-	totalfee = pcost + setupfee;
-	
-	document.getElementById("pcost").value = pcost;
-	document.getElementById("totalfee").value = totalfee;
-	document.getElementById("totalamount").innerHTML = "$ "+pcost+"";
+		document.getElementById("pcost").value = pcost;
+		document.getElementById("totalfee").value = totalfee;
+		document.getElementById("totalamount").innerHTML = "$ "+pcost+"";
 	
 		if($("#setupfee").length) {
 		document.getElementById("setupfee").innerHTML="$ "+setupfee+"";
@@ -93,14 +93,55 @@ function updateprice(pval)
 		document.getElementById("gtotal").innerHTML = "$ "+totalfee+"";
 		}
 	}
-
+	$('html,body').animate({scrollTop: $("#checkout").offset().top},'slow');
+	
 	
 	
 
 }
+
+$(document).ready(function() {
+  var opts = {collapseTimer: 4000};
+
+  $.each(['beforeExpand', 'afterExpand', 'onCollapse'], function(i, callback) {
+    opts[callback] = function(byUser) {
+      var by, msg = '<div class="success">' + callback;
+
+      if (callback == 'onCollapse') {
+        msg += ' (' + (byUser ? 'user' : 'timer') + ')';
+      }
+      msg += '</div>';
+
+      $(this).parent().parent().append(msg)
+    }
+  });
+
+
+  $('div.features').expander({
+    slicePoint: 40,
+    widow: 2,
+    expandSpeed: 0,
+	expandEffect: 'show',
+    userCollapseText: '[^]'
+  });
+
+
+});
+
 </script>
 <link href="../../../../public/css/site.css" rel="stylesheet" type="text/css" />
-   
+   <?php 
+  if($this->cms)
+  {
+  		echo '<div class="cms">';
+		if(!$this->cms['cms_title']=="")
+		{
+    		echo '<span>'.$this->cms['cms_title'].'</span><br/>';
+		}	
+	echo $this->cms['cms_details'];
+	echo '</div>';
+  }
+?>
 <div class="leftpanel">
 <form method="post" action="<?php echo $this->baseUrl();?>/UserRegister/adduser/">
 <input type="hidden" name="_sec" value="plan">
@@ -148,14 +189,13 @@ function updateprice(pval)
       <td align="center" valign="top" class="normal-text shadowlight"><?php echo $sino;?>.</td>
       <td class="normal-text shadowlight"><span class="product"><?php echo $productdtd['product_name'];?>
       </span><br />
-        <strong>Features : </strong>
-        <p><?php echo $productdtd['product_feature'];?></p></td>
+        <div class="features"><?php echo $productdtd['product_feature'];?></div></td>
        <?php
 	  if($this->planname['bundle_setup_cost']!=0){
 	  ?>
-      <td align="right" valign="top" class="normal-text shadowlight"><?php echo($productdtd['setup_fee']=="0")?'Nil':$currency->toCurrency($productdtd['setup_fee']);?></td>
+      <td align="right" valign="top" class="normal-text shadowlight"><?php echo($productdtd['setup_fee']=="0")?'$0.00':$currency->toCurrency($productdtd['setup_fee']);?></td>
       <?php } ?>
-      <td align="right" valign="top" class="normal-text shadowlight"><?php echo($productdtd['cost']=="0")?'Nil':$currency->toCurrency($productdtd['cost']);?></td>
+      <td align="right" valign="top" class="normal-text shadowlight"><?php echo($productdtd['cost']=="0")?'$0.00':$currency->toCurrency($productdtd['cost']);?></td>
     </tr>
    <?php 
    
@@ -244,7 +284,7 @@ function updateprice(pval)
      </tr>
      <tr>
       <td colspan="4" align="right" valign="top" id="checkout">
-       <!-- <a href="<?php echo $this->url(array('controller'=>'UserRegister','action'=>'adduser', 'id'=>$this->ecode($this->pid)));?>" class="plan-register">Proceed To Registration</a>--> <input name="" type="submit" value="Proceed to Registration" />     </td>
+       <!-- <a href="<?php echo $this->url(array('controller'=>'UserRegister','action'=>'adduser', 'id'=>$this->ecode($this->pid)));?>" class="plan-register">Proceed To Registration</a>-->        <input name="" type="submit" value="Proceed to Registration" />     </td>
     </tr>
   </table>
   </form>

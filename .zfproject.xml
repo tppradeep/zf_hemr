@@ -213,6 +213,12 @@
               <actionMethod actionName="edit"/>
               <actionMethod actionName="delete"/>
             </controllerFile>
+            <controllerFile controllerName="Faq">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="add"/>
+              <actionMethod actionName="edit"/>
+              <actionMethod actionName="delete"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
           <layoutsDirectory enabled="false">
@@ -237,6 +243,7 @@
               <dbTableFile dbTableName="Cms"/>
               <dbTableFile dbTableName="EmailTemplate"/>
               <dbTableFile dbTableName="Speciality"/>
+              <dbTableFile dbTableName="Faq"/>
             </dbTableDirectory>
           </modelsDirectory>
           <viewsDirectory>
@@ -482,6 +489,18 @@
                 <viewScriptFile forActionName="edit"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Speciality">
+                <viewScriptFile forActionName="delete"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Faq">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Faq">
+                <viewScriptFile forActionName="add"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Faq">
+                <viewScriptFile forActionName="edit"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Faq">
                 <viewScriptFile forActionName="delete"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>

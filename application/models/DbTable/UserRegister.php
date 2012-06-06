@@ -5,8 +5,9 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 
     protected $_name = 'hosted_facilities';
 	
-	public function addUser($hf_facility_identifier,$cusid,$hf_facility_suffix,$hf_facility_name,$hf_facility_lname,$hf_speciality,$dashboard_password,$dashboard_password_confirm,$hf_email,$hf_address,$hf_city,$hf_state,$hf_zip,$hf_country,$hf_phone,$hf_fax,$hf_tax_id,$hf_npi,$id,$apid,$bpcost,$pcost,$setupfee,$totalfee)
+	public function addUser($hf_organization,$hf_facility_identifier,$cusid,$hf_facility_suffix,$hf_facility_name,$hf_facility_lname,$hf_speciality,$dashboard_password,$dashboard_password_confirm,$hf_email,$hf_address,$hf_city,$hf_state,$hf_zip,$hf_country,$hf_phone,$hf_fax,$hf_tax_id,$hf_npi,$id,$apid,$bpcost,$pcost,$setupfee,$totalfee)
 	{
+	   
 	    
 		$db = Zend_Db_Table::getDefaultAdapter();
 		
@@ -18,6 +19,7 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		$dashboard_password = sha1($dashboard_password);
 		$data = array(
 		        'customer_id' => $cusid,
+		        'hf_organization'=>$hf_organization,
 				'hf_facility_identifier' => $hf_facility_identifier,
 		        'hf_facility_suffix'=>$hf_facility_suffix,
 				'hf_facility_name' => addslashes($hf_facility_name),
@@ -197,8 +199,8 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		
 		if($bd_type==1 && $one_time_payment>0) // if in %
 		{
-		   echo $one_time_payment = $one_time_payment - $one_time_payment * $bd_dpc / 100;
-		   die;
+		    $one_time_payment = $one_time_payment - $one_time_payment * $bd_dpc / 100;
+		   
 		    $productsetupfee = $productsetupfee - $productsetupfee * $db_dps / 100;
 		    
 		    $PlanCostTotalDiscount = $one_time_payment * $bd_dpc / 100;

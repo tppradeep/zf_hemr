@@ -70,7 +70,7 @@ class Application_Model_DbTable_PlanList extends Zend_Db_Table_Abstract
 	    }
 	    $output .=' </tr>';
 	    
-	    $sql = 'select idproducts,product_name from products where ProductType in(1,3)';
+	    $sql = 'select idproducts,product_name from products where ProductType in(1,3) order by product_sort_order asc';
 	    $flist = $db->fetchAll($sql);
 	    $sino=1;
 	    	foreach($flist as $FL)

@@ -11,6 +11,7 @@ class PaymentController extends Zend_Controller_Action
 
     public function indexAction()
     {
+       
         //Retriving the user and plan detals to process the paypal
     	$uid 							= $this->view->Dcode($this->_getParam('uid'));
     	$pid 							= $this->view->Dcode($this->_getParam('pid'));
@@ -207,6 +208,8 @@ class PaymentController extends Zend_Controller_Action
         
        // $this->_helper->layout->disableLayout();
         
+        $cmsObj = new Application_Model_DbTable_Index();
+        $this->view->cms = $cmsObj->getcms('Confirm Invoice');
         
     	$invoiceId	= $this->view->Dcode($this->_getParam('inid'));
     	

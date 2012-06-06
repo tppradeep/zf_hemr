@@ -47,7 +47,7 @@
                 },
                 "equals": {
                     "regex": "none",
-                    "alertText": "* Fields do not match"
+                    "alertText": "* Confirm Password not matching"
                 },
                 "phone": {
                     // credit: jquery.h5validate.js / orefalo
@@ -99,6 +99,10 @@
 				 "onlyLetterwithSpaceandAppostophy": {
                     "regex": /^['\sa-zA-Z0-9]+$/,
                     "alertText": "* No special characters allowed except space and (')"
+                },
+				 "password": {
+                    "regex": /^((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%_]).{6,15})+$/,
+                    "alertText": "* Password Not Correctly formated <br/> 1) must contains one digit from 0-9<br/>2)must contains one lowercase characters <br/> 3)must contains one uppercase characters <br/>4) must contains one special symbols in the list '@#$%_' <br/>5)length at least 6 characters and maximum of 15"
                 },
                 // --- CUSTOM RULES -- Those are specific to the demos, they can be removed or changed to your likings
                 "ajaxUserCall": {

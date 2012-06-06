@@ -31,6 +31,18 @@ function RemoveAdditionalProductFromCart(idcart)
 	}
 }
 </script>
+  <?php 
+  if($this->cms)
+  {
+  		echo '<div class="cms">';
+		if(!$this->cms['cms_title']=="")
+		{
+    		echo '<span>'.$this->cms['cms_title'].'</span><br/>';
+		}	
+	echo $this->cms['cms_details'];
+	echo '</div>';
+  }
+?>
 <table width="94%" border="0" align="center" cellpadding="2" cellspacing="2">
   <tr>
     <td align="left" class="cart-head">My Cart</td>
@@ -41,9 +53,10 @@ function RemoveAdditionalProductFromCart(idcart)
     <table width="100%" border="0" cellspacing="2" cellpadding="2">
       <tr>
         <td width="2%" class="cart-title shadow">#</td>
-        <td width="31%" class="cart-title shadow">Description</td>
-        <td width="9%" align="center" class="cart-title shadow">User Licence</td>
-        <td width="12%" align="right" class="cart-title shadow">Unit Price</td>
+        <td width="31%" class="cart-title shadow">Particulars</td>
+        <td width="9%" align="center" class="cart-title shadow">Providers Selected</td>
+        <td width="12%" align="right" class="cart-title shadow">Cost / Provider</td>
+        <td width="12%" align="right" class="cart-title shadow">Onetime Fee</td>
          <td width="7%" align="right" class="cart-title shadow">Discount</td>
         <td width="38%" align="right" class="cart-title shadow">Total</td>
         <td width="1%" align="right" class="cart-title shadow">&nbsp;</td>
@@ -65,6 +78,7 @@ function RemoveAdditionalProductFromCart(idcart)
         echo $currency->toCurrency($cart['unit_price']);
         ?>
         </td>
+        <td class="normal-text shadowlight" align="right">&nbsp;</td>
         <td class="normal-text shadowlight" align="right">
         <?php 
         echo $currency->toCurrency($cart['discount']);
@@ -96,6 +110,7 @@ function RemoveAdditionalProductFromCart(idcart)
         echo $currency->toCurrency($cart['setupfee']);
         ?>
         </td>
+        <td class="normal-text shadowlight" align="right">&nbsp;</td>
         <td class="normal-text shadowlight" align="right">
         <?php 
         echo $currency->toCurrency($cart['setupfee_discount']);
@@ -119,7 +134,7 @@ function RemoveAdditionalProductFromCart(idcart)
       ?>
         <tr>
         <td class="normal-text"></td>
-        <td colspan="4" class="normal-text b">Gross Amount</td>
+        <td colspan="5" class="normal-text b">Gross Amount</td>
         <td class="normal-text b" align="right"><?php echo $currency->toCurrency($gtotal+$gsetupfee);?></td>
         <td class="normal-text b" align="right">&nbsp;</td>
         </tr>
@@ -133,6 +148,7 @@ function RemoveAdditionalProductFromCart(idcart)
           <a href="<?php echo $this->baseURL();?>/user/Products" class="BrowseProducts shadow">Browse Products</a>
           <?php }?>
           </td>
+          <td align="right" nowrap="nowrap" class="normal-text b">&nbsp;</td>
           <td colspan="3" class="normal-text b" align="center">
         <?php
 		if($gtotal==0)

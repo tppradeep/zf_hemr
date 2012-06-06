@@ -15,6 +15,9 @@ class PlanListController extends Zend_Controller_Action
 
     public function listplanAction()
     {
+        $cmsObj = new Application_Model_DbTable_Index();
+        $this->view->cms = $cmsObj->getcms('Plan List Page');
+        
         $pid = $this->view->Dcode($this->_getParam('id'));
         $planname = new Application_Model_DbTable_PlanList();
       
@@ -80,7 +83,8 @@ class PlanListController extends Zend_Controller_Action
         $allplans = new Application_Model_DbTable_PlanList();
         $this->view->allplans = $allplans->allplans();
         
-       
+        $cmsObj = new Application_Model_DbTable_Index();
+        $this->view->cms = $cmsObj->getcms('Compare Plans');
         
     }
 

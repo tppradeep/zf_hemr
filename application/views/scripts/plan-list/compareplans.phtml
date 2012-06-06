@@ -1,6 +1,16 @@
 <table width="680px;" border="0" cellspacing="2" cellpadding="2" align=center>
-  
-
+  <?php 
+  if($this->cms)
+  {
+  		echo '<div class="cms">';
+		if(!$this->cms['cms_title']=="")
+		{
+    		echo '<span>'.$this->cms['cms_title'].'</span><br/>';
+		}	
+	echo $this->cms['cms_details'];
+	echo '</div>';
+  }
+?>
  <?php 
  echo $this->allplans;
  ?>

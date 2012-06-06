@@ -11,6 +11,9 @@ class CartController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        $cmsObj = new Application_Model_DbTable_Index();
+        $this->view->cms = $cmsObj->getcms('Cart');
+        
         //$this->_helper->layout->setLayout('user'); 
         // action body
         $pid = $this->view->Dcode($this->_getParam('Pid'));

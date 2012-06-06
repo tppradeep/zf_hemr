@@ -1,3 +1,15 @@
+   <?php 
+  if($this->cms)
+  {
+  		echo '<div class="cms">';
+		if(!$this->cms['cms_title']=="")
+		{
+    		echo '<span>'.$this->cms['cms_title'].'</span><br/>';
+		}	
+	echo $this->cms['cms_details'];
+	echo '</div>';
+  }
+?>
  <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="POST">
  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>

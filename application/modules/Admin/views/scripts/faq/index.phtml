@@ -1,0 +1,125 @@
+	<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/themes/base/jquery.ui.all.css">
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/external/jquery.bgiframe-2.1.2.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.core.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.widget.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.mouse.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.button.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.draggable.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.position.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.dialog.js"></script>
+	<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/demo/demos.css">
+	
+	
+		
+	<script>
+	$(function() {
+		$("#dialog-confirm").addClass("hidevisible");  
+		});
+	
+	
+	function del(delid)
+	{
+		$(function() {
+		$( "#dialog-confirm" ).addClass("shovisible");
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+			$( "#dialog-confirm" ).dialog({
+				resizable: false,
+				height:180,
+				modal: true,
+				buttons: {
+					"Delete all items": function() {
+						$( this ).dialog( "close" );
+						window.location.href="<?php echo $this->baseUrl();?>/Admin/Faq/delete/id/"+delid+"";
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		});
+	}
+	
+	</script>
+<?php
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+?>
+
+<div id="right_panel">
+ <div id="dialog-confirm" title="Delete Record?">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+<?php 
+if($this->st<>"")
+{
+?>
+ <div id="con_mess">
+ <?php
+
+ if($this->st=="2") echo "Record Updated Successfully";
+ 
+ ?>
+     </div>
+     <?php }?>
+<div class="addnew">
+    <?php echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Faq','action'=>'add'),0,true).'" class="add">';?>
+    Add New FAQ
+    <?php echo "</a>";?>
+</div>
+    
+<table width="100%" border="0" cellpadding="0" cellspacing="3" id="grid">
+  <thead>
+  <tr>
+    <td width="5%" height="20" align="center" class="invoice-table-title b table-head-bg white">#</td>
+    <td align="left" class="b table-head-bg">Faq Section</td>
+    <td align="left" class="b table-head-bg">FAQ Question</td>
+    <td align="left"  class=" b table-head-bg">FAQ Answer</td>
+    <td align="center" class=" b table-head-bg">Listing Order</td>
+    <td align="center" class=" b table-head-bg">Status</td>
+    <td class=" b table-head-bg">Options</td>
+  </tr>
+  </thead>
+  <tbody>
+  <?php 
+  $sino=1;
+  //$currency = new Zend_Currency();
+  foreach($this->faqlist as $faq)
+  {
+  ?>
+  <tr>
+    <td height="22" class="normal-text  shadowlight" align="center"><?php echo $sino;?>.</td>
+    <td align="left" class="normal-text shadowlight"><?php echo($faq['category']==0)?"General":"User Section";?></td>
+    <td class="normal-text shadowlight" align="left"><?php echo $faq['question'];?></td>
+    <td class="normal-text shadowlight" align="left"><?php echo $faq['answer'];?></td>
+    <td class="normal-text shadowlight" align="center"><?php echo $faq['listing_order'];?></td>
+    <td class="normal-text shadowlight" align="center"><?php
+    echo($faq['status'])?'<img src="'.$this->baseUrl().'/images/active.png" alt="Active" title="Active"/>':'<img src="'.$this->baseUrl().'/images/disable.png" alt="Disabled" title="Disabled"/>';
+    ?></td>
+    
+    <td class="normal-text line" align="center" nowrap="nowrap">
+ <?php 
+    
+    
+    echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Faq','action'=>'edit', 'id'=>$this->Ecode($faq['faqid'])),0,true).'">';
+    echo "<img src='".$this->baseUrl()."/images/edit.png' alt='Edit' title='Edit'  style='cursor:pointer;' />";
+    echo '</a>&nbsp;';
+       	echo "<img src='".$this->baseUrl()."/images/delete.gif' alt='Delete' title='Delete' onClick='del(".$faq['faqid'].")'   style='cursor:pointer;'/>";
+    ?>
+    </td>
+  </tr>
+  <?php 
+  $sino = ++$sino;
+  }
+  ?>
+  </tbody>
+</table>
+  </div>
+ <script type="text/javascript">
+                //<![CDATA[
+ $(document).ready(function() {
+	    oTable = $('#grid').dataTable({
+	        "bJQueryUI": true,
+	        "sPaginationType": "full_numbers"
+	    });
+	} );
+                //]]>
+                </script>
