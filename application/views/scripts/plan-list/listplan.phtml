@@ -101,22 +101,8 @@ function updateprice(pval)
 }
 
 $(document).ready(function() {
-  var opts = {collapseTimer: 4000};
 
-  $.each(['beforeExpand', 'afterExpand', 'onCollapse'], function(i, callback) {
-    opts[callback] = function(byUser) {
-      var by, msg = '<div class="success">' + callback;
-
-      if (callback == 'onCollapse') {
-        msg += ' (' + (byUser ? 'user' : 'timer') + ')';
-      }
-      msg += '</div>';
-
-      $(this).parent().parent().append(msg)
-    }
-  });
-
-
+	
   $('div.features').expander({
     slicePoint: 40,
     widow: 2,
@@ -124,12 +110,12 @@ $(document).ready(function() {
 	expandEffect: 'show',
     userCollapseText: '[^]'
   });
+ 
 
 
 });
 
 </script>
-<link href="../../../../public/css/site.css" rel="stylesheet" type="text/css" />
    <?php 
   if($this->cms)
   {

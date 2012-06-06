@@ -67,6 +67,9 @@
         <controllerFile controllerName="Auth">
           <actionMethod actionName="index"/>
         </controllerFile>
+        <controllerFile controllerName="Faq">
+          <actionMethod actionName="index"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="Userregister"/>
@@ -90,6 +93,7 @@
           <dbTableFile dbTableName="Usercheck"/>
           <dbTableFile dbTableName="General"/>
           <dbTableFile dbTableName="Cart"/>
+          <dbTableFile dbTableName="Faq"/>
         </dbTableDirectory>
       </modelsDirectory>
       <modulesDirectory>
@@ -784,6 +788,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="UserRegister">
             <viewScriptFile forActionName="hostedidentifiercheck"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Faq">
+            <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
