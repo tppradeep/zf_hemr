@@ -123,6 +123,7 @@ $(document).ready(function() {
 	echo '</div>';
   }
 ?>
+ 
 <div class="leftpanel">
 <form method="post" action="<?php echo $this->baseUrl();?>/UserRegister/adduser/">
 <input type="hidden" name="_sec" value="plan">
@@ -279,20 +280,11 @@ $(document).ready(function() {
         </select>
         </span></td>
        
-      <td align="right" valign="top" ><input name="checkout" type="submit" value="Proceed to Registration" id="checkout" disabled="disabled" /></td>
+      <td align="right" valign="top" ><input name="checkout" type="submit" disabled="disabled" class="form-label-main" id="checkout" value="Proceed to Registration" /></td>
      </tr>
   </table>
   </form>
 </div>
-<script language="javascript" type="text/javascript">
-if(document.getElementById("apid").value==0)
-{
-	document.getElementById("checkout").innerHTML="<span class='error'>Please select the number of providers to proceed checkout</span>";
-}
-else
-{
-	document.getElementById("checkout").innerHTML='<input name="" type="submit" value="Proceed to Registration" />';	
-}
-</script>
+
 
 
