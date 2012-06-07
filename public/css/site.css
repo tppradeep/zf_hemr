@@ -714,3 +714,20 @@ img
 	color: #3D6DBE;
 	text-decoration: none;
 }
+#supportplans {
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+	color: #333;
+	text-transform: capitalize;
+}
+#supportplans td
+{
+	border: 1px solid #F5F5F5;	
+}
+#supportplans th
+{
+	border: 1px solid #F5F5F5;
+	color: #333;
+	background-color: #BFBFBF;
+}

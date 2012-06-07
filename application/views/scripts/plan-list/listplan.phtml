@@ -7,7 +7,7 @@ function updateprice(pval)
 	
 	if(document.getElementById("apid").value==0)
 	{
-		document.getElementById("checkout").innerHTML="<span class='error'>Please select the number of providers to proceed checkout</span>";
+		document.getElementById("checkout").disabled=true;
 		
 		document.getElementById("pcost").value = 0;
 		document.getElementById("totalfee").value = 0;
@@ -18,7 +18,7 @@ function updateprice(pval)
 	}
 	else
 	{
-		document.getElementById("checkout").innerHTML='<input name="" type="submit" value="Proceed to Registration" />';	
+		document.getElementById("checkout").disabled=false;
 		
 		bundle_discount_type = parseFloat(document.getElementById("bundle_discount_type").value);
 		bundle_discount_per_cost = parseFloat(document.getElementById("bundle_discount_per_cost").value);
@@ -101,8 +101,6 @@ function updateprice(pval)
 }
 
 $(document).ready(function() {
-
-	
   $('div.features').expander({
     slicePoint: 40,
     widow: 2,
@@ -110,9 +108,6 @@ $(document).ready(function() {
 	expandEffect: 'show',
     userCollapseText: '[^]'
   });
- 
-
-
 });
 
 </script>
@@ -135,17 +130,6 @@ $(document).ready(function() {
     <tr>
       <td colspan="4" class="plan-title shadow"><?php echo $this->planname['hp_name'];?></td>
     </tr>
-    <tr>
-      <td colspan="2" nowrap="nowrap" class="normal-text b"><p>Please select the  number of providers using this system</p></td>
-      <td colspan="2" class="normal-text"><select name="provider" id="provider" onchange="updateprice(this.value)">
-        <?php 
-      for($i=0;$i<=100;$i++)
-      {
-          echo "<option value=$i>$i</option>";
-      }
-      ?>
-      </select></td>
-      </tr>
     <tr>
       <td colspan="4" class="normal-text">This Plan includes following packages :</td>
     </tr>
@@ -272,10 +256,31 @@ $(document).ready(function() {
        <td colspan="<?php echo  $colspan;?>" align="right" valign="top" class="normal-text shadowlight"><strong>Gross Amount :</strong></td>
        <td align="right" valign="top" class="normal-text shadowlight b" id="gtotal"> <?php echo $currency->toCurrency(($this->planname['bundle_cost']+$this->planname['bundle_setup_cost'])*0);?></td>
      </tr>
+
      <tr>
-      <td colspan="4" align="right" valign="top" id="checkout">
-       <!-- <a href="<?php echo $this->url(array('controller'=>'UserRegister','action'=>'adduser', 'id'=>$this->ecode($this->pid)));?>" class="plan-register">Proceed To Registration</a>-->        <input name="" type="submit" value="Proceed to Registration" />     </td>
-    </tr>
+      <?php
+		 if($this->planname['bundle_setup_cost']!=0)
+		 {
+			 $cpan=3;
+		 }
+		else
+		{
+			$cpan=2;
+		 } ?>
+      <td colspan="<?=$cpan;?>" align="right"  class="normal-text b" nowrap="nowrap">
+        Please select the  number of providers using this system:<span class="normal-text">
+        <select name="provider" id="provider" onchange="updateprice(this.value)">
+          <?php 
+      for($i=0;$i<=100;$i++)
+      {
+          echo "<option value=$i>$i</option>";
+      }
+      ?>
+        </select>
+        </span></td>
+       
+      <td align="right" valign="top" ><input name="checkout" type="submit" value="Proceed to Registration" id="checkout" disabled="disabled" /></td>
+     </tr>
   </table>
   </form>
 </div>

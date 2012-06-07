@@ -29,6 +29,8 @@ echo $this->doctype();
 <script language="javascript" src="<?php echo $this->baseUrl().'/js/admin.js';?>"></script>
 
 <script language="javascript" src="<?php echo $this->baseUrl().'/js/jquery.accordion.js';?>"></script>
+<script language="javascript" src="<?php echo $this->baseUrl().'/js/jquery.expander.js';?>"></script>
+
 
 
 <link rel="stylesheet" type="text/css" media="all" href="<?php echo $this->baseUrl();?>/css/jquery.modalbox-basic.css" />
@@ -53,6 +55,16 @@ echo $this->doctype();
 		    autoHeight: false 
 		});
 	});
+
+	$(document).ready(function() {
+		  $('div.features').expander({
+		    slicePoint: 30,
+		    widow: 2,
+		    expandSpeed: 0,
+			expandEffect: 'show',
+		    userCollapseText: '[^]'
+		  });
+		});
 	
 /* ]]> */
 </script>

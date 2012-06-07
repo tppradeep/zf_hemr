@@ -16,3 +16,15 @@
  ?>
   
 </table>
+  <?php 
+  if($this->cmssupport)
+  {
+  		echo '<div class="cms">';
+		if(!$this->cmssupport['cms_title']=="")
+		{
+    		echo '<span>'.$this->cmssupport['cms_title'].'</span><br/>';
+		}	
+	echo $this->cmssupport['cms_details'];
+	echo '</div>';
+  }
+?>

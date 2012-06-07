@@ -79,12 +79,14 @@ class PlanListController extends Zend_Controller_Action
     {
        // $this->_helper->layout->setLayout('user_noright'); 
         
-        
+       
         $allplans = new Application_Model_DbTable_PlanList();
         $this->view->allplans = $allplans->allplans();
         
         $cmsObj = new Application_Model_DbTable_Index();
         $this->view->cms = $cmsObj->getcms('Compare Plans');
+            
+        $this->view->cmssupport = $cmsObj->getcms('ZHOpen EMR Support Scope');
         
     }
 

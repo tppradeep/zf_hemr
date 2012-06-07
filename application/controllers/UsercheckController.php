@@ -39,16 +39,17 @@ class UsercheckController extends Zend_Controller_Action
 				{
 					
 					$select = $db->select()
-					->from(array('h'=>'hosted_facilities'),array('h.hf_id'))
+					->from(array('h'=>'hosted_facilities'),array('h.hf_id','h.hf_facility_identifier'))
 					->where('h.hf_email="'.$uid.'"');
 					
-					$hf_id = $db->fetchOne($select);
+					$hfdata = $db->fetchRow($select);
 					
 					
 					Zend_Session::start();
 					$sess = new Zend_Session_Namespace('user');
 	    			$sess->duser = $uid;
-	    			$sess->hf_id = $hf_id;
+	    			$sess->hf_id = $hfdata['hf_id'];
+	    			$sess->hf_identifier = $hfdata['hf_facility_identifier'];
 					
 					//$userName = $sess->duser;
 					

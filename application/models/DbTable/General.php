@@ -120,5 +120,12 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	    	return 0;
 	    }
 	}
+	public function facilityidentifier($userid)
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+   
+	    $sql ='select hf_facility_identifier from hosted_facilities where hf_id='.$userid;
+	    return $db->fetchOne($sql);
+	}
 }
 

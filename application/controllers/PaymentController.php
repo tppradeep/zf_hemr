@@ -228,7 +228,8 @@ class PaymentController extends Zend_Controller_Action
     	$uname 							= new Application_Model_DbTable_UserRegister();
     	$this->view->uname 				= ucfirst(strtolower($uname->UserName($invoicedetails['hf_id']))); // for User Full Name
     	$this->view->ulogin 			= $uname->UserLoginInfo($invoicedetails['hf_id']); // for User Login and password info
-
+		
+    	$this->view->providerno			= $invDetails->plan_provider($invoicedetails['hf_id']);
     	if($invoicedetails['plan_id']!=0)
     	{
     	$pname 							= new Application_Model_DbTable_PlanList();
@@ -527,7 +528,7 @@ class PaymentController extends Zend_Controller_Action
     	
     	try
 		{
-			$mail->send($transport);
+			//$mail->send($transport);
 		}
 		catch(Zend_Exception $e)
 		{

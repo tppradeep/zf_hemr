@@ -49,7 +49,11 @@
     <td class="normal-text line"><?php echo $this->ulogin['dashboard_password'];?></td>
   </tr-->
   <tr>
-    <td height="35" class="normal-text b line">Selected Plan </td>
+    <td height="35" class="normal-text b line">Selected Plan (<?php echo $this->providerno;?> 
+    <?php
+	echo ($this->providerno==1)?"Provider":"Providers";
+	?>
+    ) </td>
     <td align="center" class="normal-text b line">:</td>
     <td class="normal-text line"><?php echo $this->planname['hp_name']; // PlanList.php (DbTable)?></td>
   </tr>

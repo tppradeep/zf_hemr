@@ -485,6 +485,12 @@ class Application_Model_DbTable_Paymentdb extends Zend_Db_Table_Abstract
 	        
 	    }
 	}
+	public function plan_provider($hf_id)
+	{
+	    $db=Zend_Db_Table::getDefaultAdapter();
+	    $sql ='select provider_no from customer_selected_plan where hf_id='.$hf_id;
+	    return $db->fetchOne($sql);
+	}
 	
 	
 }

@@ -51,6 +51,9 @@
         </controllerFile>
         <controllerFile controllerName="General">
           <actionMethod actionName="index"/>
+          <actionMethod actionName="privacyPolicy"/>
+          <actionMethod actionName="termsOfUse"/>
+          <actionMethod actionName="legalDocumentation"/>
         </controllerFile>
         <controllerFile controllerName="Cart">
           <actionMethod actionName="index"/>
@@ -791,6 +794,15 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Faq">
             <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="General">
+            <viewScriptFile forActionName="privacyPolicy"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="General">
+            <viewScriptFile forActionName="termsOfUse"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="General">
+            <viewScriptFile forActionName="legalDocumentation"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

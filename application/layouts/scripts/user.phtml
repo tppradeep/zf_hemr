@@ -178,6 +178,31 @@ Cufon.replace('.cart-title', { fontFamily: 'Enigmatic Regular', hover: true });
             </td>
           </tr>
           <tr>
+            <td>
+             <fieldset class="frameset-profile">
+        <legend>Backup:</legend>
+  <table border="0" cellspacing="3" cellpadding="0">
+    <tr>
+      <td>
+      <?
+		$sess = new Zend_Session_Namespace('user');
+		$hf_id=$sess->hf_identifier;
+	  ?>
+      <a href="http://backup.hostedopenemr.com?identifier=<?php echo base64_encode($hf_id);?>" target="_blank">
+      <img src="<?php echo $this->baseUrl();?>/images/backup.png" width="32" height="32" alt="Backup Data" title="Backup Data" />
+      </a>
+
+      </td>
+     
+      </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    </table>
+      </fieldset>
+            </td>
+          </tr>
+          <tr>
             <td>&nbsp;</td>
           </tr>
         </table>
