@@ -192,7 +192,7 @@ class Application_Model_DbTable_Paymentdb extends Zend_Db_Table_Abstract
 	{
 		$db=Zend_Db_Table::getDefaultAdapter();
 		$select = $db->select()
-					->from (array('hosted_facilities'),array('hf_facility_name','hf_address','hf_city','hf_zip','hf_state','hf_country','hf_email','hf_phone','hf_fax'))
+					->from (array('hosted_facilities'),array('hf_facility_suffix','hf_facility_name','hf_facility_lname','hf_address','hf_city','hf_zip','hf_state','hf_country','hf_email','hf_phone','hf_fax'))
 					->where('hf_id='.$hf_id);
 		return $db->fetchRow($select);
 	}
@@ -259,27 +259,27 @@ class Application_Model_DbTable_Paymentdb extends Zend_Db_Table_Abstract
 		    if($CD['plan_id']==0)
 		    {
 		        $particulars = $particulars.$CD['description'].",";
-		        $particulars= substr($particulars, 0, -1);
+		       
 		        $productid=$CD['product_id'];
 		        
 		        $row = $db->query("CALL product_payment_term($productid)"); // Its a procedure call
 		        $ProDtd=$row->fetchAll();
-		        	
-		        if($ProDtd['provider_cost_nature']==1)
+		        		
+		        if($ProDtd[0]['provider_cost_nature']==1)
 		        {
 		       		$PlanMonthlyPayment_sum = $PlanMonthlyPayment_sum + $CD['unit_price']*$CD['qty'];
 		        }
-		        if($ProDtd['provider_cost_nature']==0)
+		        if($ProDtd[0]['provider_cost_nature']==0)
 		        {
 		        	$PlanMonthlyPayment_sum = $PlanMonthlyPayment_sum + $CD['unit_price'];
 		        }
 		        
 		        //Setup fee section
-		        if($ProDtd['provider_setup_nature']==1)
+		        if($ProDtd[0]['provider_setup_nature']==1)
 		        {
 		       		 $setupfee = $setupfee + $ProDtd[0]['setup_fee']*$CD['qty'];
 		        }
-		        if($ProDtd['provider_setup_nature']==0)
+		        if($ProDtd[0]['provider_setup_nature']==0)
 		        {
 		        	$setupfee = $setupfee + $ProDtd[0]['setup_fee'];
 		        }
@@ -287,6 +287,8 @@ class Application_Model_DbTable_Paymentdb extends Zend_Db_Table_Abstract
 		       // $amount = $amount + ($CD['qty'] * $CD['unit_price']);
 		    }
 		}
+		$particulars= substr($particulars, 0, -1);
+
 		$data = array(
 					'plan_id' => $plan_id,
 					'hf_id' => $hf_id,
@@ -491,6 +493,7 @@ class Application_Model_DbTable_Paymentdb extends Zend_Db_Table_Abstract
 	    $sql ='select provider_no from customer_selected_plan where hf_id='.$hf_id;
 	    return $db->fetchOne($sql);
 	}
+	
 	
 	
 }

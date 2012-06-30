@@ -33,7 +33,8 @@ class GeneralController extends Zend_Controller_Action
         $cmsObj = new Application_Model_DbTable_Index();
         $this->view->cms = $cmsObj->getcms('Legal Documentation ');
     }
-
+	
+   
 
 }
 

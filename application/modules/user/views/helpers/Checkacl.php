@@ -12,13 +12,14 @@ class Zend_View_Helper_Checkacl  extends Zend_View_Helper_Abstract
 
    		$sql = 'select acl_action from acl_user_setting where hf_id='.$hf_id;
    		$assigned_actions =explode(',',$db->fetchOne($sql));
-   		foreach($assigned_actions as $Assigned)
+   	/*	foreach($assigned_actions as $Assigned)
    		{
    		    if($Assigned==$actionid)
    		    {
    		        return true;
    		        break;
    		    }
-   		}
+   		}*/
+   		return true;
    }
 }

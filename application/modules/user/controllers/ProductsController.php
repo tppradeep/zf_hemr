@@ -9,6 +9,8 @@ class User_ProductsController extends Zend_Controller_Action
          $this->view->checkaclresource('0','0',0); // Just for initiallization for helper call
         $sess = new Zend_Session_Namespace('user');
         $this->view->hf_id=$sess->hf_id;
+        $sess = new Zend_Session_Namespace('user');
+      
     }
 
     public function indexAction()
@@ -20,6 +22,12 @@ class User_ProductsController extends Zend_Controller_Action
         if ($this->getRequest()->isPost())
         {
            $formData = $this->getRequest()->getPost();
+           
+           /*
+            * The following session is using to identify the additional product purchase
+            */
+           $additional = new Zend_Session_Namespace('additional');
+           $additional->status=1;
         //   echo "<pre>";
        //    print_r($formData);
            $fdkey = array_keys($formData);
@@ -33,7 +41,9 @@ class User_ProductsController extends Zend_Controller_Action
                  
               //     if($formData[$ivalue]==1) // There is only one provider, basic price of product have to pick
              //      {
+             
                        $dval = $PrimaryProductAdd->productaddtocart($ivalue,$providerno);
+                       
              //      }
              //      else // Picking the correct product cost based on provider range from product_price and updating cart
              //      {

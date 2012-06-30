@@ -23,7 +23,7 @@ a {
 	text-decoration: none;
 }
 a:hover {
-	color: #060;
+	color: #000000;
 	text-decoration: none;
 }
 /* Table */
@@ -264,55 +264,41 @@ a.plan-register:hover
 	border: 1px solid #999 !important;
 	background-color: #F5F5F5;
 }
-.user-submit
-{
-	font-family: Tahoma, Arial, Verdana;
-	font-size: 12px;
+input[type=submit], .button {
+	background-color: #3D6DBE !important;
+	border-bottom-right-radius: 4px !important;
+	border-top-right-radius: 4px !important;
+	border-bottom-left-radius: 4px !important;
+	border-top-left-radius: 4px !important;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: 11px;
 	font-weight: bold;
-	color: #FFFFFF;
-	text-decoration: none;
-	background-image: url(../images/registration_button.png);
-	height: 27px;
-	width: 153px;
-	display: block;
-	padding-top: 3px;
-	padding-right: 30px;
-	padding-bottom: 21px;
-	padding-left: 34px;
+	color: #FFF;
+	padding: 5px;
+	cursor: pointer;
+	display: inline-block;
+	vertical-align: middle;
 	border-top-width: 0px;
 	border-right-width: 0px;
 	border-bottom-width: 0px;
 	border-left-width: 0px;
-	border-top-style: none;
-	border-right-style: none;
-	border-bottom-style: none;
-	border-left-style: none;
-	cursor: pointer;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+}
+a.button:hover
+{
+	color: #BBCDEA;
+}
+
+.user-submit
+{
+	
 }
 .login
 {
-	font-family: Tahoma, Arial, Verdana;
-	font-size: 12px;
-	font-weight: bold;
-	color: #FFFFFF;
-	text-decoration: none;
-	background-image: url(../images/submit_details.png);
-	height: 19px;
-	width: 83px;
-	display: block;
-	padding-top: 3px;
-	padding-right: 20px;
-	padding-bottom: 21px;
-	padding-left: 20px;
-	border-top-width: 0px;
-	border-right-width: 0px;
-	border-bottom-width: 0px;
-	border-left-width: 0px;
-	border-top-style: none;
-	border-right-style: none;
-	border-bottom-style: none;
-	border-left-style: none;
-	cursor: pointer;
+	
 }
 .header-home-logo
 {
@@ -588,26 +574,13 @@ textarea{resize: none;}
 }
 .submit
 {
-	background-color: #ff7302;
-	font-family: Verdana, Geneva, sans-serif;
-	font-size: 12px;
-	font-weight: bold;
-	color: #FFF;
-	border: 0px solid #FFF;
-	height: 25px;
+	background-color: #ff7302 !important;
+
 }
 .compareplan {
-	font-family: Verdana, Geneva, sans-serif;
-	font-size: 12px;
-	font-weight: bold;
-	color: #FFF;
-	background-color: #2665D9;
-	height: 25px;
+	height: auto;
 	width: auto;
 	float: right;
-	padding-right: 15px;
-	padding-left: 15px;
-	line-height: 22px;
 	margin-right: 34px;
 	margin-top: 15px;
 }
@@ -730,4 +703,20 @@ img
 	border: 1px solid #F5F5F5;
 	color: #333;
 	background-color: #BFBFBF;
+}
+.red
+{
+	color: #F00;	
+}
+.button-disabled
+{
+	color: #999;	
+}
+.cartul
+{
+	margin: 0px;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 18px;
 }

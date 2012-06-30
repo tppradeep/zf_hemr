@@ -10,6 +10,7 @@
     <td class="list-table-header shadow" align="center">Invoice Amount</td>
     <td class="list-table-header shadow" align="center">Payment Date</td>
     <td class="list-table-header shadow" align="center">Payment Status</td>
+    <td class="list-table-header shadow">Service Status</td>
     <td class="list-table-header shadow"></td>
   </tr>
   </thead>
@@ -42,9 +43,24 @@
     <td class="normal-text shadowlight"><?php echo $userlist['payment_status'];?>
     </td>
     <td align="center" valign="middle" nowrap="nowrap" class="normal-text shadowlight">
+    <?php 
+	if($userlist['activation_status']==0)
+	{
+		echo '<a class="openmodalbox" href="javascript:void(0);"	rel="ajax: '.$this->baseUrl().'/Admin/Users/activation-error/id/'.base64_encode($userlist['invoice_number']).'">';
+		echo "<span class=red>Fail</span>";	
+		echo '</a>';
+	}
+	elseif($userlist['activation_status']==1)
+	{
+		echo "<span class=green>Success</span>";	
+	}
+	
+	?>
+    </td>
+    <td align="center" valign="middle" nowrap="nowrap" class="normal-text shadowlight">
      <a href="<?php echo $this->baseUrl();?>/uploads/invoice/<?php echo $userlist['invoice_number'];?>.pdf" target="_blank"><?php
     echo "<img src='".$this->baseUrl()."/images/pdf.png' alt='View Invoices' title='View Invoices'  style='cursor:pointer;margin-top:15px;'/>";
-	?></a><a href="<?php echo $this->baseUrl();?>/Admin/Updateinvoice/index/id/<?php echo $userlist['invoice_number'];?>"> 
+	?></a>   <a href="<?php echo $this->baseUrl();?>/Admin/Updateinvoice/index/id/<?php echo $userlist['invoice_number'];?>"> 
     <?php 
     echo "<img src='".$this->baseUrl()."/images/updateinvoice.png' alt='Update Invoice Amount' title='Update Invoice Amount'  style='cursor:pointer;margin-top:15px;'/>";
 	?>

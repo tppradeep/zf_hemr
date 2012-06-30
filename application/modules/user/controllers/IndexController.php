@@ -19,16 +19,14 @@ class User_IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        $sess = new Zend_Session_Namespace('user');
         
         $welcomemessage = new Application_Model_DbTable_Cms();
     	$this->view->welcome = $welcomemessage->getcms('User_welcome_after_login');
     	
-    	// User Name Retriving from UserRegisterController
-    	$sess = new Zend_Session_Namespace('MyNamespace');
-    
     	    	
     	$userfullname = new user_Model_DbTable_Index();
-    //	$this->view->ufullname = $userfullname->UserName($sess->duser); 
+    	$this->view->ufullname = $userfullname->UserName($sess->duser); 
     	
     	// Checking Invoice Paid Details
     	$userfullname = new user_Model_DbTable_Index();

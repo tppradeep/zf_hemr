@@ -1,0 +1,231 @@
+<script>
+function updateme()
+{
+	var errnomes = "";
+	
+	if(document.getElementById("firstName").value=='')
+	{
+		errnomes ='Please Enter Your First Name \n';	
+	}
+	if(document.getElementById("lastName").value=='')
+	{
+		errnomes = errnomes +'Please Enter Your Last Name \n';	
+	}
+	if(document.getElementById("creditCardNumber").value=='')
+	{
+		errnomes = errnomes +'Please Enter Your Credit Card Number \n';	
+	}
+	else
+	{
+		var ret=/^\d/ 
+		if (document.getElementById("creditCardNumber").value.search(ret)==-1) //if match failed
+			errnomes = errnomes + 'Please enter only numbers in credit card field';
+	}
+	if(document.getElementById("cvv2Number").value=='')
+	{
+		errnomes = errnomes + 'Please Enter Your Card Verification Number \n';	
+	}
+	else
+	{
+		var ret=/^\d/ 
+		if (document.getElementById("cvv2Number").value.search(ret)==-1) //if match failed
+			errnomes = errnomes + 'Please enter only numbers in Card Verification Number';
+	}
+	if(document.getElementById("address1").value=='')
+	{
+		errnomes = errnomes +'Please Enter Address \n';	
+	}
+	if(document.getElementById("city").value=='')
+	{
+		errnomes = errnomes +'Please Enter Your City Name \n';	
+	}
+	if(document.getElementById("city").value=='')
+	{
+		errnomes = errnomes +'Please Enter Your City Name \n';	
+	}
+	if(document.getElementById("state").value=='')
+	{
+		errnomes = errnomes +'Please Enter Your State Name \n';	
+	}
+	if(document.getElementById("zip").value=='')
+	{
+		errnomes = errnomes +'Please Enter Your Zip Code \n';	
+	}
+	if(document.getElementById("country").value=='')
+	{
+		errnomes = errnomes +'Please Enter Country Name \n';	
+	}
+	if(errnomes=='')
+	{
+	document.getElementById("makepayment").innerHTML='<img src="<?php echo $this->baseUrl()?>/images/loadingAnimation.gif"><br/>Please wait we processing your payment request';
+	return true;;	
+	}
+	else
+	{
+		errnomes = 'PLEASE CORRECT THE FOLLOWING SECTION AND SUBMIT THE DETAILS : \n\n' + errnomes;	
+		alert(errnomes);	
+		return false;
+	}
+}
+
+ 
+</script>
+<?php
+$currency = new Zend_Currency('en_US');
+//echo "<pre>";
+//print_r($this->formdata);
+//echo "</pre>";
+?>
+<link href="../../../../public/css/site.css" rel="stylesheet" type="text/css" />
+
+
+  <form id="payment" action="do-payment" method="POST"  name="CreateRPProfileForm" onsubmit="return updateme()">
+<table width="100%" border="0" cellspacing="2" cellpadding="2">
+  <tr>
+    <td colspan="3" class="table-head"> Credit Card Information</td>
+    </tr>
+  <tr>
+    <td width="49%" align="right" class="label-no"><span class="red">*</span>First Name:</td>
+    <td width="1%" align="left">&nbsp;</td>
+    <td width="50%" align="left"><input type="text" size="30" maxlength="32" id="firstName"  name="firstName" value="<?php echo  $this->hfdata['hf_facility_name'];?>" /></td>
+  </tr>
+  <tr>
+    <td align="right" class="label-no"><span class="red">*</span>Last Name:</td>
+    <td align="left">&nbsp;</td>
+    <td align="left"><input type="text" size="30" maxlength="32" id="lastName" name="lastName" value="<?php echo  $this->hfdata['hf_facility_lname'];?>" /></td>
+  </tr>
+  <tr>
+    <td align="right" class="label-no"><span class="red">*</span>Card Type:</td>
+    <td align="left">&nbsp;</td>
+    <td align="left"><select name="creditCardType">
+      <option value="Visa" selected="selected">Visa</option>
+      <option value="MasterCard">MasterCard</option>
+      <option value="Discover">Discover</option>
+      <option value="Amex">American Express</option>
+    </select></td>
+  </tr>
+  <tr>
+    <td align="right" class="label-no"><span class="red">*</span>Card Number:</td>
+    <td align="left">&nbsp;</td>
+    <td align="left"><input type="text" size="19" maxlength="19" name="creditCardNumber" id="creditCardNumber" /></td>
+  </tr>
+  <tr>
+    <td align="right" class="label-no"><span class="red">*</span>Expiration Date:</td>
+    <td align="left">&nbsp;</td>
+    <td align="left"><select name="expDateMonth">
+        <option value="1">01</option>
+        <option value="2">02</option>
+        <option value="3">03</option>
+        <option value="4">04</option>
+        <option value="5">05</option>
+        <option value="6">06</option>
+        <option value="7">07</option>
+        <option value="8">08</option>
+        <option value="9">09</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+      </select>      <select name="expDateYear">
+        <?php
+		for($i=date("Y");$i<date("Y")+20;$i++)
+		{
+			echo '<option value="'.$i.'">'.$i.'</option>';
+		}
+		?>
+    </select></td>
+  </tr>
+  <tr>
+    <td align="right" class="label-no"><span class="red">*</span>Card Verification Number:</td>
+    <td align="left">&nbsp;</td>
+    <td align="left"><input type="text" size="3" maxlength="4" name="cvv2Number"  id="cvv2Number" value="" /></td>
+  </tr>
+  <tr>
+    <td colspan="3" class="table-head">Billing Address</td>
+    </tr>
+  <tr>
+    <td align="right" class="label-no"><span class="red">*</span>Address 1:</td>
+    <td align="left">&nbsp;</td>
+    <td align="left"><input type="text" size="25" maxlength="100" id="address1" name="address1" value="<?php echo  $this->hfdata['hf_address'];?>" /></td>
+  </tr>
+  <tr>
+    <td align="right" class="label-no">Address 2:</td>
+    <td align="left">&nbsp;</td>
+    <td align="left" class="label-no"><input type="text"  size="25" maxlength="100" name="address2" />
+      (optional)</td>
+  </tr>
+  <tr>
+    <td align="right" class="label-no"><span class="red">*</span>City:</td>
+    <td align="left">&nbsp;</td>
+    <td align="left"><input type="text" size="25" maxlength="40" id="city" name="city" value="<?php echo  $this->hfdata['hf_city'];?>" /></td>
+  </tr>
+  <tr>
+    <td align="right" class="label-no"><span class="red">*</span>State:</td>
+    <td align="left">&nbsp;</td>
+    <td align="left">
+    <input type="text" name="state" id="state" value="<?php echo  $this->hfdata['hf_state'];?>" /></td>
+  </tr>
+  <tr>
+    <td align="right" class="label-no"><span class="red">*</span>ZIP Code:</td>
+    <td align="left">&nbsp;</td>
+    <td align="left"><input type="text" size="10" maxlength="10" id="zip" name="zip" value="<?php echo  $this->hfdata['hf_zip'];?>"/></td>
+  </tr>
+  <tr>
+    <td align="right" class="label-no"><span class="red">*</span>Country:</td>
+    <td align="left">&nbsp;</td>
+    <td align="left"><input name="country" id="country" type="text"  value="<?php echo  $this->hfdata['hf_country'];?>" /></td>
+  </tr>
+  <tr>
+    <td colspan="3" class="table-head">Invoice Details</td>
+    </tr>
+  <tr>
+    <td align="right" class="label-no">Invoice No :</td>
+    <td>&nbsp;</td>
+    <td class="label-no b"><?php echo $this->formdata['item_number'];?></td>
+  </tr>
+  <tr>
+    <td align="right" class="label-no">Invoice Amount :</td>
+    <td>&nbsp;</td>
+    <td class="label-no"><?php echo $currency->toCurrency($this->formdata['a1']);?> (Monthly Fee : <?php echo $currency->toCurrency($this->formdata['a3']);?>)</td>
+  </tr>
+  <tr>
+    <td align="right" class="label-no">Invoice Date :</td>
+    <td>&nbsp;</td>
+    <td class="label-no"><?php echo  $this->hfdata['reg_date'];?></td>
+  </tr>
+  <tr>
+    <td align="right"><input type="hidden" name="business" value="pradee_1332324973_biz_api1.zhservices.com">
+		<input type="hidden" name=SIGNATURE value="AFcWxV21C7fd0v3bYYYRCpSSRl31ASh58JiqMRQg94gl0iRFYVSC2fVW">
+         <input type="hidden" name="cmd" value="<?php echo $this->formdata['cmd'];?>">
+         <input type="hidden" name="item_name" value="<?php echo $this->formdata['item_name'];?>">
+		<input type="hidden" name="item_number" value="<?php echo $this->formdata['item_number'];?>">
+		<input type="hidden" name="amount" value="<?php echo $this->formdata['amount'];?>">
+		<input type="hidden" name="currency_code" value="USD">
+		<input type="hidden" name="no_shipping" value="1">
+        <input type="hidden" name="custom" value="<?php echo $this->formdata['custom'];?>">
+		<input type="hidden" name="a1" value="<?php echo $this->formdata['a1'];?>">
+        <input type="hidden" name="p1" value="1">
+        <input type="hidden" name="t1" value="M">
+        <input type="hidden" name="a3" value="<?php echo $this->formdata['a3'];?>">
+		<input type="hidden" name="p3" value="1">
+		<input type="hidden" name="t3" value="M">
+		<input type="hidden" name="src" value="1">
+      </td>
+    <td>&nbsp;</td>
+    <td class="label-no">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="3" align="center" class="red" id="makepayment"><input type="submit" name="button" id="button" value="Make Payment" style="margin-left:95px;" /></td>
+    </tr>
+  <tr>
+    <td align="right">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="3" align="center" class="form-label-sub"> <img src="<?php echo $this->baseUrl().'/images/paypal_logo.jpg'?>"/><br />
+<?php 
+   		 echo $this->escape($this->paypaldtd['cms_details']); //Cms.php (DbTable)
+    ?></td>
+    </tr>
+</table>
+</form>

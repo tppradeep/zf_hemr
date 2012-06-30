@@ -1,0 +1,134 @@
+Time Card - Readme
+==================
+  A DotProject time card module .
+  Version 2.10 beta - August 2007
+  --------------------------------
+  http://dotmods.sf.net
+
+    Copyright (C) 2002-2004 Dana Cordes <dcordes@warmfuzzyland.com> and New Hampshire Ball Bearing
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+Summary
+=======
+
+Time Card is a module that will allow user to easily see how many hours they have logged in a given week, and allow them to easily add task logs to bring that time up to the minimum required by their organization. There is now an option to hilight weeks where users have exceeded their normal working hours, so that the company knows how much overtime to apply to salaries, for example.
+
+Busy project managers, can you answer questions like these?...
+
+* How many hours per week are my staff spending on this project?
+* How much time is our section contributing to this project?
+* Who is owed for overtime pay this month?
+* How many hours did so-and-so put in this week/month? What were his/her specific contributions to each project?
+* Is that pay raise s/he requested justified when I review his/her task logs?
+
+Want fast answers? Time Card is a one-stop shop for team members to record their progress, without all the extra 'clutter' presented by some of the other dotProject modules. Not only can staff enter new task logs, they can also edit existing logs when more information is requested or needed.
+
+For project managers (or for department heads using dotProject to track staff time), Time Card gives you a quick overview of what's happening in several different layouts focusing on individual staff, projects, or departments under your supervision. Staff progress reports, with cumulative time, can be exported to a PDF for inclusion in HR records.
+
+INSTALL
+=======
+Just dump this module into the modules directory and install as usual. It makes no database changes. To allow configuration, make sure that the config.php file is writable by dotproject.
+
+You can configure report availablity, viewing others timecards and editing others timecards based on the user type of each user. This is done in the configuration options in the View Modules section of the System Admin module.
+
+OVERVIEW
+========
+First, understand this: If you or your staff haven't yet created any task logs in dotProject, then you aren't likely to see anything interesting in Time Card right at the start.
+
+Time Card is composed of three to six different 'tabs'. The number of tabs you see depends on the security permissions you have been granted. Persons with Manager status are generally able to use the reporting features for getting an overview of staff activities in their company.
+
++ Weekly Time Card
+This is the main report, providing a summary of the weeks activities and time for the logged on user,as well as other users if the logged on user has the appropriate permissions. Users can add/edit logs directly from this page.
+
++ Task Logs by Date
+This report allows a user or manager to select any date range to make a list of log entries ordered by date for the user selected on the Weekly Time Card. This could then be submitted as part of the employees' weekly time records:
+
++ Summary by User
+This report focuses on the hours clocked by each user--either ALL users, or users in a particular company which the manager has access to:
+
++ Summary by Project
+This report focuses on time clocked against specific projects and the contributions of departments and individuals toward those totals. You can view any 4-week period, or simply use the date selectors to view a single chunk of time of any length:
+
+KNOWN ISSUES
+============
++ Help Desk integration is not yet error-free. Recommend leaving it turned off for now.
++ Permissions problem: If a user has access/view rights only to Company A, when trying to see other users' timecards from the same company they will get Access Denied, even if their user level is sufficiently high as set in the module configuration options. The logged on user can see users belonging to all Companies/Groups in the drop-down list--not just the one to which he has access. When any of these names are selected, the system throws an Access Denied page; the same happens when clicking on My Time Card. If a user is given Access/View rights on all Companies/Groups, the error does not appear. This might not be related to this module at all, the problem perhaps lying somewhere deep in the bowels of permissions.php, permissions.class.php or the phpgacl libraries. A kludge is simply to comment out the lines in the code which provide the faulty permissions check (lines 38-40 of vw_timecard.php, for example). Obviously not very elegant, but I haven't figure out how to fix this yet. (arcos, 22-Aug-2007)
++ New task logs that begin with parentheses '(' have a habit of not displaying on the Weekly Time Card. Brackets seem to work ok.
++ On the Summary by Project report, 2nd level (department) headers are not always displaying correctly when departments are outside of the current users company, or no department is indicated for the project.
+
+OTHER TO-DOs
+============
++ New Task Log: add ability to set progress percentage on tasks
++ New Task Log: drop-down list of projects should be prefixed by the project short name (project code). This should be coded so that it is easy to turn of for implementations that do not rely on projects codes.
++ Summary by User: add PDF export
++ Summary by Project: add PDF export
+
+Credits
+=======
+Dana Cordes <dcordes@warmfuzzyland.com>
+HelpDesk integration changes by GrahamJB
+Fixes and tweaks by lots of others, including:
++Pedroa
++Caseydk
++theideaman
++hstanton
++bloaterpaste
++arcos
+
+Version Information
+===================
+
+2007-08-04 v2.10 beta
+This module has gone through a lot of overhaul to make it work (albeit with some caveats) with dotProject 2.1rc2 and the Stable_2 branch--hence the version change. Nobody has bothered to record all the changes during that time, so they are buried in comments in the php files. Most recently, arcos (Matthew Arciniega) made the following changes:
++ Moved all reports onto the tabs to make them more accessible
++ Fixed a lot of bugs in report displays and tweaked formatting to be prettier
++ Changed report names to be slightly more logical
++ Changed the display of names to first name first
++ Got rid of the reports subdirectory and the moribund vw_monthly report
++ Changed the config options to read "Highlight where users went into overtime" and altered the way the hilight functions accordingly in the reports. In our company this makes more sense, since it's only when users exceed their normal work hours that we need to worry about paying them more.
++ Changed index.php so that it's easier to rearrange the tabs without unpredictable behavior. It ain't so cute, but it works.
++ Rewrote a good deal of the README file
+
+
+
+2004-05-13
+Made the textareas in the helpdeskitem and tasklog tabs larger.
+Added module configuration.
+Added configuration options for toggling highlighting of undertime hours.
+Added configuration options for minimum user level selection for displaying reports, showing or editing other users timecards.
+Integration of GrahamJB's patch for HelpDesk integration.
+
+2004-05-12
+Fixed bug that was causing error in tasks and projects with ' in their names.
+
+2004-05-11
+Fixing a small error that caused the forward link in the reporting to actually go backwards.
+
+2004-04-29
+Putting in a lot of BS code to keep the days on the proper day.
+Linking out individual hour counts to detail  info.
+Added user report by week.
+Adding permissions control throughout based on what companies a user as access to.
+Adding perms to prevent users from viewing ppl's timecards that they don't have access to.
+
+2004-04-26
+Added sloppy redundant code to continue to combat the hour increment bug.
+
+2004-04-21
+If a task log is added, automatically redirect to the listing page.
+
+2004-04-16
+Initial Checkin

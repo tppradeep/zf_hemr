@@ -63,12 +63,10 @@ class User_Model_DbTable_Products extends Zend_Db_Table_Abstract
 	         */
 	        $output.=' <tr>
     <td height="25" class="normal-text shadowlight">'.$sino.'.</td>
-    <td class="normal-text shadowlight">'.$PL['product_name'].'</td>
+    <td class="normal-text shadowlight">'.$PL['category'].'</td>
+    <td class="normal-text shadowlight" nowrap><a class="openmodalbox" href="javascript:void(0);"	rel="ajax: '.$path.'/user/Products/productfeature/id/'.base64_encode($PL['idproducts']).'">'.$PL['product_name'].'</a></td>
     <td align="right" class="normal-text shadowlight">'.$currency->toCurrency($PL['cost']).'</td>
-    <td align="right" class="normal-text shadowlight">'.$currency->toCurrency($PL['setup_fee']).'</td>
-     <td align="center" class="normal-text shadowlight"> <a class="openmodalbox" href="javascript:void(0);"	rel="ajax: '.$path.'/user/Products/productfeature/id/'.base64_encode($PL['idproducts']).'">
-      <img src="'.$path.'/images/expand.png" width="16" height="16" title="View Features" alt="View Features" />
-      </a></td>';
+    <td align="right" class="normal-text shadowlight">'.$currency->toCurrency($PL['setup_fee']).'</td>';
 
     $output.='</td><td align="center" class="normal-text shadowlight">';
              
@@ -143,6 +141,85 @@ class User_Model_DbTable_Products extends Zend_Db_Table_Abstract
 	    //echo "<br>";
 	    //echo $hf_id;
 	   // die;
+	   
+	    // Checking the category of product adding
+	    
+	    //0:not increment with provider number ; 1: increment with provider number (provider_cost_nature,provider_setup_nature)
+	     $sql = "select category,cost,setup_fee,provider_cost_nature,provider_setup_nature from products where idproducts=".$id;
+	    $proresult = $db->fetchRow($sql);
+	    
+	    /*
+	     * if category is support, then deleting the existing support product from the selected plan and
+	     * adding the new support plan
+	     */
+	    if($proresult['category']=='support')
+	    {
+	        $sql = 'select idproducts,cost,setup_fee,provider_cost_nature,provider_setup_nature,additional from customer_products where category="support" and hf_id='.$hf_id;
+	        
+	        $ExProdtd = $db->fetchRow($sql);
+	        
+	       //echo "<pre>";
+	       //print_r($ExProdtd);
+	       //echo "</pre>";
+	       //die;
+	        if($ExProdtd['additional']==0)
+	        {
+	            
+		        /*
+		         * Collecting the support product cost to reduce it from plan
+		         */
+		        if($ExProdtd['provider_cost_nature']==1)
+		        {
+		            $deduct_cost = $ExProdtd['cost']*$providerno;
+		        }
+		        else
+		        {
+		            $deduct_cost = $ExProdtd['cost'];
+		        }
+		        if($ExProdtd['provider_setup_nature']==1)
+		        {
+		            $deduct_setup_cost = $ExProdtd['setup_fee']*$providerno;
+		        }
+		        else
+		        {
+		            $deduct_setup_cost = $ExProdtd['setup_fee'];
+		        }
+		        $sql ='select monthly_payment,setupfee,total_payment from customer_selected_plan where hf_id='.$hf_id;
+		        $plancosts = $db->fetchRow($sql);
+		        
+		        $updated_cost = $plancosts['monthly_payment'] - $deduct_cost;
+		        $updated_setup_fee = $plancosts['setupfee'] - $deduct_setup_cost;
+		        $updated_total_payment = $updated_cost + $updated_setup_fee;
+		        
+		       $sql = 'update customer_selected_plan set monthly_payment='.$updated_cost.',setupfee='.$deduct_setup_cost.',total_payment='.$updated_total_payment.' where hf_id='.$hf_id;
+		       $db->query($sql);
+		       /*
+		        * update cart price
+		        */
+		       
+		       $sess = new Zend_Session_Namespace('user');
+		       $hf_id = $sess->hf_id;
+		       
+		       $sql ='select unit_price,setupfee,discount,total from cart where cartsession="'.$sesid.'" and plan_id <>0 and hf_id='.$hf_id.' and cstatus=0';
+		       $ExtCartDtd = $db->fetchRow($sql);
+		       
+		       $NewCartUnitPrice = $ExtCartDtd['unit_price']-$deduct_cost ;
+		       $NewCartSetupFee = $ExtCartDtd['setupfee']-$deduct_setup_cost;
+		       $newCartTotal = $NewCartUnitPrice + $NewCartSetupFee - $ExtCartDtd['discount'];
+		       
+		       $sql ='update cart set unit_price='.$NewCartUnitPrice.',setupfee='.$NewCartSetupFee.',total='.$newCartTotal.' where cartsession="'.$sesid.'" and plan_id <>0 and hf_id='.$hf_id.' and cstatus=0';
+			   $db->query($sql);		       
+		       
+		       
+		        
+	        }
+	        
+	        $sql ='delete from customer_products where hf_id='.$hf_id.' and category="support" and additional=0';
+	       	$db->query($sql);
+	    }
+	    
+	    
+	    
 	    $row = $db->query("CALL add_product($id,$providerno,'$sesid',$hf_id)"); // Its a procedure call
 	    $row = $db->query("SELECT @result"); // Its a procedure call
 	    $rst = $row->fetchAll();

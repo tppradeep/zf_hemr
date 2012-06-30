@@ -442,3 +442,7 @@ input[type=text],input[type=password],select,textarea
 	float:right;
 	color: #F00 !important;
 }
+.green
+{
+	color:#060;	
+}

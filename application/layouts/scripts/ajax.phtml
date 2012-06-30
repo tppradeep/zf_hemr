@@ -1,7 +1,7 @@
 <?php
 $this->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
 $this->headTitle()->setSeparator(' - ');
-$this->headTitle('Hosted EMR');
+$this->headTitle('Hosted OpenEMR');
 echo $this->doctype(); 
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -10,34 +10,21 @@ echo $this->doctype();
 <?php echo $this->headMeta(); ?>
 <?php echo $this->headTitle(); ?>
 
-<link href="<?php echo $this->baseUrl().'/css/user.css';?>" rel="stylesheet" type="text/css" />
+<link href="<?php echo $this->baseUrl().'/css/site.css';?>" rel="stylesheet" type="text/css" />
 <link href="<?php echo $this->baseUrl().'/css/validationEngine.jquery.css';?>" rel="stylesheet" type="text/css" />
 <link href="<?php echo $this->baseUrl().'/css/grid.css';?>" rel="stylesheet" type="text/css" />
 <link href="<?php echo $this->baseUrl().'/css/grid_jui.css';?>" rel="stylesheet" type="text/css" />
 <link href="<?php echo $this->baseUrl().'/css/jquery-ui-1.8.4.custom.css';?>" rel="stylesheet" type="text/css" />
-<link href="<?php echo $this->baseUrl().'/css/tooltip.css';?>" rel="stylesheet" type="text/css" />
+
 
 
 <script language="javascript" src="<?php echo $this->baseUrl().'/jquery/jquery-1.5.1.min.js';?>"></script>
 <script language="javascript" src="<?php echo $this->baseUrl().'/jquery/jquery.validationEngine.js';?>"></script>
 <script language="javascript" src="<?php echo $this->baseUrl().'/jquery/jquery.validationEngine-en.js';?>"></script>
-<script language="javascript" src="<?php echo $this->baseUrl().'/js/curvycorners.js';?>"></script>
 <script language="javascript" src="<?php echo $this->baseUrl().'/js/jquery.dataTables.js';?>"></script>
-<script language="javascript" src="<?php echo $this->baseUrl().'/jquery/jquery.popupwindow.js';?>"></script>
 <script language="javascript" src="<?php echo $this->baseUrl().'/js/jtip.js';?>"></script>
 
-<script type="text/JavaScript">
- 
-	function unloadcallback(){
-		alert("unloaded");
-	};
 
-
-	$(function()
-	{
-		$(".popupwindow").popupwindow(profiles);
-	});
-</script>
 <script type="text/javascript">
 	javascript: window.history.forward(1);
 </script>

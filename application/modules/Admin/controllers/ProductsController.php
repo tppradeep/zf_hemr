@@ -26,12 +26,14 @@ class Admin_ProductsController extends Zend_Controller_Action
 
     public function addAction()
     {
-     if ($this->getRequest()->isPost()) 
+        $gndb = new Application_Model_DbTable_General();
+        $this->view->emrlist = $gndb->emrfeature();
+    	if ($this->getRequest()->isPost()) 
 		{
 		    $customerId = new Zend_Session_Namespace('customerId');
 		    $customer_id=$customerId->customerId;
 			$formData = $this->getRequest()->getPost();
-
+				$category = $formData['category'];
 				$product_name = $formData['product_name'];
 				$product_feature = $formData['product_feature'];
 				$cost = $formData['cost'];
@@ -41,10 +43,10 @@ class Admin_ProductsController extends Zend_Controller_Action
 				$ProductType=$formData['ProductType'];
 				$provider_cost_nature = $formData['provider_cost_nature'];
 				$provider_setup_nature = $formData['provider_setup_nature'];
-									
+				$emrfeature = $formData['emrfeature'];					
 				// calling model db to insert values			
 				$pfeature = new Admin_Model_DbTable_Products();
-				$pid=$pfeature->addProduct($product_name,$customer_id,$product_feature,$cost,$setup_fee,$product_sort_order,$product_status,$ProductType,$provider_cost_nature,$provider_setup_nature);
+				$pid=$pfeature->addProduct($category,$idproducts,$product_name,$customer_id,$product_feature,$cost,$setup_fee,$product_sort_order,$product_status,$ProductType,$provider_cost_nature,$provider_setup_nature,$emrfeature);
 				
 						
 				$this->_redirect('Admin/Products/index/st/1');
@@ -53,8 +55,10 @@ class Admin_ProductsController extends Zend_Controller_Action
 
     public function editAction()
     {
-
-    $id=$this->view->Dcode($this->_getParam('id')); // Retriving id from query string
+        $gndb = new Application_Model_DbTable_General();
+        $this->view->emrlist = $gndb->emrfeature();
+        
+    	$id=$this->view->Dcode($this->_getParam('id')); // Retriving id from query string
     	
     	if ($this->getRequest()->isPost())
     	{
@@ -62,7 +66,8 @@ class Admin_ProductsController extends Zend_Controller_Action
     	    $customer_id=$customerId->customerId;
     	
     		$formData = $this->getRequest()->getPost();
-    	
+    		
+    		$category = $formData['category'];
     		$idproducts = $formData['idproducts'];
     		$product_name = $formData['product_name'];
 			$product_feature = $formData['product_feature'];
@@ -73,11 +78,11 @@ class Admin_ProductsController extends Zend_Controller_Action
 			$ProductType=$formData['ProductType'];
 			$provider_cost_nature = $formData['provider_cost_nature'];
 			$provider_setup_nature = $formData['provider_setup_nature'];
-    		    	
+			$emrfeature = $formData['emrfeature'];
     	
     		// calling model db to insert values (Planfeatures.php)
     		$pss = new Admin_Model_DbTable_Products();
-    		$pss->updateProduct($idproducts,$product_name,$customer_id,$product_feature,$cost,$setup_fee,$product_sort_order,$product_status,$ProductType,$provider_cost_nature,$provider_setup_nature);
+    		$pss->updateProduct($category,$idproducts,$product_name,$customer_id,$product_feature,$cost,$setup_fee,$product_sort_order,$product_status,$ProductType,$provider_cost_nature,$provider_setup_nature,$emrfeature);
     		 
     		$this->_redirect('Admin/Products/index/st/2');
     		 

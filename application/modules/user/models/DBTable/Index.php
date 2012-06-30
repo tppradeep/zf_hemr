@@ -6,19 +6,16 @@ class user_Model_DbTable_Index extends Zend_Db_Table_Abstract
    // protected $_name = 'hosted_facilities';
 	public function UserName($uid) // Retriving Name through uid(hf_id table field)
 	{
-		
 		$db = Zend_Db_Table::getDefaultAdapter();
-		$select = $db->select()
-		->from(array('h'=>'hosted_facilities'),array('h.hf_facility_name'))
-		->where('h.hf_email="'.$uid.'"');
-		
-		$row = $db->fetchRow($select);
+		$sql = "select hf_facility_suffix,hf_facility_name,hf_facility_lname from hosted_facilities where hf_email='".$uid."'";
+			
+		$row = $db->fetchRow($sql);
 	
 		if(!$row)
 		{
 			throw new Exception($e);
 		}
-		return $row['hf_facility_name'];
+		return $row['hf_facility_suffix'].'&nbsp;'.$row['hf_facility_name'].'&nbsp;'.$row['hf_facility_lname'];
 	}
 	
 	public function LastPayment_invoice($hf_id)

@@ -13,6 +13,8 @@ class CartController extends Zend_Controller_Action
     {
         $cmsObj = new Application_Model_DbTable_Index();
         $this->view->cms = $cmsObj->getcms('Cart');
+        $this->view->cmsadditional = $cmsObj->getcms('Cart Additional Product Intro');
+        
         
         //$this->_helper->layout->setLayout('user'); 
         // action body
@@ -29,6 +31,10 @@ class CartController extends Zend_Controller_Action
         
         $products = new Application_Model_DbTable_Cart();
         $this->view->products = $products->cart_product_list($this->view->baseurl());
+        
+        // For Listing Plan Products
+        $PlanListDb = new Application_Model_DbTable_PlanList();
+        $this->view->prolist = $PlanListDb->productdetails_cart($pid,$uid);
     }
 
     public function freeplanAction()
@@ -70,14 +76,17 @@ class CartController extends Zend_Controller_Action
     	$emailto = trim($userdata['hf_email']);
     	$nameto = $userdata['hf_facility_name'];
     	 
-		 $config = array('ssl' => 'tls', 'port' => 587, 'auth' => 'login', 'username' => 'pradeep@zhservices.com', 'password' => 'pradulmon');
+    	$mailconfig = new Zend_Session_Namespace('mail');
+    	
+    	
+		$config = array('ssl' => 'tls', 'port' => 587, 'auth' => 'login', 'username' => $mailconfig->userid, 'password' => $mailconfig->password);
 		$transport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', $config);
 		
     	$mail = new Zend_Mail();
     	$mail->setType(Zend_Mime::MULTIPART_RELATED);
     	//$mail->setBodyText('Invoice Details attached');
     	$mail->setBodyHtml($emailbody);
-    	$mail->setFrom('info@zhservices.com', 'ZH Healthcare');
+    	$mail->setFrom($mailconfig->userid, 'ZH Healthcare');
     	$mail->addTo($emailto, $nameto);
     	$mail->setSubject($emailsubject);
     	try

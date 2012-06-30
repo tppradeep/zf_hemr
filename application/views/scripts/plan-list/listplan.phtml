@@ -2,13 +2,18 @@
 <script language="javascript">
 function updateprice(pval)
 {
-	provider = parseInt(pval);
-	document.getElementById("apid").value=provider;
+	
+	pprovider = parseInt(pval);
+
+	document.getElementById("apid").value=pval;
 	
 	if(document.getElementById("apid").value==0)
 	{
 		document.getElementById("checkout").disabled=true;
-		
+		document.getElementById("provider").style.color="#F00";
+		document.getElementById("checkout").style.color="#D8D8D8";
+
+		document.getElementById("gtotal").innerHTML = "$ 0.00";
 		document.getElementById("pcost").value = 0;
 		document.getElementById("totalfee").value = 0;
 		document.getElementById("totalamount").innerHTML = "$ 0.00";
@@ -18,7 +23,10 @@ function updateprice(pval)
 	}
 	else
 	{
+		
 		document.getElementById("checkout").disabled=false;
+		document.getElementById("provider").style.color="#373737";
+		document.getElementById("checkout").style.color="#fff";
 		
 		bundle_discount_type = parseFloat(document.getElementById("bundle_discount_type").value);
 		bundle_discount_per_cost = parseFloat(document.getElementById("bundle_discount_per_cost").value);
@@ -30,12 +38,12 @@ function updateprice(pval)
 		
 		FixedProductCostTotal = parseFloat(document.getElementById("FixedProductCostTotal").value);
 		FixedProductSetupFeeTotal = parseFloat(document.getElementById("FixedProductSetupFeeTotal").value);
-	
+		
 		if(bundle_discount_type==1) // % wise
 		{
 			if(VariableProductCostTotal>0)
 			{
-					VariableProductCostTotal = VariableProductCostTotal * provider;
+					VariableProductCostTotal = VariableProductCostTotal * pprovider;
 					VariableProductCostTotal = VariableProductCostTotal - ((VariableProductCostTotal * bundle_discount_per_cost)/100);
 			}
 			else
@@ -44,7 +52,7 @@ function updateprice(pval)
 			}
 			if(VariableProductSetupFeeTotal>0)
 			{
-				VariableProductSetupFeeTotal = VariableProductSetupFeeTotal * provider;
+				VariableProductSetupFeeTotal = VariableProductSetupFeeTotal * pprovider;
 				VariableProductSetupFeeTotal = VariableProductSetupFeeTotal - ((VariableProductSetupFeeTotal * bundle_discount_per_setup)/100);
 			}
 			else
@@ -53,11 +61,12 @@ function updateprice(pval)
 			}
 			FixedProductSetupFeeTotal = FixedProductSetupFeeTotal - ((FixedProductSetupFeeTotal * bundle_discount_per_setup)/100);
 		}
+		
 		if(bundle_discount_type==2) // Flat discount
 		{
 			if(VariableProductCostTotal>0)
 			{
-				VariableProductCostTotal = (VariableProductCostTotal * provider) -  (bundle_discount_per_cost * provider);
+				VariableProductCostTotal = (VariableProductCostTotal * pprovider) -  (bundle_discount_per_cost * pprovider);
 			}
 			else
 			{
@@ -65,28 +74,37 @@ function updateprice(pval)
 			}
 			if(VariableProductSetupFeeTotal > 0)
 			{
-				VariableProductSetupFeeTotal = (VariableProductSetupFeeTotal * provider) - (bundle_discount_per_setup * provider);
+				VariableProductSetupFeeTotal = (VariableProductSetupFeeTotal * pprovider) - (bundle_discount_per_setup * pprovider);
 			}
 			else
 			{
 				VariableProductSetupFeeTotal=0;
 			}
+
 			
-			FixedProductSetupFeeTotal = (FixedProductSetupFeeTotal) - (bundle_discount_per_setup * provider);
+			FixedProductSetupFeeTotal = (FixedProductSetupFeeTotal) - (bundle_discount_per_setup * pprovider);
+			
 			
 		}
+
+		
 		TotalOneTimeFee = FixedProductSetupFeeTotal + VariableProductSetupFeeTotal;
+		
 		TotalVariableFee = FixedProductCostTotal + VariableProductCostTotal;
+		
 		pcost = VariableProductCostTotal + FixedProductCostTotal;
-		setupfee = VariableProductSetupFeeTotal + FixedProductSetupFeeTotal;
-		totalfee = pcost + setupfee;
+
+		
+		setupfeee = parseFloat(VariableProductSetupFeeTotal) + parseFloat(FixedProductSetupFeeTotal);
+		
+		totalfee = pcost + setupfeee;
 		
 		document.getElementById("pcost").value = pcost;
 		document.getElementById("totalfee").value = totalfee;
 		document.getElementById("totalamount").innerHTML = "$ "+pcost+"";
-	
+		
 		if($("#setupfee").length) {
-		document.getElementById("setupfee").innerHTML="$ "+setupfee+"";
+		document.getElementById("setupfee").innerHTML="$ "+setupfeee+"";
 		}
 
 		if($("#gtotal").length) {
@@ -106,7 +124,7 @@ $(document).ready(function() {
     widow: 2,
     expandSpeed: 0,
 	expandEffect: 'show',
-    userCollapseText: '[^]'
+    userCollapseText: '<img src=<?php echo $this->baseUrl();?>/images/plus.gif>'
   });
 });
 
@@ -123,6 +141,8 @@ $(document).ready(function() {
 	echo '</div>';
   }
 ?>
+
+   
  
 <div class="leftpanel">
 <form method="post" action="<?php echo $this->baseUrl();?>/UserRegister/adduser/">
@@ -158,9 +178,11 @@ $(document).ready(function() {
     ?>
     <tr>
       <td align="center" valign="top" class="normal-text shadowlight"><?php echo $sino;?>.</td>
-      <td class="normal-text shadowlight"><span class="product"><?php echo $productdtd['product_name'];?>
-      </span><br />
-        <div class="features"><?php echo $productdtd['product_feature'];?></div></td>
+      <td class="normal-text shadowlight"><span class="product">
+	 <?php
+     echo  '<a class="openmodalbox" href="javascript:void(0);"	rel="ajax: '.$this->baseUrl().'/user/Products/productfeature/id/'.base64_encode($productdtd['idproducts']).'">'.$productdtd['product_name'].'</a>';
+	  ?>
+      </span></td>
        <?php
 	  if($this->planname['bundle_setup_cost']!=0){
 	  ?>
@@ -185,8 +207,7 @@ $(document).ready(function() {
 	 {
     ?>
      <tr>
-       <td align="center" valign="top" class="normal-text shadowlight">&nbsp;</td>
-       <td align="right" class="table-head shadowlight">List Price</td>
+       <td colspan="2" align="right" valign="top" class="table-head shadowlight">List Price :</td>
        <?php  if($this->planname['bundle_setup_cost']!=0){?>
        <td align="right" valign="top" class="table-head shadowlight">
        <?php
@@ -214,24 +235,23 @@ $(document).ready(function() {
 	 }
 	 ?>
      <tr>
-      <td align="center" valign="top" class="normal-text shadowlight">&nbsp;</td>
-      <td align="right" class="table-head shadowlight">
-       <input type="hidden" name="pid" value="<?php echo $this->ecode($this->pid);?>" />
-       <input type="hidden" name="bundle_discount_type" id="bundle_discount_type" value="<?php echo $this->planname['bundle_discount_type'];?>" />
-       <input type="hidden" name="bundle_discount_per_cost" id="bundle_discount_per_cost" value="<?php echo $this->planname['bundle_discount_per_cost'];?>" />
-       <input type="hidden" name="bundle_discount_per_setup" id="bundle_discount_per_setup" value="<?php echo $this->planname['bundle_discount_per_setup'];?>" />
-       
-       <input type="hidden" name="VariableProductCostTotal" id="VariableProductCostTotal" value="<?php echo $this->VariableProductCostTotal;?>" />
-       <input type="hidden" name="FixedProductCostTotal" id="FixedProductCostTotal" value="<?php echo $this->FixedProductCostTotal;?>" />
-       <input type="hidden" name="VariableProductSetupFeeTotal" id="VariableProductSetupFeeTotal" value="<?php echo $this->VariableProductSetupFeeTotal;?>" />
-       <input type="hidden" name="FixedProductSetupFeeTotal" id="FixedProductSetupFeeTotal" value="<?php echo $this->FixedProductSetupFeeTotal; ?>" />
-       
-       
-      <input type="hidden" name="pcost" id="pcost" <?php echo $this->planname['bundle_cost']*0;?> />
-      <input type="hidden" name="totalfee" id="totalfee" <?php echo $this->planname['bundle_setup_cost']*0;?> />
-      <input type="hidden" name="apid" id="apid" value="0" />Plan Price
-      </td>
-        <?php
+      <td colspan="2" align="right" valign="top" class="table-head shadowlight">
+        <input type="hidden" name="pid" value="<?php echo $this->ecode($this->pid);?>" />
+        <input type="hidden" name="bundle_discount_type" id="bundle_discount_type" value="<?php echo $this->planname['bundle_discount_type'];?>" />
+        <input type="hidden" name="bundle_discount_per_cost" id="bundle_discount_per_cost" value="<?php echo $this->planname['bundle_discount_per_cost'];?>" />
+        <input type="hidden" name="bundle_discount_per_setup" id="bundle_discount_per_setup" value="<?php echo $this->planname['bundle_discount_per_setup'];?>" />
+        
+        <input type="hidden" name="VariableProductCostTotal" id="VariableProductCostTotal" value="<?php echo $this->VariableProductCostTotal;?>" />
+        <input type="hidden" name="FixedProductCostTotal" id="FixedProductCostTotal" value="<?php echo $this->FixedProductCostTotal;?>" />
+        <input type="hidden" name="VariableProductSetupFeeTotal" id="VariableProductSetupFeeTotal" value="<?php echo $this->VariableProductSetupFeeTotal;?>" />
+        <input type="hidden" name="FixedProductSetupFeeTotal" id="FixedProductSetupFeeTotal" value="<?php echo $this->FixedProductSetupFeeTotal; ?>" />
+        
+        
+        <input type="hidden" name="pcost" id="pcost" <?php echo $this->planname['bundle_cost']*0;?> />
+        <input type="hidden" name="totalfee" id="totalfee" <?php echo $this->planname['bundle_setup_cost']*0;?> />
+        <input type="hidden" name="apid" id="apid" value="0" />
+        Plan Price      :</td>
+      <?php
 	  if($this->planname['bundle_setup_cost']!=0){
 	  ?>
       <td align="right" valign="top" class="table-head shadowlight"> <?php echo $currency->toCurrency($this->planname['bundle_setup_cost']);?></td>
@@ -268,7 +288,7 @@ $(document).ready(function() {
 		{
 			$cpan=2;
 		 } ?>
-      <td colspan="<?=$cpan;?>" align="right"  class="normal-text b" nowrap="nowrap">
+      <td colspan="<?=$cpan;?>" align="right"  class="normal-text b red" nowrap="nowrap" id="provider">
         Please select the  number of providers using this system:<span class="normal-text">
         <select name="provider" id="provider" onchange="updateprice(this.value)">
           <?php 
@@ -280,7 +300,7 @@ $(document).ready(function() {
         </select>
         </span></td>
        
-      <td align="right" valign="top" ><input name="checkout" type="submit" disabled="disabled" class="form-label-main" id="checkout" value="Proceed to Registration" /></td>
+      <td align="right" valign="top" ><input name="checkout" type="submit" disabled="disabled" class="button-disabled" id="checkout" value="Proceed to Registration" /></td>
      </tr>
   </table>
   </form>

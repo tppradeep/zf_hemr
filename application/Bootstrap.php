@@ -1,11 +1,14 @@
 <?php
-require_once 'acl/acl.php';
+
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
-	
+   
 	function _initSession()
 	{
 		Zend_Session::start();
+		
+		$sess = new Zend_Session_Namespace('user');
+		
 		$customerId = new Zend_Session_Namespace('customerId');
 		$customerId->customerId = 1;
 		
@@ -15,9 +18,20 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$MailLegal = new Zend_Session_Namespace('maillegal');
 		$MailLegal->maillegal='<p><font face="Verdana, Geneva, sans-serif" size="1" color="#666666">DO NOT read, copy or disseminate this communication unless you are the intended addressee. This e-mail communication may contain confidential and/or privileged information intended only for the addressee. If you are not the intended recipient, please note that any dissemination, distribution, or copying of this communication is strictly prohibited. If you have received this communication in error, please notify the sender immediately by return e-mail, and delete it from your computer.</font></p>';
 		
-		
+		$mailconfig = new Zend_Session_Namespace('mail');
+		$mailconfig->userid='hostedopenemr@zhservices.com';
+		$mailconfig->password='hostedemr';
 	}
-	
+	protected function _initDatabase()
+	{
+		$db = new Zend_Db_Adapter_Pdo_Mysql(array(
+				'host'     => 'localhost',
+				'username' => 'root',
+				'password' => '',
+				'dbname'   => 'hosted_emr'
+		));
+		Zend_Registry::set('zf_db', $db);
+	}
     function _initViewHelpers ()
     {
         $this->bootstrap('layout');

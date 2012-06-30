@@ -1,4 +1,4 @@
-<link href="../../../../../../public/css/user.css" rel="stylesheet" type="text/css" />
+
 <table width="100%" border="0" cellspacing="2" cellpadding="2">
     <tr>
       <td colspan="4" class="plan-title shadow"><?php echo $this->planname['plan_name'];?>(selected providers : <?php echo $this->planname['provider_no'];?>)</td>
@@ -25,8 +25,7 @@
       <td align="center" valign="top" class="normal-text shadowlight"><?php echo $sino;?>.</td>
       <td class="normal-text shadowlight"><span class="product"><?php echo $productdtd['product_name'];?>
       </span><br />
-        <strong>Features : </strong>
-        <p><?php echo $productdtd['product_feature'];?></p></td>
+        <div class="features"><?php echo $productdtd['product_feature'];?></div></td>
       <td align="right" valign="top" class="normal-text shadowlight"><?php echo $us->toCurrency($productdtd['setup_fee']);?></td>
       <td align="right" valign="top" class="normal-text shadowlight"><?php echo $us->toCurrency($productdtd['cost'] * $this->planname['provider_no']);?></td>
     </tr>

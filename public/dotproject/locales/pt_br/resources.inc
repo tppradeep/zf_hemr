@@ -1,0 +1,23 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Add Resource"=>"Adicionar Recurso",
+"All Resources"=>"Todos os Recursos",
+"Description"=>"Descrição",
+"Details"=>"Detalhes",
+"Equipment"=>"Equipamento",
+"ID"=>"ID",
+"Max Alloc %"=>"% Máx Aloc",
+"Max Allocation %"=>"% Máxima Alocação",
+"Maximum Allocation Percentage"=>"Porcentagem Máxima de Alocação",
+"Notes"=>"Anotações",
+"Resource ID"=>"Identificação do Recurso",
+"Resource Name"=>"Nome do Recurso",
+"Tool"=>"Ferramenta",
+"Type"=>"Tipo",
+"Venue"=>"Local",
+"back"=>"voltar",
+"doDelete"=>"apagar",
+"new resource"=>"novo recurso",
+"resource list"=>"lista de recursos",
+"submit"=>"enviar",

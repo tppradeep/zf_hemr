@@ -1,5 +1,6 @@
 <?php
 require_once 'Zend/Http/Client.php';
+require_once 'CallerService.php';
 class PaymentController extends Zend_Controller_Action
 {
 
@@ -38,169 +39,17 @@ class PaymentController extends Zend_Controller_Action
     	
     }
 
-    public function confirmAction()
+    public function confirmAction() // This is for IPN now it integrated into paypal pro so, no need of IPN
     {
     	
-    		
-    	 $this->_helper->layout()->disableLayout();
-    	 $formData = $this->getRequest()->getParams();
-    //	echo "<pre>";
-    //	print_r($formData);
-    //	echo "</pre>";
-    	$req = 'cmd=_notify-validate';
-    	 $i=1;
-    	 foreach ($formData as $key => $value) {
-    	 	if($i>3)
-    	 	{
-    	 		$value = urlencode(stripslashes($value));
-    	 		$req .= "&$key=$value";
-    	 	}
-    	 	$i=$i+1;
-    	 }
-    	// echo $req;
-    	 
-    	 
-    	// $header = "POST /cgi-bin/webscr HTTP/1.0\r\n";
-    	 //$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-    	// $header .= "Content-Length: " . strlen($req) . "\r\n\r\n";
-    	 
-    	// $fp = fsockopen ('https://www.sandbox.paypal.com', 80, $errno, $errstr, 30);
-    	// $fp = fsockopen ('ssl://www.sandbox.paypal.com',443, $errno, $errstr, 30);
-    	// fputs ($fp, $header . $req);
-    	// echo $res = fgets ($fp, 1024);
-    	 $res = file_get_contents('https://www.sandbox.paypal.com?'.$req.'');
-    	 $paypaloutput=$res;
-    	 
-    	 $txn_type=$formData['txn_type'];
-    	 $res="SUCCESS";
-    	 
-    	 
-      	/*
-      	 * The following section done with assumption that the #res is "SUCCESS"
-      	 */
-    	 if($res=="SUCCESS")
-    	 {
-	    	 	$fp = fopen('d://data.html', 'a');
-	    	 	fwrite($fp, "<br>----------".date('Y-m-d')."-". $paypaloutput." Write Start Query Retrived---<br>");
-	    	 	fwrite($fp, $req);
-	    	 	fwrite($fp, "<br>--------------Write Query Retrived End-------------------<br>");
-	    	 	fclose($fp);
-    	 	
-	    	 	
-    	 	$payer_id 		= $formData['payer_id'];
-    	 	$first_name 	= $formData['first_name'];
-    	 	$particulars	= $formData['item_name'];
-    	 	$transaction_id="";
-    	 	if (array_key_exists('txn_id', $formData)) {
-    	 	 	$transaction_id	= $formData['txn_id'];
-    	 	}
-    	 	$last_name 		= $formData['last_name'];
-    	 	$payer_email 	= $formData['payer_email'];
-
-    	 	//$payment_status = "Completed"; //This is hardcoded now have update while hosting
-    	 	$payment_status	= $formData['payment_status'];
-    	 	$paypal_string	= $req;
-    	 	$invoice_number			= $formData['custom'];
-    	 	$subscr_id="";
-    	 	
-    	// 	$payment_date 	= $formData['subscr_date'];
-    	 	$payment_date   = date('Y-m-d');
-    	 	
-    	 //	$subscription_amount = $formData['mc_amount3'];
-    	 	if (array_key_exists('subscr_id', $formData)) {
-    	 	$subscr_id 		= $formData['subscr_id'];
-    	 	}
-    	 	
-    	 	
-    	 	$InvoiceAddress		= New Application_Model_DbTable_Paymentdb();
-    	 	$invoiceaddress		= $InvoiceAddress->invoiceaddress_invoice($invoice_number);
-    	 	
-    	 	
-    	 	$hf_id =$invoiceaddress[0]['hf_id'];
-    	 	
-    	 	
-    	 	if($txn_type=="subscr_payment" || $txn_type=="web_accept") // when plan is signup first time payment
-    	 	{
-    	 	/*
-    	 	 * Calling Confirm_invoice function to update Invoice Status after payment
-    	 	 * This function is a backend process of IPN execution
-    	 	 */
-    	 	    
-    	 	$inv = new Application_Model_DbTable_Paymentdb();
-    	 	$uid=$inv->Confirm_invoice($hf_id,$invoice_number,$particulars,$payment_date,$payment_status,$transaction_id,$paypal_string,$subscr_id);
-    	 	
-    	 	
-    	 	/*
-    	 	 * Sending Mail with Payment Status
-    	 	 */
-    	 	/*
-    	 	 * Email Template Section
-    	 	*/
-    	 	$MailLegal = new Zend_Session_Namespace('maillegal');
-    	 	$mailbottom=$MailLegal->maillegal;
-    	 	
-    	 	$gendb = new Application_Model_DbTable_General();
-    	 	$emldata = $gendb->emailtemplate('invoice_details');
-    	 	$emailsubject =  str_replace('__invoiceno__', $invoice_number, $emldata['Subject']);
-    	 	$emailbody = $emldata['content'];
-    	 	$emailbody = str_replace('__invoiceno__', $invoice_number, $emailbody);
-    	 	
-    	 	$emailbody=$emailbody.$mailbottom;
-    	 
-    	 
     	
-    	$emailto = trim($invoiceaddress[0]['hf_email']);
-    	$nameto = $invoiceaddress[0]['hf_facility_name'];
-    	
-    	$config = array('ssl' => 'tls', 'port' => 587, 'auth' => 'login', 'username' => 'pradeep@zhservices.com', 'password' => 'pradulmon');
-    	
-    	$transport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', $config);
-    	
-    	$mail = new Zend_Mail();
-    	$mail->setType(Zend_Mime::MULTIPART_RELATED);
-    	//$mail->setBodyText('Invoice Details attached');
-    	$mail->setBodyHtml($emailbody);
-    	$mail->setFrom('pradeep@zhservices.com', 'ZH Healthcare');
-    	$mail->addTo($emailto, $nameto);
-    	$mail->setSubject($emailsubject);
-    	try
-		{
-			$mail->send($transport);
-		}
-		catch(Zend_Exception $e)
-		{
-		    
-		}
-    	
-    	if(strtolower($payment_status)=="completed")
-    	{
-
-    	    $ProductUpdateToPlan = new Application_Model_DbTable_Paymentdb();
-    	    $uid=$ProductUpdateToPlan->ProductUpdateToPlan($hf_id,$invoice_number,$payment_date,$payment_status,$transaction_id);
-    	    
-    	}
-    	
-    	 	}
-    	 
-    	 
-    	 	
-    	 }    	 
     }
 
     public function thanksAction()
     {
-        $formData = $this->getRequest()->getParams();
-   //     echo "<pre>";
-    //    print_r($_GET);
-        
-        $req="";
-        foreach ($_GET as $key => $value) {
-        	$value = urlencode(stripslashes($value));
-        	$req .= "&$key=$value";
-        }
-      //  $UpdateInvoice = new Application_Model_DbTable_Paymentdb();
-       // $UI=$UpdateInvoice->updateinvoice($formData);
-     	$this->view->transaction=$formData;
+    	$cmsObj = new Application_Model_DbTable_Index();
+        $this->view->cms = $cmsObj->getcms('Payment Success');
+     	
     }
 
     public function viewinvoiceAction()
@@ -237,8 +86,7 @@ class PaymentController extends Zend_Controller_Action
        	$this->view->planname 			= $pname->planname($invoicedetails['plan_id']);
     	}
     	
-    	$PayPal_Notification 			= new Application_Model_DbTable_Cms();
-    	$this->view->paypaldtd 			= $PayPal_Notification->getcms('Paypal_intimation');
+    	
     	
     	$cms 							= new Application_Model_DbTable_Cms();
     	$this->view->cmsdtd 			= $cms->getcms('User_reg_Confirm');
@@ -339,10 +187,13 @@ class PaymentController extends Zend_Controller_Action
     	<td colspan="3" valign="middle" class="line">&nbsp;</td>
     	</tr>
     	<tr>
-    	<td valign="middle" class="invoice-title"><strong>Bill To :</strong><br />';
-    	
+    	<td valign="middle" class="invoice-title"><strong>Bill To :';
+    	$invoicePDF .= $invoiceaddress['hf_facility_suffix'];
+    	$invoicePDF .= "&nbsp;";
     	$invoicePDF .= $invoiceaddress['hf_facility_name'];
-    	$invoicePDF .= "<br/>";
+    	$invoicePDF .= "&nbsp;";
+    	$invoicePDF .= $invoiceaddress['hf_facility_lname'];
+    	$invoicePDF .= "</strong><br />";
     	$invoicePDF .= $invoiceaddress['hf_address'];
     	$invoicePDF .= "<br/>";
     	$invoicePDF .= $invoiceaddress['hf_city'];
@@ -374,13 +225,13 @@ class PaymentController extends Zend_Controller_Action
     	<td width="12%" align="right" class="invoice-table-title line">Amount</td>
     	<td width="4%" class="invoice-table-title line">&nbsp;</td>
     	</tr>';
-    	if($invoicedetails['plan_id']==0)
+    	if($invoicedetails['amount']>0)
     	{
     	    $invoicePDF .= '<tr>
-    	    <td height="35" class="normal-text b line">&nbsp;</td>
-    	    <td class="normal-text line">'.$invoicedetails['particulars'].' </td>
-    	    <td class="normal-text line">:</td>
-    	    <td align="right" class="normal-text b line">';
+    	    <td class="normal-text line"  valign="middle" height="25px">&nbsp;</td>
+    	    <td class="normal-text line" valign="middle">'.str_replace(",","<br/>",$invoicedetails['particulars']).' </td>
+    	    <td class="normal-text line" valign="middle">:</td>
+    	    <td align="right" class="normal-text line" valign="middle">';
     	    
     	    $MonthlyFee = new Zend_Currency('en_US');
     	    $invoicePDF .= $MonthlyFee->toCurrency($invoicedetails['amount']);
@@ -388,16 +239,14 @@ class PaymentController extends Zend_Controller_Action
     	    <td align="right" class="normal-text b line">&nbsp;</td>
     	    </tr>';
     	}
-    	else
-    	{
-	    	if($invoicedetails['amount']>0)
+	    	if($invoicedetails['setupfee']>0)
 	    	{
 	    	
 	    	$invoicePDF .='<tr>
-	    		<td height="50" class="normal-text b line">&nbsp;</td>
-	    		<td class="normal-text line">Plan Onetime Fee </td>
-	    		<td class="normal-text line">:</td>
-	    		<td align="right" class="normal-text b line">';
+	    		<td class="normal-text line" valign="middle" height="25px">&nbsp;</td>
+	    		<td class="normal-text line" valign="middle">Onetime Fee </td>
+	    		<td class="normal-text line" valign="middle">:</td>
+	    		<td align="right" class="normal-text line" valign="middle">';
 	    	
 	    		$OneTimeFee = new Zend_Currency('en_US');
 	    		$invoicePDF .= $OneTimeFee->toCurrency($invoicedetails['setupfee']);
@@ -405,45 +254,32 @@ class PaymentController extends Zend_Controller_Action
 	    		<td align="right" class="normal-text b line">&nbsp;</td>
 	    		</tr>';
 	    	}
-	    	if($invoicedetails['subscription_amount']>0)
+	    	if($invoicedetails['discount_amount']>0)
 	    	{
 	    	
 	    		$invoicePDF .= '<tr>
-	    		<td height="35" class="normal-text b line">&nbsp;</td>
-	    		<td class="normal-text line">Monthly Fee (advance payment) </td>
-	    		<td class="normal-text line">:</td>
-	    		<td align="right" class="normal-text b line">';
+	    		<td class="normal-text line" valign="middle" height="25px">&nbsp;</td>
+	    		<td class="normal-text line" valign="middle">Discount </td>
+	    		<td class="normal-text line" valign="middle">:</td>
+	    		<td align="right" class="normal-text line" valign="middle">';
 	    	
 	    		$MonthlyFee = new Zend_Currency('en_US');
-	    		$invoicePDF .= $MonthlyFee->toCurrency($invoicedetails['subscription_amount']);
+	    		$invoicePDF .= $MonthlyFee->toCurrency($invoicedetails['discount_amount']);
 	    		$invoicePDF .='</td>
 	    		<td align="right" class="normal-text b line">&nbsp;</td>
 	    		</tr>';
 	    	}
-    	}
-    
-    		/*if($invoicedetails['discount_amount']>0)
-    		{
-    			$invoicePDF .= '<tr>
-    			<td height="35" class="normal-text b line">&nbsp;</td>
-    			<td align="right" class="normal-text b line">Discount </td>
-    			<td class="normal-text b line">:</td>
-    			<td align="right" class="normal-text b line">
-    			'.$MonthlyFee->toCurrency($invoicedetails['discount_amount']).'
-    			</td>
-    			<td align="right" class="normal-text b line">&nbsp;</td>
-    			</tr>';
-    		}*/
+
     			$invoicePDF .='<tr>
-    			<td height="35" class="normal-text b line">&nbsp;</td>
-    			<td align="right" class="normal-text b line">Gross Amount</td>
-    			<td class="normal-text b line">:</td>
-    			<td align="right" class="normal-text b line">';
+    			<td class="normal-text b line" valign="middle" style="padding:10px;" height="25px">&nbsp;</td>
+    			<td align="right" class="normal-text b line" valign="middle" style="padding:10px;">Gross Amount</td>
+    			<td class="normal-text b line" valign="middle" style="padding:10px;">:</td>
+    			<td align="right" class="normal-text b line" valign="middle" style="padding:10px;">';
     	
     			$totalFee = new Zend_Currency('en_US');
-    			$invoicePDF .= $totalFee->toCurrency($invoicedetails['amount']+$invoicedetails['setupfee']);
+    			$invoicePDF .= $totalFee->toCurrency($invoicedetails['amount']+$invoicedetails['setupfee']-$invoicedetails['discount_amount']);
     			$invoicePDF .='</td>
-    			<td align="right" class="normal-text b line">&nbsp;</td>
+    			<td align="right" class="normal-text b line" style="padding:10px;">&nbsp;</td>
     			</tr>';
     		
     	
@@ -451,7 +287,6 @@ class PaymentController extends Zend_Controller_Action
     	$invoicePDF .='</table></td>
     	</tr>
     	</table>';
-    	
     	$invoicepath = str_replace("application", "public", APPLICATION_PATH).'\\uploads\\invoice\\'.$invoicedetails['invoice_number'].'.pdf';
    // 	$file = fopen($invoicepath,"w");
    // 	echo fwrite($file,$invoicePDF);
@@ -540,9 +375,227 @@ class PaymentController extends Zend_Controller_Action
     	 */
     }
 
+    public function makePaymentAction()
+    {
+        $Gndb = new Application_Model_DbTable_General();
+         
+        $PayPal_Notification 			= new Application_Model_DbTable_Cms();
+        $this->view->paypaldtd 			= $PayPal_Notification->getcms('Paypal_intimation');
+        
+        $sess = new Zend_Session_Namespace('user');
+        $hf_id=$sess->hf_id;
+        
+        if ($this->getRequest()->isPost()) // Making Payment
+        {
+	        $this->view->hfdata = $Gndb->identifierdetails($hf_id);
+	    	$formData = $this->getRequest()->getParams();
+	    	$this->view->formdata = $formData;
+        }
+    }
+    
+    public function doPaymentAction()
+    {
+    	if($this->getRequest()->isPost())
+    	{
+    	    
+    	    $formData = $this->getRequest()->getParams();
+    	    
+    	//    echo "<pre>";
+    	//    print_r($formData);
+    	//    echo "</pre>";
+    	  //  die;
+    	    $this->view->formdata = $formData;
 
+    	    $paymentType =urlencode( $formData['cmd']);
+    	    $firstName =urlencode( $formData['firstName']);
+    	    $lastName =urlencode( $formData['lastName']);
+    	    $creditCardType =urlencode( $formData['creditCardType']);
+    	    $creditCardNumber = urlencode($formData['creditCardNumber']);
+    	    $expDateMonth =urlencode( $formData['expDateMonth']);
+    	    
+    	    // Month must be padded with leading zero
+    	    $padDateMonth = str_pad($expDateMonth, 2, '0', STR_PAD_LEFT);
+    	    
+    	    $expDateYear =urlencode( $formData['expDateYear']);
+    	    $cvv2Number = urlencode($formData['cvv2Number']);
+    	    $address1 = urlencode($formData['address1']);
+    	    $address2 = urlencode($formData['address2']);
+    	    $city = urlencode($formData['city']);
+    	    $state =urlencode( $formData['state']);
+    	    $zip = urlencode($formData['zip']);
+    	    $amount = urlencode($formData['amount']);
+    	    $currencyCode="USD";
+    	    
+    	    $profileDesc = urlencode($formData['item_name']);
+    	    $billingPeriod = "Month";
+    	    $billingFrequency = 1;
+    	    $totalBillingCycles = 0;
+    	    
+    	  
+    	    $initamt = urlencode($formData['a1']);
+    	    
+    	    if($initamt==0)
+    	        $initamt=$amount; // if there is no setup fee then assign first month subscription amount to initial amount
+    	    
+    	   
+    	    
+    	    $profileStartDateDay = date("d");
+    	    // Day must be padded with leading zero
+    	    $padprofileStartDateDay = str_pad($profileStartDateDay, 2, '0', STR_PAD_LEFT);
+    	    $profileStartDateMonth = date("m");
+    	    // Month must be padded with leading zero
+    	    $padprofileStartDateMonth = str_pad($profileStartDateMonth, 2, '0', STR_PAD_LEFT);
+    	    $profileStartDateYear = date("Y");
+    	    
+    	    $profileStartDate = urlencode($profileStartDateYear . '-' . $padprofileStartDateMonth . '-' . $padprofileStartDateDay . 'T00:00:00Z');
+    	    
+    	    /* Construct the request string that will be sent to PayPal.
+    	     The variable $nvpstr contains all the variables and is a
+    	    name value pair string with & as a delimiter */
+    	    $direct = 0;
+    	    
+    	   
+    	    if($amount==0) //Direct Payment section
+    	    {
+    	       // echo "direct";
+				$direct = 1;
+    	    	$amount=$initamt;
+    	        $nvpstr="&AMT=$amount&PAYMENTACTION=Sale&IPADDRESS=192.168.0.1&INITAMT=$initamt&CREDITCARDTYPE=$creditCardType&ACCT=$creditCardNumber&EXPDATE=".$padDateMonth.$expDateYear."&CVV2=$cvv2Number&FIRSTNAME=$firstName&LASTNAME=$lastName&STREET=$address1&CITY=$city&STATE=$state".
+    	        		"&ZIP=$zip&COUNTRYCODE=US&CURRENCYCODE=$currencyCode&PROFILESTARTDATE=$profileStartDate&DESC=$profileDesc&BILLINGPERIOD=$billingPeriod&BILLINGFREQUENCY=$billingFrequency&TOTALBILLINGCYCLES=$totalBillingCycles";
+    	        	
+    	     
+    	        $resArray=hash_call_direct("DoDirectPayment",$nvpstr);
+    	    }
+    	    else // recurrering section 
+    	    {
+    	       
+    	    	 $nvpstr="&AMT=$amount&INITAMT=$initamt&CREDITCARDTYPE=$creditCardType&ACCT=$creditCardNumber&EXPDATE=".$padDateMonth.$expDateYear."&CVV2=$cvv2Number&FIRSTNAME=$firstName&LASTNAME=$lastName&STREET=$address1&CITY=$city&STATE=$state".
+    	    		"&ZIP=$zip&COUNTRYCODE=US&CURRENCYCODE=$currencyCode&PROFILESTARTDATE=$profileStartDate&DESC=$profileDesc&BILLINGPERIOD=$billingPeriod&BILLINGFREQUENCY=$billingFrequency&TOTALBILLINGCYCLES=$totalBillingCycles";
+    	
+    	   		$resArray=hash_call("CreateRecurringPaymentsProfile",$nvpstr);
+    	    }
+    	   // echo $nvpstr;
+    	   // die;
+    	   // echo  $_SESSION['curl_error_msg'];
+		//	echo "<pre>";
+			//print_r($resArray);
+		//	die;
+			
+    	    
+    	    /* Display the API response back to the browser.
+    	     If the response from PayPal was a success, display the response parameters'
+    	    If the response was an error, display the errors received using APIError.php.
+    	    */
+    	    $ack = strtoupper($resArray["ACK"]);
+    	  //  die;
+    	    if($ack=="SUCCESS") 
+    	    {
+
+    	      	
+    	        // Updating the tables and sending mail
+    	        $sess = new Zend_Session_Namespace('user');
+    	        $hf_id = $sess->hf_id;
+    	        
+    	        
+    	        $particulars = $formData['item_name'];
+    	        $payment_date = date('Y-m-d');
+    	        $payment_status = "COMPLETED";
+    	        $transaction_id = $resArray['TRANSACTIONID'];
+				if($direct==0)
+    	        	$subscr_id = $resArray['PROFILEID'];
+    	        $paypal_string = json_encode($resArray);
+    	        
+    	        $invoice_number = $formData['item_number'];
+    	        
+    	        $inv = new Application_Model_DbTable_Paymentdb();
+    	        $uid=$inv->Confirm_invoice($hf_id,$invoice_number,$particulars,$payment_date,$payment_status,$transaction_id,$paypal_string,$subscr_id);
+    	       
+    	        
+    	        /*
+    	         * CALLING PLAN SETTUP SECTION
+    	         * 
+    	         */
+
+    	        
+			    	   
+							
+						//	die;
+    	        /*
+    	         * The above code section using to auto setup the oemr section. deleting or altering the section will affect the automatic plan setup
+    	         * 
+    	         */
+    	        /*
+    	         * Sending Mail with Payment Status
+    	        */
+    	        /*
+    	         * Email Template Section
+    	        */
+    	        $MailLegal = new Zend_Session_Namespace('maillegal');
+    	        $mailbottom=$MailLegal->maillegal;
+    	         
+    	        $gendb = new Application_Model_DbTable_General();
+    	        $emldata = $gendb->emailtemplate('invoice_details');
+    	        $emailsubject =  str_replace('__invoiceno__', $invoice_number, $emldata['Subject']);
+    	        $emailbody = $emldata['content'];
+    	        $emailbody = str_replace('__invoiceno__', $invoice_number, $emailbody);
+    	        $emailbody = str_replace('__name__', $firstName." ".$lastName, $emailbody);
+    	         
+    	        $emailbody=$emailbody.$mailbottom;
+    	        
+    	        $InvoiceAddress		= New Application_Model_DbTable_Paymentdb();
+    	        $invoiceaddress		= $InvoiceAddress->invoiceaddress_invoice($invoice_number);
+    	         
+    	        $emailto = trim($invoiceaddress[0]['hf_email']);
+    	        $nameto = $invoiceaddress[0]['hf_facility_name'];
+    	         
+    	        
+    	        $mailconfig = new Zend_Session_Namespace('mail');
+    	        
+    	        $config = array('ssl' => 'tls', 'port' => 587, 'auth' => 'login', 'username' =>  $mailconfig->userid, 'password' => $mailconfig->password);
+    	         
+    	        $transport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', $config);
+    	         
+    	        $mail = new Zend_Mail();
+    	        $mail->setType(Zend_Mime::MULTIPART_RELATED);
+    	        //$mail->setBodyText('Invoice Details attached');
+    	        $mail->setBodyHtml($emailbody);
+    	        
+    	        
+    	        $mail->setFrom($mailconfig->userid, 'ZH Healthcare');
+    	        $mail->addTo($emailto, $nameto);
+    	        $mail->setSubject($emailsubject);
+    	        
+    	        $gendb->messageadd($hf_id,addslashes($emailsubject),addslashes($emailbody));
+    	        try
+    	        {
+    	        	$mail->send($transport);
+    	        	
+    	        }
+    	        catch(Zend_Exception $e)
+    	        {
+    	        
+    	        }
+ 	        	$ProductUpdateToPlan = new Application_Model_DbTable_Paymentdb();
+   	        	$uid=$ProductUpdateToPlan->ProductUpdateToPlan($hf_id,$invoice_number,$payment_date,$payment_status,$transaction_id);
+				
+   	        	//$this->_helper->redirector('thanks','Payment',null,array('st' => 'success'));
+   	        	//$this->_helper->redirector('PlanSetup','Index',null,array('st' => 'success','hfid'=>base64_encode($hf_id)));
+
+   	        	$this->_redirect('/PlanSetup/index/st/success/hfid/'.base64_encode($hf_id));
+   	        	 
+    	    }
+    	    else // Payment is fail 
+    	    {
+    	        $this->_helper->redirector('fail','Payment',null,array('st' => 'fail'));
+    		}
+    	}
+    }
+    public function failAction()
+    {
+        $cmsObj = new Application_Model_DbTable_Index();
+        $this->view->cms = $cmsObj->getcms('Payment Fail');
+    }
 }
-
 
 
 

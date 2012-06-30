@@ -1,0 +1,60 @@
+	<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/themes/base/jquery.ui.all.css">
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/external/jquery.bgiframe-2.1.2.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.core.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.widget.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.mouse.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.button.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.draggable.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.position.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.dialog.js"></script>
+	<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/demo/demos.css">
+	
+	
+		
+	
+
+
+<table width="98%" border="0" cellspacing="0" cellpadding="0" id="grid">
+  <thead>
+  <tr>
+    <td width="6%" height="20" align="center"  class="invoice-table-title b table-head-bg ">#</td>
+    <td width="64%" class="invoice-table-title b table-head-bg">Subject</td>
+    <td width="14%" align="left" class="invoice-table-title b table-head-bg">Date</td>
+    <td width="16%" class="invoice-table-title b table-head-bg">Options</td>
+  </tr>
+  </thead>
+  <tbody>
+  <?php 
+  $sino=1;
+foreach($this->inbox as $inbox)
+ {
+  ?>
+  <tr>
+    <td height="22" align="center" nowrap="nowrap" class="normal-text  line"><?php echo $sino;?>.</td>
+    <td class="normal-text line"><?php echo $inbox['subject'];?></td>
+    <td class="normal-text line" align="left">
+    <?php echo $this->Disdate($inbox['date'])?>
+    </td>
+    <td class="normal-text line" align="center" nowrap="nowrap">
+    <a href="<?php echo $this->baseUrl();?>/user/Inbox/view/id/<?php echo $inbox['id']?>?keepThis=true&TB_iframe=true&height=350&width=500" title="<?php echo $inbox['subject'];?>" class="thickbox">
+    <img src = '<?php echo  $this->baseUrl();?>/images/view.png'>
+	</a>   
+    </td>
+  </tr>
+  <?php 
+  $sino = ++$sino;
+  }
+  ?>
+  </tbody>
+</table>
+  </div>
+ <script type="text/javascript">
+                //<![CDATA[
+ $(document).ready(function() {
+	    oTable = $('#grid').dataTable({
+	        "bJQueryUI": true,
+	        "sPaginationType": "full_numbers"
+	    });
+	} );
+                //]]>
+                </script>

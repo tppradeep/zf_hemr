@@ -53,59 +53,80 @@ function RemoveAdditionalProductFromCart(idcart)
     <table width="100%" border="0" cellspacing="2" cellpadding="2">
       <tr>
         <td width="2%" class="cart-title shadow">#</td>
-        <td width="31%" class="cart-title shadow">Particulars</td>
-        <td width="9%" align="center" class="cart-title shadow">Providers Selected</td>
-        <td width="12%" align="right" class="cart-title shadow">Cost</td>
-        <td width="12%" align="right" class="cart-title shadow">Onetime Fee</td>
-         <td width="7%" align="right" class="cart-title shadow">Discount</td>
-        <td width="38%" align="right" class="cart-title shadow">Total</td>
-        <td width="1%" align="right" class="cart-title shadow">&nbsp;</td>
+        <td width="8%" class="cart-title shadow">Plan</td>
+        <td width="37%" class="cart-title shadow">Plan Includes</td>
+        <td width="9%" align="center" class="cart-title shadow">Providers</td>
+        <td width="12%" align="right" nowrap="nowrap" class="cart-title shadow">Provider / Month</td>
+        <td width="10%" align="right" nowrap="nowrap" class="cart-title shadow">Onetime Fee</td>
+        <td width="19%" align="right" class="cart-title shadow">Diacount</td>
+        <td width="3%" align="right">&nbsp;</td>
       </tr>
       <?php 
       $currency = new Zend_Currency('en_US');
       $gtotal=0;
 	  $sino=1;
 	  $gsetupfee=0;
+	  $totaldiscount=0;
+	  $totalunitprice=0;
+	  $totalsetupfee=0;
+	//  echo "<pre>";
+	//  print_r($this->cart);
+	//  echo "</pre>";
       foreach($this->cart as $cart)
       {
       ?>
       <tr>
-        <td height="25" class="normal-text shadowlight"><?php echo $sino;?>.</td>
-        <td class="normal-text shadowlight"><?php echo $this->escape($cart['description']);?> </td>
-        <td class="normal-text shadowlight" align="center"><?php echo $cart['qty'];?></td>
-        <td class="normal-text shadowlight" align="right">
+        <td height="25" valign="top" class="normal-text shadowlight"><?php echo $sino;?>.</td>
+        <td valign="top" class="normal-text shadowlight"><?php
+		if(!$cart['plan_id']==0)
+		 echo stripcslashes($cart['description']);?></td>
+        <td valign="top" nowrap="nowrap" class="normal-text shadowlight">
+        <?php
+		if(!$cart['plan_id']==0)
+		{
+		echo "<ul class='cartul'>";
+		foreach($this->prolist as $prolist)
+		{
+			
+			echo '<li><a class="openmodalbox" href="javascript:void(0);"	rel="ajax: '.$this->baseUrl().'/user/Products/productfeature/id/'.base64_encode($prolist['idproducts']).'">'.$prolist['product_name'].'</a></li>';	
+		}
+		echo "</ul>";
+		}
+		else
+		{
+			echo stripcslashes($cart['description']);	
+		}
+		?>
+        </td>
+        <td align="center" valign="top" class="normal-text shadowlight"><?php echo $cart['qty'];?></td>
+        <td align="right" valign="top" class="normal-text shadowlight">
         <?php 
         echo $currency->toCurrency($cart['unit_price']);
+		$totalunitprice = $totalunitprice + $cart['unit_price'];
         ?>
         </td>
-        <td class="normal-text shadowlight" align="right">
+        <td align="right" valign="top" class="normal-text shadowlight">
          <?
 		if($cart['setupfee']>0)
 		{
 			echo $currency->toCurrency($cart['setupfee']);
+			$totalsetupfee = $totalsetupfee + $cart['setupfee'];
 		}
 		else
 		{
 			echo "$0.00";	
 		}
+		$totaldiscount = $totaldiscount + $cart['discount'];
+          $currency->toCurrency(($cart['unit_price'])+$cart['setupfee']);
+         $gtotal = $gtotal + (($cart['unit_price'])+$cart['setupfee']);
 		?>
         </td>
-        <td class="normal-text shadowlight" align="right">
-        <?php 
-        echo $currency->toCurrency($cart['discount']);
-        ?>
-        </td>
-        <td class="normal-text shadowlight" align="right">
-        <?php 
-         echo $currency->toCurrency(($cart['unit_price'])+$cart['setupfee']-$cart['discount']);
-         $gtotal = $gtotal + (($cart['unit_price'])+$cart['setupfee']-$cart['discount']);
-        ?>
-        </td>
-        <td class="normal-text shadowlight" align="right">
+        <td align="right" valign="top" class="normal-text shadowlight"><?php echo $cart['discount'];?></td>
+        <td align="right" valign="top" class="normal-text shadowlight">
         <?php
 		if($cart['plan_id']==0)
 		{
-			echo '<img src="'.$this->baseUrl().'/images/delete.gif" width="16" height="16" alt="Delete" title="Delete" onclick="RemoveAdditionalProductFromCart('.$cart['idcart'].')" />';	
+			echo '<img src="'.$this->baseUrl().'/images/delete.gif" width="16" height="16" alt="Delete" title="Delete" onclick="RemoveAdditionalProductFromCart('.$cart['idcart'].')"  style="cursor:pointer;"/>';	
 		}
 		?>
         </td>
@@ -119,20 +140,40 @@ function RemoveAdditionalProductFromCart(idcart)
 	   if( $sino>1)
 		  {
       ?>
+       <tr>
+          <td class="normal-text"></td>
+          <td colspan="6" class="normal-text b line"></td>
+          <td class="normal-text b" align="right"></td>
+        </tr>
+        <tr>
+          <td class="normal-text"></td>
+          <td colspan="2" class="normal-text b">Sub Total</td>
+          <td class="normal-text b">&nbsp;</td>
+          <td align="right" class="normal-text b"><?php echo $currency->toCurrency($totalunitprice);?></td>
+          <td align="right" class="normal-text b"><?php echo $currency->toCurrency($totalsetupfee);?></td>
+          <td class="normal-text b" align="right"><?php echo $currency->toCurrency($totaldiscount);?></td>
+          <td width="3%" align="right" class="normal-text b">&nbsp;</td>
+        </tr>
+        <tr>
+          <td class="normal-text"></td>
+          <td colspan="6" class="normal-text b line"></td>
+          <td class="normal-text b" align="right"></td>
+        </tr>
         <tr>
         <td class="normal-text"></td>
         <td colspan="5" class="normal-text b">Gross Amount</td>
-        <td class="normal-text b" align="right"><?php echo $currency->toCurrency($gtotal+$gsetupfee);?></td>
+        <td class="normal-text b" align="right"><?php echo $currency->toCurrency(($gtotal+$gsetupfee)-$totaldiscount);?></td>
         <td class="normal-text b" align="right">&nbsp;</td>
         </tr>
         <tr>
           <td class="normal-text"></td>
           <td align="right" class="normal-text b"></td>
+          <td align="right" class="normal-text b"></td>
           <td align="right" class="normal-text b">&nbsp;</td>
           <td align="right" nowrap="nowrap" class="normal-text b">
           <?php  if($this->planname =="")
  {?>
-          <a href="<?php echo $this->baseURL();?>/user/Products" class="BrowseProducts shadow">Browse Products</a>
+          <!--a href="<?php echo $this->baseURL();?>/user/Products" class="BrowseProducts shadow">Browse Products</a-->
           <?php }?>
           </td>
           <td align="right" nowrap="nowrap" class="normal-text b">&nbsp;</td>
@@ -164,7 +205,18 @@ function RemoveAdditionalProductFromCart(idcart)
   </tr>
   <tr>
   <td class="form-label-main">
-  If you wish to add more products, you can add into the cart from below
+   <?php 
+  if($this->cmsadditional)
+  {
+  		echo '<div class="cms">';
+		if(!$this->cmsadditional['cms_title']=="")
+		{
+    		echo '<span>'.$this->cms['cms_title'].'</span><br/>';
+		}	
+	echo $this->cmsadditional['cms_details'];
+	echo '</div>';
+  }
+?>
   </td>
   </tr>
   <tr>
@@ -174,13 +226,13 @@ function RemoveAdditionalProductFromCart(idcart)
  <table width="100%" border="0" cellspacing="2" cellpadding="2">
   <tr>
     <td width="3%" class="cart-title shadow">#</td>
-    <td width="70%" class="cart-title shadow">Product Name</td>
-    <td width="12%" align="right" class="cart-title shadow">Cost / Provider</td>
-    <td width="12%" align="right" class="cart-title shadow">Onetime Fee</td>
+    <td width="70%" class="cart-title shadow">Category</td>
+    <td width="70%" nowrap="nowrap" class="cart-title shadow">Product Name</td>
+    <td width="12%" align="right" class="cart-title shadow">Provider / Month</td>
+    <td width="12%" align="right" nowrap="nowrap" class="cart-title shadow">Onetime Fee</td>
     <!--td width="12%" align="left" nowrap="nowrap" class="cart-title shadow">Payment Term</td-->
-    <td width="7%" class="cart-title shadow">Features</td>
     <td width="7%" class="cart-title shadow">Providers</td>
-    <td width="7%" class="cart-title shadow">Total Cost</td>
+    <td width="7%" nowrap="nowrap" class="cart-title shadow">Total Cost</td>
     <td width="8%" nowrap="nowrap" class="cart-title shadow">Add To Cart</td>
   </tr>
   <?php 
@@ -191,6 +243,7 @@ function RemoveAdditionalProductFromCart(idcart)
   ?>
    <tr>
     <td height="25" class="normal-text"></td>
+    <td class="normal-text">&nbsp;</td>
     <td height="25" class="normal-text">&nbsp;</td>
     <td height="25" class="normal-text">&nbsp;</td>
     <td height="25" class="normal-text">&nbsp;</td>

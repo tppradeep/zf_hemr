@@ -85,7 +85,7 @@
                     "alertText": "* Invalid URL"
                 },
                 "onlyNumberSp": {
-                    "regex": /^[0-9\ ]+$/,
+                    "regex": /^[0-9]+$/,
                     "alertText": "* Numbers only"
                 },
                 "onlyLetterSp": {
@@ -93,7 +93,7 @@
                     "alertText": "* Letters only"
                 },
                 "onlyLetterNumber": {
-                    "regex": /^[\s0-9a-zA-Z]+$/,
+                    "regex": /^[0-9a-zA-Z]+$/,
                     "alertText": "* No special characters allowed"
                 },
 				 "onlyLetterwithSpaceandAppostophy": {
@@ -117,18 +117,18 @@
                     // you may want to pass extra data on the ajax call
                     "extraData": "",
                     // if you provide an "alertTextOk", it will show as a green prompt when the field validates
-                    "alertTextOk": "* This Email Address is available.",
+                    "alertTextOk": "",
                     "alertText": "* The Email address entered is already taken.Please enter another email address",
-                    "alertTextLoad": "* Validating, please wait"
+                    "alertTextLoad": ""
                 },
 				"ajaxHostedIdentifier": {
                     "url": "../hostedidentifiercheck/",
                     // you may want to pass extra data on the ajax call
                     "extraData": "",
                     // if you provide an "alertTextOk", it will show as a green prompt when the field validates
-                    "alertTextOk": "* This Organization short name is available.",
+                    "alertTextOk": "",
                     "alertText": "* This Organization short name is taken by another user. Please change your Organization Short Name",
-                    "alertTextLoad": "* Validating, please wait"
+                    "alertTextLoad": ""
                 },
                 "ajaxNameCall": {
                     // remote json service location

@@ -78,13 +78,13 @@ if($this->formdata['error']!="")
     <tr>
       <td class="label-no">Organization Name</td>
       <td class="label-no">:</td>
-      <td colspan="7"><input name="hf_organization" type="text" class="validate[required],custom[onlyLetterNumber]" id="hf_organization" tabindex="1" value="<?php echo $this->formdata['hf_organization']?>" size="45" maxlength="150"/></td>
+      <td colspan="7"><input name="hf_organization" type="text" class="validate[required]" id="hf_organization" tabindex="1" value="<?php echo $this->formdata['hf_organization']?>" size="45" maxlength="150"/></td>
     </tr>
     <tr>
       <td class="label-no">Organization <br />
       short name</td>
       <td class="label-no">:</td>
-      <td colspan="4"><input name="hf_facility_identifier" type="text" id="hf_facility_identifier" maxlength="150" class="validate[required],custom[onlyLetterNumber],ajax[ajaxHostedIdentifier]" value="<?php echo $this->formdata['hf_facility_identifier']?>" tabindex="1"/> <?php $this->DisplayHelp('UserRegistrtion','FacilityIdentifier');?></td>
+      <td colspan="4"><input name="hf_facility_identifier" type="text" id="hf_facility_identifier" maxlength="150" class="validate[required],ajax[ajaxHostedIdentifier]" value="<?php echo $this->formdata['hf_facility_identifier']?>" tabindex="1"/> <?php $this->DisplayHelp('UserRegistrtion','FacilityIdentifier');?></td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
@@ -106,7 +106,7 @@ if($this->formdata['error']!="")
     <td><input name="hf_facility_name" type="text" class="validate[required],custom[onlyLetterwithSpaceandAppostophy]" id="hf_facility_name" tabindex="3" value="<?php echo $this->formdata['hf_facility_name']?>" size="15" maxlength="150"/></td>
     <td class="label-no">Last Name</td>
     <td class="label-no">:</td>
-    <td><input name="hf_facility_lname" type="text" class="validate[required],custom[onlyLetterNumber]" id="hf_facility_lname" tabindex="4" value="<?php echo $this->formdata['hf_facility_lname']?>" size="15" maxlength="150"/></td>
+    <td><input name="hf_facility_lname" type="text" class="validate[required],custom[onlyLetterwithSpaceandAppostophy]" id="hf_facility_lname" tabindex="4" value="<?php echo $this->formdata['hf_facility_lname']?>" size="15" maxlength="150"/></td>
   </tr>
 </table>
        </td>
@@ -226,20 +226,15 @@ if($this->formdata['error']!="")
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td >&nbsp;</td>
-      <td >&nbsp;</td>
-      <td >&nbsp;</td>
-      <td >&nbsp;</td>
-      <td >&nbsp;</td>
-      <td >&nbsp;</td>
-      <td >&nbsp;</td>
-      <td >&nbsp;</td>
-      <td >&nbsp;</td>
+      <td align="right" ><input type="checkbox" name="terms" id="terms"  class="validate[required]"/>
+      <label for="terms"></label></td>
+      <td class="normal-text" >:</td>
+      <td colspan="7" class="normal-text" >I Agree <a href="<?php echo $this->baseUrl();?>/General/terms-of-Use/?keepThis=true&TB_iframe=true&height=400&width=700" class="thickbox" title="Terms of Use">Terms &amp; Conditions</a></td>
     </tr>
     <tr>
       <td >&nbsp;</td>
       <td >&nbsp;</td>
-      <td ><input type="submit" name="Submit" value="Register Details" class="user-submit" tabindex="16" /></td>
+      <td ><input type="submit" name="Submit" id="Submit" value="Register Details" class="user-submit" tabindex="16" /></td>
       <td >&nbsp;</td>
       <td >&nbsp;</td>
       <td >&nbsp;</td>

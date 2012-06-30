@@ -37,6 +37,25 @@ class Application_Model_DbTable_PlanList extends Zend_Db_Table_Abstract
 	    }
 	    return $row;
 	}
+	
+	public function productdetails_cart($pid,$hf_id)
+	{
+		//select p.idproducts,p.product_name,p.product_feature,p.cost,p.payment_term from products p, plan_products pp where pp.idproducts=p.idproducts and pp.idplan=1
+		$db = Zend_Db_Table::getDefaultAdapter();
+		$select = $db->select()
+		-> from(array('p'=>'customer_products'),array('p.idproducts','p.product_name','p.product_feature','p.cost','p.setup_fee'))
+		-> where('p.hf_id='.$hf_id)
+		-> where('p.hp_id='.$pid);
+		 
+		$row = $db->fetchAll($select);
+		 
+		if (!$row)
+		{
+			throw new Exception("Could not find row");
+		}
+		return $row;
+	}
+	
 	public function allplans()
 	{
 	    /*
@@ -102,15 +121,7 @@ class Application_Model_DbTable_PlanList extends Zend_Db_Table_Abstract
 	    	// For Price Listing
 	    	$currency = new Zend_Currency('en_US');
 	    	
-	    	$output .= '<tr><td>&nbsp</td><td>&nbsp</td>';
-	    	foreach($planprice as $PPL)
-	    	{
 	    	
-	    		$output .= '<td align=center class="normal-text strike">';
-	    		$output .= 'List Price : '.$currency->toCurrency($PPL).'';
-	    		$output .= '</td>';
-	    	}
-	    	$output .='</tr>';
 	    	$output .= '<tr><td>&nbsp</td><td>&nbsp</td>';
 	    	foreach($planid as $PPL)
 	    	{
@@ -118,7 +129,16 @@ class Application_Model_DbTable_PlanList extends Zend_Db_Table_Abstract
 	    		$output .= '<td align=center class="normal-text">';
 	    		$sql ='call listprice('.$PPL.')';
 	    		$listprice =  $db->fetchOne($sql);    		 
-	    		$output .= 'Plan Price : '.$currency->toCurrency($listprice).'<br/>(Per Provider/Month)';
+	    		$output .= '<span class=strike>List Price : '.$currency->toCurrency($listprice).'</span>';
+	    		$output .= '</td>';
+	    	}
+	    	$output .='</tr>';
+	    	$output .= '<tr><td>&nbsp</td><td>&nbsp</td>';
+	    	foreach($planprice as $PPL)
+	    	{
+	    	
+	    		$output .= '<td align=center class="normal-text">';
+	    		$output .= 'List Price : '.$currency->toCurrency($PPL).'<br/>(Per Provider/Month)';
 	    		$output .= '</td>';
 	    	}
 	    	$output .='</tr>';

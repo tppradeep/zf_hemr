@@ -25,17 +25,17 @@
     <tr>
       <td width="49%" class="form-label-main">Current Password</td>
       <td width="1%" class="form-label-main">:</td>
-      <td width="50%"><input name="c_pwd" type="password"  class="validate[required],custom[onlyLetterNumber]" id="c_pwd" maxlength="25"/></td>
+      <td width="50%"><input name="c_pwd" type="password"  class="validate[required]" id="c_pwd" maxlength="25"/></td>
     </tr>
     <tr>
       <td class="form-label-main">New Password</td>
       <td class="form-label-main">:</td>
-      <td><input name="n_pwd" type="password"  class="validate[required],custom[onlyLetterNumber]" id="n_pwd" maxlength="25"/></td>
+      <td><input name="n_pwd" type="password"  class="validate[required],custom[password]]" id="n_pwd" maxlength="25"/></td>
     </tr>
     <tr>
       <td class="form-label-main">Confirm New Password</td>
       <td class="form-label-main">:</td>
-      <td><input name="cn_pwd" type="password"  class="validate[required],custom[onlyLetterNumber]" id="cn_pwd" maxlength="25"/></td>
+      <td><input name="cn_pwd" type="password"  class="validate[required],equals[n_pwd]" id="cn_pwd" maxlength="25"/></td>
     </tr>
     <tr>
       <td>&nbsp;</td>

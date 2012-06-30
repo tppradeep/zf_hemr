@@ -10,8 +10,17 @@ h1 {
 font-size: 1.4em;
 color: #008000;
 }
+img
+{
+	border: 0px;
+}
 a {
-color: #008000;
+	color: #317DBB;
+	text-decoration: none;
+}
+a:hover {
+	color: #000000;
+	text-decoration: none;
 }
 /* Table */
 th {
@@ -271,7 +280,7 @@ margin-left: 100px;
 }
 #main .usermenu {
 	float: right;
-	width: 297px;
+	width: 295px;
 	padding-right: 3px;
 }
 .red {
@@ -361,16 +370,41 @@ a.plan-register:hover
 	font-size: 18px;
 	color: #333;
 }
-.submit
+input[type=text],input[type=password],select,textarea
 {
-	background-color: #ff7302;
 	font-family: Verdana, Geneva, sans-serif;
 	font-size: 12px;
+	font-weight: normal;
+	color: #003A75;
+	border: 1px solid #999 !important;
+	background-color: #F5F5F5;
+}
+input[type=submit], .button {
+	background-color: #3D6DBE !important;
+	border-bottom-right-radius: 4px !important;
+	border-top-right-radius: 4px !important;
+	border-bottom-left-radius: 4px !important;
+	border-top-left-radius: 4px !important;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: 11px;
 	font-weight: bold;
 	color: #FFF;
-	border: 0px solid #FFF;
-	height: 25px;
+	padding: 5px;
+	cursor: pointer;
+	display: inline-block;
+	vertical-align: middle;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
 }
+
+
+
 .BrowseProducts
 {
 	font-family: Verdana, Geneva, sans-serif;
@@ -436,4 +470,34 @@ a.plan-register:hover
 .read-less
 {
 	float:right;	
+}
+.cms
+{
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: 14px;
+	font-weight: normal;
+	color: #333;
+	display: block;
+	margin-right: 10px;
+	margin-left: 10px;
+	width: 98%;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.cms span
+{
+	font-weight: bold;
+	color: #3D6DBE;
+	text-decoration: none;
+}
+iframe {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+	color: #333;
+	text-decoration: none;
+	border: 0px solid #FFF;
+	height: 98%;
+	width: 98%;
+	float: left;
 }

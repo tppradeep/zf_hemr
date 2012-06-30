@@ -1,12 +1,5 @@
 <table width="99%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr>
-    <td colspan="2" class="dashboard-welcome">
-    <?php echo $this->welcome['cms_title'];?>&nbsp;
-    <?php 
-   echo $this->ufullname;
-    ?> !!!
-    </td>
-  </tr>
+
   <tr>
     <td height="40" colspan="2" valign="top" class="line"><?php echo $this->welcome['cms_details'];?></td>
   </tr>
@@ -16,7 +9,9 @@
     </td>
     <td width="43%" rowspan="2" valign="top">
       <fieldset class="frameset-profile">
-        <legend>Account Overview:</legend>
+        <legend>Account Overview ( <?php 
+   echo $this->ufullname;
+    ?>):</legend>
         <table width="100%" border="0" cellspacing="3" cellpadding="3">
   <tr>
     <td colspan="2" class="sec-heading">Last Payment :</td>

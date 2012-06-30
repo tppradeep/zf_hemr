@@ -111,4 +111,13 @@ class Admin_UsersController extends Zend_Controller_Action
        $db = new Admin_Model_DbTable_Users();
        $db->useractionupdate($resource,$hf_id);
     }
+    public function activationErrorAction()
+    {
+        $this->_helper->layout()->disableLayout();
+    	$invoiceno=base64_decode($this->_getParam('id'));
+    	
+    	$uDb = new Admin_Model_DbTable_Users();
+    	$this->view->erro = $uDb->activationerrorlog($invoiceno);
+        
+    }
 }

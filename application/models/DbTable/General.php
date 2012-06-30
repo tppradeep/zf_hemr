@@ -127,5 +127,72 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	    $sql ='select hf_facility_identifier from hosted_facilities where hf_id='.$userid;
 	    return $db->fetchOne($sql);
 	}
+	public function facilityemail($hfid)
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    $sql ='select hf_email from hosted_facilities where hf_id='.$hfid;
+	    return $db->fetchOne($sql);
+	}
+	public function identifierdetails($hf_id)
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    
+	    $sql ='select hf_facility_suffix,hf_facility_name,hf_facility_lname,hf_email,hf_address,hf_state,hf_city,hf_zip,hf_country,reg_date from hosted_facilities where hf_id='.$hf_id;
+	    return $db->fetchRow($sql);
+	}
+	
+	public function messageadd($hf_id,$subject,$message)
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    $ddate = date('Y-m-d');
+	    $sql = 'insert into messages (hf_id,pk_id,Subject,message,status,date)values('.$hf_id.',0,"'.$subject.'","'.$message.'",1,"'.$ddate.'")';
+	    $db->query($sql);
+	    
+	}
+	
+	public function userdeatils_email($hfemail)
+	{
+		$db = Zend_Db_Table::getDefaultAdapter();
+		 
+		$sql ='select hf_id,hf_facility_suffix,hf_facility_name,hf_facility_lname,hf_address,hf_state,hf_city,hf_zip,hf_country,reg_date from hosted_facilities where hf_email="'.$hfemail.'"';
+		return $db->fetchRow($sql);
+	}
+	public function emrfeature()
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    	
+	    $sql ='select id,module_name,short_tag from emr_modules order by module_name asc';
+	    return $db->fetchAll($sql);
+	}
+	public function dbname($hfemail)// to find out in which server the user database is located
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    
+	    $sql ='select db_server from hosted_facilities where hf_email="'.$hfemail.'"';
+	    return $db->fetchOne($sql);
+	}
+	
+	public function generatepassword()
+	{
+		return substr(md5(rand().rand()), 0, 8);
+	}
+	public function checkautonumer($no)
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    $sql = 'select count(autonumber) from autonumber where autonumber="'.$no.'"';
+	    $nocount = $db->fetchOne($sql);
+	    if($nocount==0)
+	    {
+	        $sql = 'insert into autonumber (autonumber) values ("'.$no.'")';
+	        $db->query($sql);
+	    }
+	    return $nocount;
+	}
+	public function customer_tranid($hf_id)
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    $sql = 'select transaction_id from customer_invoice where hf_id='.$hf_id;
+	    return $db->fetchOne($sql);
+	}
 }
 

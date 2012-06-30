@@ -1,4 +1,52 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Forgotpassword</b> and script/action name <b>index</b></p>
-</div>
+<?php
+if($this->st==1)
+{
+	echo $this->message ;
+}
+else
+{
+?>
+
+<script language="javascript" type="text/javascript">
+    jQuery(document).ready(function(){
+                // binds form submission and fields to the validation engine
+                jQuery("#forgot").validationEngine();
+            });
+</script>
+      <?php 
+  if($this->cms)
+  {
+  		echo '<div class="cms">';
+		if(!$this->cms['cms_title']=="")
+		{
+    		echo '<span>'.$this->cms['cms_title'].'</span><br/>';
+		}	
+	echo $this->cms['cms_details'];
+	echo '</div>';
+  }
+?>
+<form id="forgot" name="forgot" method="post" action="">
+<table width="80%" border="0" cellspacing="2" cellpadding="2">
+  <tr>
+    <td colspan="3" class="cms">
+
+    </td>
+    </tr>
+  <tr>
+    <td class="label-no">Please Enter Your User Id (email id)</td>
+    <td class="label-no">:</td>
+    <td>
+      <label for="email"></label>
+      <input type="text" name="email" id="email" class="validate[required],custom[email]" />
+   </td>
+  </tr>
+  <tr>
+    <td class="label-no">&nbsp;</td>
+    <td class="label-no">&nbsp;</td>
+    <td><input type="submit" name="button" id="button" value="Retrieve Password" /></td>
+  </tr>
+</table> 
+</form>
+<?php
+}
+?>

@@ -7,6 +7,12 @@ class User_ProfileController extends Zend_Controller_Action
     {
         $this->view->checkacl('0','0','0','1'); // Just for initiallization for helper call
         $this->view->checkaclresource('0','0',0); // Just for initiallization for helper call
+        $sess = new Zend_Session_Namespace('user');
+        if($sess->duser=="")
+        {
+        	$this->_redirect('Index');
+        	exit;
+        }
     }
 
     public function indexAction()

@@ -1,5 +1,4 @@
 <?php
-
 class UserRegisterController extends Zend_Controller_Action
 {
 

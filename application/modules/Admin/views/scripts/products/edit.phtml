@@ -25,6 +25,15 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
         <td colspan="3" class="list-table-header shadow">Update Product</td>
       </tr>
       <tr>
+        <td class="label line">Category</td>
+        <td>:</td>
+        <td class="label line"><select name="category" id="category">
+            <option value="product" <?php echo($this->productview['category']=='product')?' selected':'';?>>Plan Product</option>
+            <option value="support" <?php echo($this->productview['category']=='support')?' selected':'';?>>Support Product</option>
+            <option value="service" <?php echo($this->productview['category']=='service')?' selected':'';?>>Service</option>
+        </select></td>
+      </tr>
+      <tr>
         <td width="19%" class="label line">Product Name</td>
         <td width="1%">:</td>
         <td width="80%" class="label line">
@@ -113,6 +122,31 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
               Disable</label>
             <br />
         </p></td>
+      </tr>
+       <tr>
+        <td class="label red line">Linked Service to OEMR</td>
+        <td class="label line">:</td>
+        <td class="normal red line">
+        <label for="emrfeature"></label>
+          <select name="emrfeature" id="emrfeature">
+          <option value="0" selected>Not link to any feature</option>
+          <?php
+		  foreach($this->emrlist as $emr)
+		  {
+		    if(trim($this->productview['emrfeature'])==trim($emr['short_tag']))
+		    {
+		        $selval=' selected=selected';
+		    }
+		    else
+		    {
+		        $selval='';
+		    }
+			echo '<option value="'.$emr['short_tag'].'" '.$selval.'>'.$emr['module_name'].'</option>';
+		  }
+		  ?>
+        </select>
+          <br /> 
+          [Note : you have to be careful to link the product with emr. any wrong assignment will make the entire plan configure wrong]</td>
       </tr>
       <tr>
         <td>&nbsp;</td>

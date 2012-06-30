@@ -78,8 +78,8 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		
 		$data = array(
 				'hf_id' => $uid,
-				'acl_resource' => 'Profile,Changepassword,Plan,Products,Invoice',
-				'acl_action'=>'18,17,16,13,15,14,11,19'
+				'acl_resource' => 'Profile,Changepassword,Plan,Products,Invoice,Backup',
+				'acl_action'=>'18,17,16,13,15,14,11,19,20'
 		
 		);
 		$numRows = $db->insert('acl_user_setting', $data);
@@ -277,7 +277,7 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		//select p.idproducts,p.product_name,p.customer_id,p.product_feature,p.cost,p.payment_term,p.product_sort_order,p.product_status from 
 		//products p, plan_products pp where p.idproducts=pp.idproducts and pp.idplan=1
 		$select = $db->select()
-					->from(array('p'=>'products',array('p.idproducts','p.product_name','p.customer_id','p.product_feature','p.cost','setup_fee','p.payment_term','p.product_sort_order','p.product_status')))
+					->from(array('p'=>'products',array('p.idproducts','p.category','p.product_name','p.customer_id','p.product_feature','p.cost','setup_fee','p.payment_term','p.product_sort_order','p.product_status','p.provider_cost_nature','p.provider_setup_nature')))
 					->join(array('pp'=>'plan_products'),'pp.idproducts=p.idproducts')
 	   				-> where('pp.idplan='.$id);
 		$row=$db->fetchAll($select);
@@ -292,13 +292,16 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 					'hf_id' => $uid,
 			        'hp_id' => $id,
 					'idproducts' => $record['idproducts'],
+			        'category'=>$record['category'],
 					'product_name'=> $record['product_name'],
 					'customer_id'=> $record['customer_id'],
 					'product_feature' => $record['product_feature'],
 					'cost' => $record['cost'],
 			        'setup_fee'=>$record['setup_fee'],
 			        'product_sort_order'=>$record['product_sort_order'],
-			        'product_status'=>$record['product_status']
+			        'product_status'=>$record['product_status'],
+			        'provider_cost_nature'=>$record['provider_cost_nature'],
+			        'provider_setup_nature'=>$record['provider_setup_nature']
 					
 			);
 			$db->insert('customer_products', $customer_selected_plan_features_data);

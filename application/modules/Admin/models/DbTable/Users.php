@@ -47,7 +47,7 @@ class Admin_Model_DbTable_Users extends Zend_Db_Table_Abstract
 	{
 	    $db = Zend_Db_Table::getDefaultAdapter();
 	    $select = $db->select()
-	    ->from(array('customer_invoice'),array('idcustomer_invoice','plan_id','invoice_number','invoice_date','payment_date','amount','setupfee','payment_status'))
+	    ->from(array('customer_invoice'),array('idcustomer_invoice','plan_id','invoice_number','invoice_date','payment_date','amount','setupfee','payment_status','activation_status','activation_message'))
 	    ->where('hf_id="'.$hf_id.'"');
 	    return $db->fetchAll($select);
 	}
@@ -279,5 +279,11 @@ class Admin_Model_DbTable_Users extends Zend_Db_Table_Abstract
 	    /*
 	     * Udate End
 	    */
+	}
+	public function activationerrorlog($invid)
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    $sql = 'select activation_message from customer_invoice where invoice_number="'.$invid.'"';
+	    return $db->fetchOne($sql);
 	}
 }

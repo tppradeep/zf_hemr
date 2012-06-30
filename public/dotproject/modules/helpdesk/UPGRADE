@@ -1,0 +1,16 @@
+===== Version 0.1 to 0.2 =====
+
+Added
+* Requestor phone number, requestor type (user or contact), item company
+* Optional item assignee notification by e-mail
+* Status log of item activity, based on the new item audit trail options
+* Can assign to a company and/or a project
+* Enabled "closed today" ticket view.
+* Many UI tweaks.  Addition links to view tickets, additional email links.
+* Ability to select either a system user or a system contact at the requestor and have it pre-populate the phone and email fields.
+* Added the ability to log time to Task Logs for each ticket.
+
+Removed
+* Item status "Delete"
+* Item asset number
+
