@@ -39,6 +39,9 @@
           <actionMethod actionName="confirm"/>
           <actionMethod actionName="thanks"/>
           <actionMethod actionName="viewinvoice"/>
+          <actionMethod actionName="makePayment"/>
+          <actionMethod actionName="doPayment"/>
+          <actionMethod actionName="fail"/>
         </controllerFile>
         <controllerFile controllerName="Dashboard">
           <actionMethod actionName="index"/>
@@ -73,6 +76,20 @@
         <controllerFile controllerName="Faq">
           <actionMethod actionName="index"/>
         </controllerFile>
+        <controllerFile controllerName="Services">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="soap"/>
+          <actionMethod actionName="getproviderno"/>
+          <actionMethod actionName="viewsoap"/>
+          <actionMethod actionName="check"/>
+          <actionMethod actionName="install"/>
+        </controllerFile>
+        <controllerFile controllerName="Resetpassword">
+          <actionMethod actionName="index"/>
+        </controllerFile>
+        <controllerFile controllerName="PlanSetup">
+          <actionMethod actionName="index"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="Userregister"/>
@@ -97,6 +114,9 @@
           <dbTableFile dbTableName="General"/>
           <dbTableFile dbTableName="Cart"/>
           <dbTableFile dbTableName="Faq"/>
+          <dbTableFile dbTableName="Services"/>
+          <dbTableFile dbTableName="Forgotpassword"/>
+          <dbTableFile dbTableName="Resetpassword"/>
         </dbTableDirectory>
       </modelsDirectory>
       <modulesDirectory>
@@ -176,6 +196,7 @@
               <actionMethod actionName="userAcl"/>
               <actionMethod actionName="userActionList"/>
               <actionMethod actionName="setPermission"/>
+              <actionMethod actionName="activationError"/>
             </controllerFile>
             <controllerFile controllerName="Subproduct">
               <actionMethod actionName="index"/>
@@ -227,6 +248,9 @@
               <actionMethod actionName="edit"/>
               <actionMethod actionName="delete"/>
             </controllerFile>
+            <controllerFile controllerName="Email">
+              <actionMethod actionName="index"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
           <layoutsDirectory enabled="false">
@@ -252,6 +276,7 @@
               <dbTableFile dbTableName="EmailTemplate"/>
               <dbTableFile dbTableName="Speciality"/>
               <dbTableFile dbTableName="Faq"/>
+              <dbTableFile dbTableName="Email"/>
             </dbTableDirectory>
           </modelsDirectory>
           <viewsDirectory>
@@ -511,6 +536,12 @@
               <viewControllerScriptsDirectory forControllerName="Faq">
                 <viewScriptFile forActionName="delete"/>
               </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Users">
+                <viewScriptFile forActionName="activationError"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Email">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
             <viewFiltersDirectory/>
@@ -544,6 +575,14 @@
               <actionMethod actionName="productfeature"/>
               <actionMethod actionName="addtocart"/>
             </controllerFile>
+            <controllerFile controllerName="Backup">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="retrieveFile"/>
+            </controllerFile>
+            <controllerFile controllerName="Inbox">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="view"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
           <layoutsDirectory enabled="false">
@@ -558,6 +597,8 @@
               <dbTableFile dbTableName="Profile"/>
               <dbTableFile dbTableName="Plan"/>
               <dbTableFile dbTableName="Products"/>
+              <dbTableFile dbTableName="Backup"/>
+              <dbTableFile dbTableName="Inbox"/>
             </dbTableDirectory>
           </modelsDirectory>
           <viewsDirectory>
@@ -615,6 +656,18 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Products">
                 <viewScriptFile forActionName="addtocart"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Backup">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Backup">
+                <viewScriptFile forActionName="retrieveFile"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Inbox">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Inbox">
+                <viewScriptFile forActionName="view"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -803,6 +856,39 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="General">
             <viewScriptFile forActionName="legalDocumentation"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Payment">
+            <viewScriptFile forActionName="makePayment"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Payment">
+            <viewScriptFile forActionName="doPayment"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Payment">
+            <viewScriptFile forActionName="fail"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Services">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Services">
+            <viewScriptFile forActionName="soap"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Services">
+            <viewScriptFile forActionName="getproviderno"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Services">
+            <viewScriptFile forActionName="viewsoap"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Resetpassword">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Services">
+            <viewScriptFile forActionName="check"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Services">
+            <viewScriptFile forActionName="install"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="PlanSetup">
+            <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
