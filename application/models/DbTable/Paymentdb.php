@@ -233,7 +233,7 @@ class Application_Model_DbTable_Paymentdb extends Zend_Db_Table_Abstract
 		
 		$cartdtd=$db->fetchAll($select);
 
-		
+	
 		$PlanOneTimePayment_sum=0;
 		$PlanMonthlyPayment_sum=0;
 		$discountplan=0;
@@ -267,7 +267,7 @@ class Application_Model_DbTable_Paymentdb extends Zend_Db_Table_Abstract
 		        		
 		        if($ProDtd[0]['provider_cost_nature']==1)
 		        {
-		       		$PlanMonthlyPayment_sum = $PlanMonthlyPayment_sum + $CD['unit_price']*$CD['qty'];
+		       		$PlanMonthlyPayment_sum = $PlanMonthlyPayment_sum + $CD['unit_price'];
 		        }
 		        if($ProDtd[0]['provider_cost_nature']==0)
 		        {
@@ -277,7 +277,7 @@ class Application_Model_DbTable_Paymentdb extends Zend_Db_Table_Abstract
 		        //Setup fee section
 		        if($ProDtd[0]['provider_setup_nature']==1)
 		        {
-		       		 $setupfee = $setupfee + $ProDtd[0]['setup_fee']*$CD['qty'];
+		       		 $setupfee = $setupfee + $ProDtd[0]['setup_fee'];
 		        }
 		        if($ProDtd[0]['provider_setup_nature']==0)
 		        {
@@ -304,7 +304,12 @@ class Application_Model_DbTable_Paymentdb extends Zend_Db_Table_Abstract
 					'discount_percentage'=>$discountpercentage,
 					'discount_amount'=>$discountplan
 				);
-	
+		
+	//	echo "<pre>";
+	//	print_r($data);
+	//	echo "</pre>";
+	//	die;
+		
 			$numRows = $db->insert('customer_invoice', $data);
 			$linId=$db->lastInsertId();
 			$invoice_number = $this->InvoiceNumber($linId);

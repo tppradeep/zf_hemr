@@ -17,7 +17,6 @@ class UsercheckController extends Zend_Controller_Action
 		
 			$uid = $formData['uid'];
 			$pwd = sha1(trim($formData['pwd']));
-			$usertype = $formData['usertype'];
 			
 			$db = Zend_Db_Table::getDefaultAdapter();
 			
@@ -50,10 +49,44 @@ class UsercheckController extends Zend_Controller_Action
 	    			$sess->duser = $uid;
 	    			$sess->hf_id = $hfdata['hf_id'];
 	    			$sess->hf_identifier = $hfdata['hf_facility_identifier'];
+	    			$sess->dashboard=1;
 					
 					//$userName = $sess->duser;
 					
 					$this->_helper->FlashMessenger('Successful Login');
+					
+					/*
+					 * Checking if plan is subscribed or not.
+					 * Only if the plan subscribed, allow user to go to dashboard
+					 */
+					
+					
+					$userDb = new Application_Model_DbTable_Usercheck();
+					$UserPlanDtd = $userDb->UserPlan($sess->hf_id);
+					
+					echo "<pre>";
+					print_r($UserPlanDtd);
+					echo "</pre>";
+					
+					if(is_array($UserPlanDtd))
+					{
+					    if (array_key_exists('plan_id', $UserPlanDtd)) 
+					    {
+					        if($UserPlanDtd['payment_status']==0)
+					        {
+					            
+					        }
+					    }
+					    	
+					    	
+					}
+					else 
+					{
+					    $sess->step="compare";
+						$this->_redirect('PlanList/compareplans');    
+					}
+					die;
+					
 	              	$this->_redirect('user');
 	                return;
 	            }

@@ -91,7 +91,7 @@ class CartController extends Zend_Controller_Action
     	$mail->setSubject($emailsubject);
     	try
 		{
-			$mail->send($transport);
+			//	$mail->send($transport);
 		}
 		catch(Zend_Exception $e)
 		{

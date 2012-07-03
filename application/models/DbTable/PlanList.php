@@ -144,11 +144,21 @@ class Application_Model_DbTable_PlanList extends Zend_Db_Table_Abstract
 	    	$output .='</tr>';
 	    	// For registration
 	    	$output .= '<tr><td>&nbsp</td><td>&nbsp</td>';
+	    	
+	    	$sess = new Zend_Session_Namespace('user');
+	    	
 	 		 foreach($planid as $PPL)
 	    	     {
 		    		
 		    		$output .= '<td align=center>';
-		    		$output .= '<a href="../PlanList/listplan/id/'.base64_encode($PPL).'" class="plan-register">Proceed To Registration</a>';
+		    		if($sess->step=="compare")
+		    		{
+		    		    $output .= '<a href="../PlanList/listplan/id/'.base64_encode($PPL).'" class="plan-register">Select Plan</a>';
+		    		}
+		    		else 
+		    		{
+		    			$output .= '<a href="../PlanList/listplan/id/'.base64_encode($PPL).'" class="plan-register">Proceed To Registration</a>';
+		    		}
 		    		$output .= '</td>';
 	    	     }
 		$output .='</tr>';	    	

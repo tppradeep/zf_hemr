@@ -28,7 +28,7 @@ class Application_Model_DbTable_Services extends Zend_Db_Table_Abstract
 	{
 	    // Need to call the setting service url
 	}
-	public function activateplansetting($hfemail)
+	public function activateplansetting($hfemail,$invoice_no)
 	{
 	    $db = Zend_Db_Table::getDefaultAdapter();
 	    
@@ -43,8 +43,12 @@ class Application_Model_DbTable_Services extends Zend_Db_Table_Abstract
 	    
 	    $result = array();
 	 //   $result[] = array(0);
-	    
+	   $invdtd = array("inv_no"=>$invoice_no); 
+	   
+	  $userdetails= array_merge((array)$userdetails, (array)$invdtd);
+	   
 	    array_push($result, $userdetails);
+	   // array_pust($result,)
 	    array_push($result, $productsrequiredtoenable);
 	    
 	    $tim = strtotime(gmdate("Y-m-d H:m"));
@@ -63,12 +67,63 @@ class Application_Model_DbTable_Services extends Zend_Db_Table_Abstract
 	   
 	    // Just of encoding the password to pass. the end section knows how to dcode it.
 	    $password = $result[0]['dashboard_password'];
-	    $result[0]['dashboard_password']= base64_encode(sha1($password).substr(str_shuffle("abcdef1234567890"),0,6));
+	    $result[0]['dashboard_password']= base64_encode($password.substr(str_shuffle("abcdef1234567890"),0,6));
+	   // $result[0]['dashboard_password']= $result[0]['dashboard_password'];
 	    
 	    $arr = array(array($userid,$pass,$randomvalue),$result);
 	    return $arr;
+	}
+	public function activationresult($hf_id,$inv_no,$activation_status,$activation_message)
+	{
 	    
+	    $db = Zend_Db_Table::getDefaultAdapter();
 	    
+	    $sql = 'update customer_invoice set activation_status='.$activation_status.',activation_message="'.$activation_message.'" where invoice_number="'.$inv_no.'" and hf_id ='.$hf_id;
+	    $db->query($sql);
+	    
+	    if($activation_status==1)//Success
+	    {
+	    
+	    	/*
+	    	 * Sending Mail with Plan Confiration confirmation
+	    	*/
+	    	/*
+	    	 * Email Template Section
+	    	*/
+	    	$MailLegal = new Zend_Session_Namespace('maillegal');
+	    	$mailbottom=$MailLegal->maillegal;
+	    
+	    	$gendb = new Application_Model_DbTable_General();
+	    	$userdetails = $gendb->identifierdetails($hf_id);
+	    
+	    	$firstName = $userdetails['hf_facility_name'];
+	    	$lastName = $userdetails['hf_facility_lname'];
+	    
+	    	$emldata = $gendb->emailtemplate('plan_configuration_success');
+	    	$emailsubject =  str_replace('__invoiceno__', $inv_no, $emldata['Subject']);
+	    	$emailbody = $emldata['content'];
+	    	$emailbody = str_replace('__invoiceno__', $inv_no, $emailbody);
+	    	$emailbody = str_replace('__name__', $firstName." ".$lastName, $emailbody);
+	    
+	    	$emailbody=$emailbody.$mailbottom;
+	    	 
+	    	$InvoiceAddress		= New Application_Model_DbTable_Paymentdb();
+	    	$invoiceaddress		= $InvoiceAddress->invoiceaddress_invoice($inv_no);
+
+	    	$emailto = trim($invoiceaddress[0]['hf_email']);
+	    	$nameto = $invoiceaddress[0]['hf_facility_name'];
+	    	 
+	    	$gendb->sendmail($emailto,$nameto,$emailsubject,$emailbody);
+	    	$gendb->messageadd($hf_id,addslashes($emailsubject),addslashes($emailbody));
+	    
+	    	return 1;
+	    		
+	    }
+	    else
+	    {
+	    	//$serviceDb = new Application_Model_DbTable_Services();
+	    	//$serviceDb->activationresult($hf_id,$inv_no,$activation_status,$activation_message);
+	    }
 	}
 }
 

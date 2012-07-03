@@ -83,6 +83,7 @@
           <actionMethod actionName="viewsoap"/>
           <actionMethod actionName="check"/>
           <actionMethod actionName="install"/>
+          <actionMethod actionName="planconfirm"/>
         </controllerFile>
         <controllerFile controllerName="Resetpassword">
           <actionMethod actionName="index"/>
@@ -889,6 +890,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="PlanSetup">
             <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Services">
+            <viewScriptFile forActionName="planconfirm"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

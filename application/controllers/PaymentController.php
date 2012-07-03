@@ -67,8 +67,8 @@ class PaymentController extends Zend_Controller_Action
     	$invoicedetails 			    = $invDetails->invoicedetails($invoiceId);
     	$this->view->invoicedetails		= $invDetails->invoicedetails($invoiceId);
 		$invoicedetails					= $invDetails->invoicedetails($invoiceId);
-		//print_r($invoicedetails);
-    	//die;
+		
+		
     	
     	$InvoiceAddress					= New Application_Model_DbTable_Paymentdb();
     	$this->view->invoiceaddress		= $InvoiceAddress->invoiceaddress($invoicedetails['hf_id']);
@@ -234,7 +234,7 @@ class PaymentController extends Zend_Controller_Action
     	    <td align="right" class="normal-text line" valign="middle">';
     	    
     	    $MonthlyFee = new Zend_Currency('en_US');
-    	    $invoicePDF .= $MonthlyFee->toCurrency($invoicedetails['amount']);
+    	    $invoicePDF .= $MonthlyFee->toCurrency($invoicedetails['amount']+$invoicedetails['discount_amount']);
     	    $invoicePDF .='</td>
     	    <td align="right" class="normal-text b line">&nbsp;</td>
     	    </tr>';
@@ -277,7 +277,7 @@ class PaymentController extends Zend_Controller_Action
     			<td align="right" class="normal-text b line" valign="middle" style="padding:10px;">';
     	
     			$totalFee = new Zend_Currency('en_US');
-    			$invoicePDF .= $totalFee->toCurrency($invoicedetails['amount']+$invoicedetails['setupfee']-$invoicedetails['discount_amount']);
+    			$invoicePDF .= $totalFee->toCurrency($invoicedetails['amount']+$invoicedetails['setupfee']);
     			$invoicePDF .='</td>
     			<td align="right" class="normal-text b line" style="padding:10px;">&nbsp;</td>
     			</tr>';
@@ -427,6 +427,7 @@ class PaymentController extends Zend_Controller_Action
     	    $currencyCode="USD";
     	    
     	    $profileDesc = urlencode($formData['item_name']);
+    	    $invoice_no = urlencode($formData['item_number']);
     	    $billingPeriod = "Month";
     	    $billingFrequency = 1;
     	    $totalBillingCycles = 0;
@@ -580,8 +581,8 @@ class PaymentController extends Zend_Controller_Action
 				
    	        	//$this->_helper->redirector('thanks','Payment',null,array('st' => 'success'));
    	        	//$this->_helper->redirector('PlanSetup','Index',null,array('st' => 'success','hfid'=>base64_encode($hf_id)));
-
-   	        	$this->_redirect('/PlanSetup/index/st/success/hfid/'.base64_encode($hf_id));
+				
+    	        	$this->_redirect('/PlanSetup/index/st/success/hfid/'.base64_encode($hf_id).'/invno/'.base64_encode($invoice_no));
    	        	 
     	    }
     	    else // Payment is fail 

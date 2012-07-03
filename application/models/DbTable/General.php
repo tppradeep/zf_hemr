@@ -194,5 +194,30 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	    $sql = 'select transaction_id from customer_invoice where hf_id='.$hf_id;
 	    return $db->fetchOne($sql);
 	}
+	public function sendmail($tomail,$toname,$subject,$message)
+	{
+	    $mailconfig = new Zend_Session_Namespace('mail');
+	     
+	    $config = array('ssl' => 'tls', 'port' => 587, 'auth' => 'login', 'username' =>  $mailconfig->userid, 'password' => $mailconfig->password);
+	    
+	    $transport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', $config);
+	    
+	    $mail = new Zend_Mail();
+	    $mail->setType(Zend_Mime::MULTIPART_RELATED);
+	    $mail->setBodyHtml($message);
+	    $mail->setFrom($mailconfig->userid, 'ZH Healthcare');
+	    $mail->addTo($tomail, $toname);
+	    $mail->setSubject($subject);
+	     
+	    try
+	    {
+	    	$mail->send($transport);
+	    
+	    }
+	    catch(Zend_Exception $e)
+	    {
+	    
+	    }
+	}
 }
 

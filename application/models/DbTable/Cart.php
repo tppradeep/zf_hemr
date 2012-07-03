@@ -130,14 +130,22 @@ class Application_Model_DbTable_Cart extends Zend_Db_Table_Abstract
 	}
 	function deleteproductfromcart($idcart)
 	{
+	    
+	    /*
+	     * Only additional product can add or delete so product id requried to calculate from cart id
+	     */
 	    $db = Zend_Db_Table::getDefaultAdapter();
 	    
-	    $sql = 'select product_id,hf_id from cart where idcart='.$idcart;
+	    $sql = 'select product_id,hf_id,qty from cart where idcart='.$idcart;
 	    $pdetails = $db->fetchRow($sql);
 	    
-	    
+	 //   echo "<pre>";
+	  //  print_r($pdetails);
+	  //  echo "</pre>";
+	   // die;
 	    $sql ='select provider_no from customer_selected_plan where hf_id='.$pdetails['hf_id'];
 	    $providerno = $db->fetchOne($sql);
+	    
 	    
 	    $select = $db->delete('cart',array('idcart='.$idcart));
 	    
@@ -160,8 +168,8 @@ class Application_Model_DbTable_Cart extends Zend_Db_Table_Abstract
 	        $sql = 'select p.* from plan_products pp,products p where pp.idplan='.$planid.' and pp.idproducts=p.idproducts and p.category="support"';
 	        $a_p_d = $db->fetchRow($sql);
 	        
-	        $sql = 'insert into customer_products (hf_id,hp_id,idproducts,category,product_name,customer_id,product_feature,cost,setup_fee,product_sort_order,product_status,additional)';
-	        $sql =$sql.' values ('.$pdetails['hf_id'].','.$planid.','.$a_p_d['idproducts'].',"'.$a_p_d['category'].'","'.$a_p_d['product_name'].'",'.$a_p_d['customer_id'].',"'.$a_p_d['product_feature'].'",'.$a_p_d['cost'].','.$a_p_d['setup_fee'].','.$a_p_d['product_sort_order'].','.$a_p_d['product_status'].',0)';
+	        $sql = 'insert into customer_products (hf_id,hp_id,idproducts,category,product_name,customer_id,product_feature,cost,setup_fee,product_sort_order,product_status,ProductType,provider_cost_nature,provider_setup_nature,emrfeature,additional)';
+	        $sql =$sql.' values ('.$pdetails['hf_id'].','.$planid.','.$a_p_d['idproducts'].',"'.$a_p_d['category'].'","'.$a_p_d['product_name'].'",'.$a_p_d['customer_id'].',"'.$a_p_d['product_feature'].'",'.$a_p_d['cost'].','.$a_p_d['setup_fee'].','.$a_p_d['product_sort_order'].','.$a_p_d['product_status'].','.$a_p_d['ProductType'].','.$a_p_d['provider_cost_nature'].','.$a_p_d['provider_setup_nature'].','.$a_p_d['emrfeature'].',0)';
 	        
 			$db->query($sql);
 			
@@ -185,6 +193,9 @@ class Application_Model_DbTable_Cart extends Zend_Db_Table_Abstract
 				$deduct_setup_cost = $a_p_d['setup_fee'];
 			}
 			
+			
+			//echo $deduct_cost;
+			//die;
 			$sql ='select monthly_payment,setupfee,total_payment from customer_selected_plan where hf_id='.$pdetails['hf_id'];
 			$plancosts = $db->fetchRow($sql);
 			

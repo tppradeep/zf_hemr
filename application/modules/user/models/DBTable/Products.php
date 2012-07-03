@@ -146,8 +146,8 @@ class User_Model_DbTable_Products extends Zend_Db_Table_Abstract
 	    
 	    //0:not increment with provider number ; 1: increment with provider number (provider_cost_nature,provider_setup_nature)
 	     $sql = "select category,cost,setup_fee,provider_cost_nature,provider_setup_nature from products where idproducts=".$id;
-	    $proresult = $db->fetchRow($sql);
-	    
+	     $proresult = $db->fetchRow($sql);
+	     
 	    /*
 	     * if category is support, then deleting the existing support product from the selected plan and
 	     * adding the new support plan
@@ -155,13 +155,12 @@ class User_Model_DbTable_Products extends Zend_Db_Table_Abstract
 	    if($proresult['category']=='support')
 	    {
 	        $sql = 'select idproducts,cost,setup_fee,provider_cost_nature,provider_setup_nature,additional from customer_products where category="support" and hf_id='.$hf_id;
-	        
 	        $ExProdtd = $db->fetchRow($sql);
-	        
-	       //echo "<pre>";
-	       //print_r($ExProdtd);
-	       //echo "</pre>";
-	       //die;
+	       
+	     //  echo "<pre>";
+	     //  print_r($ExProdtd);
+	     //  echo "</pre>";
+	     //  die;
 	        if($ExProdtd['additional']==0)
 	        {
 	            
@@ -176,6 +175,7 @@ class User_Model_DbTable_Products extends Zend_Db_Table_Abstract
 		        {
 		            $deduct_cost = $ExProdtd['cost'];
 		        }
+		        
 		        if($ExProdtd['provider_setup_nature']==1)
 		        {
 		            $deduct_setup_cost = $ExProdtd['setup_fee']*$providerno;
@@ -203,10 +203,13 @@ class User_Model_DbTable_Products extends Zend_Db_Table_Abstract
 		       $sql ='select unit_price,setupfee,discount,total from cart where cartsession="'.$sesid.'" and plan_id <>0 and hf_id='.$hf_id.' and cstatus=0';
 		       $ExtCartDtd = $db->fetchRow($sql);
 		       
+		      //echo $deduct_cost;
 		       $NewCartUnitPrice = $ExtCartDtd['unit_price']-$deduct_cost ;
 		       $NewCartSetupFee = $ExtCartDtd['setupfee']-$deduct_setup_cost;
 		       $newCartTotal = $NewCartUnitPrice + $NewCartSetupFee - $ExtCartDtd['discount'];
 		       
+		       
+		      // die;
 		       $sql ='update cart set unit_price='.$NewCartUnitPrice.',setupfee='.$NewCartSetupFee.',total='.$newCartTotal.' where cartsession="'.$sesid.'" and plan_id <>0 and hf_id='.$hf_id.' and cstatus=0';
 			   $db->query($sql);		       
 		       

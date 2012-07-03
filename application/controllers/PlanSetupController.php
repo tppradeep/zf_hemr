@@ -16,6 +16,7 @@ class PlanSetupController extends Zend_Controller_Action
         
         $hf_id=base64_decode($this->_getParam('hfid'));
         $status=$this->_getParam('st');
+        $invoice_no = base64_decode($this->_getParam('invno'));
        
         
         
@@ -35,7 +36,7 @@ class PlanSetupController extends Zend_Controller_Action
 					
 		$servicedb = new Application_Model_DbTable_Services();
 						
-		$setupvalues = $servicedb->activateplansetting($hfemail);
+		$setupvalues = $servicedb->activateplansetting($hfemail,$invoice_no);
 						
 		// initialize SOAP client
 		$options = array(
@@ -46,14 +47,14 @@ class PlanSetupController extends Zend_Controller_Action
 		$tim = strtotime(gmdate("Y-m-d H:m"));
 		$arr = $setupvalues;
 
-		//echo "<pre>";
-			//print_r($arr);
-		//	echo "</pre>";
-		
+	//	echo "<pre>";
+	//		print_r($arr);
+	//	echo "</pre>";
+	//die;	
 		try 
 		{
-			// $client = new Zend_Soap_Client(null, $options);   // SOAP CALL
-		//	$result = $client->setup_new_db($arr);
+			 $client = new Zend_Soap_Client(null, $options);   // SOAP CALL
+			$result = $client->setup_new_db($arr);
 			echo "<pre>";
 		//	print_r($result);
 			echo "</pre>";
