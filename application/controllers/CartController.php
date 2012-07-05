@@ -28,13 +28,16 @@ class CartController extends Zend_Controller_Action
         $this->view->uid=$this->view->Ecode($uid);
         $this->view->pid=$this->view->Ecode($pid);
         $this->view->cart = $username->cart($uid,$pid);
-        
+       
         $products = new Application_Model_DbTable_Cart();
         $this->view->products = $products->cart_product_list($this->view->baseurl());
         
         // For Listing Plan Products
         $PlanListDb = new Application_Model_DbTable_PlanList();
+        
         $this->view->prolist = $PlanListDb->productdetails_cart($pid,$uid);
+     
+       
     }
 
     public function freeplanAction()

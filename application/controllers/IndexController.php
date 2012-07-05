@@ -12,8 +12,8 @@ class IndexController extends Zend_Controller_Action
 
     public function init()
     {
-        $emptycartjunk = new Application_Model_DbTable_General();
-        $empty = $emptycartjunk->emptycartjunk();
+       // $emptycartjunk = new Application_Model_DbTable_General();
+       // $empty = $emptycartjunk->emptycartjunk();
     }
 
     public function indexAction()

@@ -11,6 +11,46 @@ class UserRegisterController extends Zend_Controller_Action
     {
     	
     }
+    
+    public function usernoplanAction()
+    {
+    	if ($this->getRequest()->isPost())
+    	{
+    	
+		   	$formData = $this->getRequest()->getPost();
+		 	echo "<pre>";
+		// 	print_r($formData);
+		 	echo "</pre>";
+		 	
+		 	
+		 	$apid = $formData['apid'];
+		 	$this->view->plandetails=$formData;
+		 	$pid = $this->view->Dcode($formData['pid']);
+		 	$provider = $formData['provider'];
+		 	$spv = new Application_Model_DbTable_PlanList();
+		 	$this->view->sp_view = $spv->planname($pid);
+		 	
+		 
+		 	
+		 	$sess = new Zend_Session_Namespace('user');
+		 	$uid =  $sess->hf_id;
+		 
+		 	
+		 	/*
+		 	 * Clean all previous data of cart
+		 	 * 
+		 	 */
+		 	$UserRegDb = New Application_Model_DbTable_UserRegister();
+		 	
+		 	$UserRegDb->cleancart($uid);
+		 	
+		 	
+		 	$UserRegDb->InsertCart($provider, base64_encode($pid), $uid);
+		 	
+		 	$this->_redirect('Cart/index/uID/'.$this->view->Ecode($uid).'/Pid/'.$this->view->Ecode($pid));
+		 	
+    	}
+    }
 
     public function adduserAction()
     {
@@ -102,6 +142,7 @@ class UserRegisterController extends Zend_Controller_Action
 		   	     
 		   	    $user = new Application_Model_DbTable_UserRegister();
 		   	    $uid=$user->addUser($hf_organization,$hf_facility_identifier,$cusid,$hf_facility_suffix,$hf_facility_name,$hf_facility_lname,$hf_speciality,$dashboard_password,$dashboard_password_confirm,$hf_email,$hf_address,$hf_city,$hf_state,$hf_zip,$hf_country,$hf_phone,$hf_fax,$hf_tax_id,$hf_npi,$pid,$apid,$bpcost,$pcost,$setupfee,$totalfee);
+		  
 		   	    if($uid=="schemaexist")
 		   	    {
 		   	    	$formData['error']="facility"; // Adding the error cause;
@@ -123,7 +164,7 @@ class UserRegisterController extends Zend_Controller_Action
 		   	    	unset($session->hf_id);
 		   	    	unset($session->duser);
 		   	    	 
-		   	    
+		   	    	
 		   	    	 
 		   	    	Zend_Session::start();
 		   	    	$sess = new Zend_Session_Namespace('user');
@@ -190,6 +231,8 @@ class UserRegisterController extends Zend_Controller_Action
         
     	}
     }
+    
+ 
 
 }
 

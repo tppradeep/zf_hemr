@@ -130,6 +130,7 @@ $(document).ready(function() {
 
 </script>
    <?php 
+    $sess = new Zend_Session_Namespace('user');
   if($this->cms)
   {
   		echo '<div class="cms">';
@@ -145,7 +146,22 @@ $(document).ready(function() {
    
  
 <div class="leftpanel">
+
+ <?php
+	  if($sess->step=="compare")
+	  {
+	  ?>
+<form method="post" action="<?php echo $this->baseUrl();?>/UserRegister/usernoplan/">
+<?php
+	  }
+	  else
+	  {
+	  ?>
+
 <form method="post" action="<?php echo $this->baseUrl();?>/UserRegister/adduser/">
+<?php
+}
+?>
 <input type="hidden" name="_sec" value="plan">
  <table width="100%" border="0" cellspacing="2" cellpadding="2">
     <tr>
@@ -296,11 +312,28 @@ $(document).ready(function() {
       {
           echo "<option value=$i>$i</option>";
       }
+	  
+	 
       ?>
         </select>
         </span></td>
        
-      <td align="right" valign="top" ><input name="checkout" type="submit" disabled="disabled" class="button-disabled" id="checkout" value="Proceed to Registration" /></td>
+      <td align="right" valign="top" >
+      <?php
+	  if($sess->step=="compare")
+	  {
+	  ?>
+      <input name="checkout" type="submit" disabled="disabled" class="button-disabled" id="checkout" value="Proceed to Payment" />
+      <?php
+	  }
+	  else
+	  {
+	  ?>
+      <input name="checkout" type="submit" disabled="disabled" class="button-disabled" id="checkout" value="Proceed to Registration" />
+      <?php
+	  }
+	  ?>
+      </td>
      </tr>
   </table>
   </form>

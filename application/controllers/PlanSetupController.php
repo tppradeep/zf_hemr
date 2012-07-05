@@ -38,9 +38,11 @@ class PlanSetupController extends Zend_Controller_Action
 						
 		$setupvalues = $servicedb->activateplansetting($hfemail,$invoice_no);
 						
+		
+		
 		// initialize SOAP client
 		$options = array(
-		  				'location' => 'http://192.168.1.139/installer/installer/setup.php',
+		  				'location' => 'http://www.hostedopenemr.com/installer/setup.php',
 		  				'uri'      => 'urn://portal/req'
 						);
 			

@@ -37,7 +37,6 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 				'hf_tax_id' => $hf_tax_id,
 				'hf_npi' => $hf_npi,
 		        'reg_date'=>date('Y-m-d')
-				
 		);
 		
 		$sc = Zend_Db_Table::getDefaultAdapter();
@@ -75,6 +74,9 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		$numRows = $db->insert('hosted_facilities', $data);
 		$uid=$db->lastInsertId();
 		
+		$sess = new Zend_Session_Namespace('user');
+		$sess->duser = $row['hf_email'];
+		$sess->hf_id = $uid;
 		
 		$data = array(
 				'hf_id' => $uid,
@@ -83,6 +85,8 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		
 		);
 		$numRows = $db->insert('acl_user_setting', $data);
+		
+		
 		/*
 		 * Sending Mail with User Login Details
 		*/
@@ -127,6 +131,7 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		    
 		}
 		
+		return $this->InsertCart($apid,$id,$uid);
 		//die;
 		/*
 		 * Sending Mail with User Login Details End
@@ -146,197 +151,217 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		
 		// PROVIDERS SELECTED BY CUSTOMER
 		
-		$provider = $apid;
 		
-		$id=base64_decode($id);
-		
-		
-		$select = $db->select()
-		->from(array('hosted_plans'),array('hp_name','discount','discount_start_date','discount_end_date','bundle_discount_type','bundle_discount_per_cost','bundle_discount_per_setup','bundle_cost'))
-		->where('hp_id='.$id);
-		$row=$db->fetchRow($select);
-		$planname=$row['hp_name'];
-		$discount=$row['discount'];
-		$discount_start_date=$row['discount_start_date'];
-		$discount_end_date=$row['discount_end_date'];
-		
-		$bd_type = $row['bundle_discount_type'];
-//	echo "<br>";
-		$bd_dpc = $row['bundle_discount_per_cost'];
-	//echo "<br>";
-	 	$db_dps=$row['bundle_discount_per_setup'];
-//	echo "<br>";
-	
-
-		
-		// Calcuating One Time Payment and Monthely Payment
-		
-		$one_time_payment=0;
-		$monthly_payment=0;
-		$discount_amt=0;
-		$productsetupfee=0;
-		$PlanCostTotalDiscount=0;
-		$PlanSetupTotalDiscount=0;
-		$plancost=0;
-		$plansetupfee=0;
-		$select = $db->select()
-		-> from(array('p'=>'products'),array('sum(p.cost) as pcost','sum(p.setup_fee) as setupcost'))
-		->join(array('pp'=>'plan_products'),'pp.idproducts=p.idproducts')
-		-> where('pp.idplan='.$id);
-		 //$otm = $db->fetchRow($select);
-		 
-		$sql = 'select cost,setup_fee,provider_cost_nature,provider_setup_nature from products p ,plan_products pp where pp.idplan='.$id.' and pp.idproducts=p.idproducts';
-		
-		$PlanTotal = $db->fetchAll($sql);
-		/*
-		 * The follwoing section is to calcualte weather the product price is incrementing with additional provider or not. 
-		 * Based on that product cost and setup fee calculating for the plan with selected provider
-		 */
-		foreach($PlanTotal as $PT)
-		{
-		    // Cost Section
-		    if($PT['provider_cost_nature']==1)//increment with provider
-		    {
-		        $plancost = $plancost + $PT['cost'] * $provider;
-		    }
-		    if($PT['provider_cost_nature']==0)//increment with provider
-		    {
-		    	$plancost = $plancost + $PT['cost'];
-		    }
-		    // Setup Fee section
-		    if($PT['provider_setup_nature']==1) // increment with provider
-		    {
-		        $plansetupfee = $plansetupfee + $PT['setup_fee'] * $provider;
-		    }
-		    if($PT['provider_setup_nature']==0) // increment with provider
-		    {
-		    	$plansetupfee = $plansetupfee + $PT['setup_fee'];
-		    }
-		    
-		}
-
-		 
-		
-		if($bd_type==1) // if in %
-		{
-		    $monthly_payment = $plancost - $plancost * $bd_dpc / 100;
-		   
-		    $one_time_payment = $plansetupfee - $plansetupfee * $db_dps / 100;
-		   
-		    $PlanCostTotalDiscount = $plancost * $bd_dpc / 100;
-		    $PlanSetupTotalDiscount = $plansetupfee * $db_dps / 100;
-		}
-		if($bd_type==2) // if in price
-		{
-			$monthly_payment = ($plancost) - ($bd_dpc*$provider);
-			$one_time_payment = ($plansetupfee)-($db_dps*$provider);
-			
-			$PlanCostTotalDiscount = $bd_dpc * $provider ;
-			$PlanSetupTotalDiscount = $db_dps * $provider;
-		}
-		
-	
-		
-		
-	//	echo $PlanCostTotalDiscount;
-	//	echo "<br>";
-	//	echo $PlanSetupTotalDiscount;
-		//die;
-		$dd=date('Y-m-d');
-		$total_discount = $PlanCostTotalDiscount + $PlanSetupTotalDiscount;
-		$total_amount = $one_time_payment + $monthly_payment;
-		
-	
-		
-		$customer_selected_plan_data = array(
-				'plan_id' => $id,
-				'plan_name'=> $planname,
-		        'provider_no'=>$provider,
-				'hf_id' => $uid,
-				'dashboard_userid' => $hf_email,
-				'one_time_payment'=> $one_time_payment,
-		        'monthly_payment'=>$monthly_payment,
-		        'setupfee'=>$one_time_payment,
-		        'discount_percentage'=>$bd_dpc,
-		        'discount_amount'=>$total_discount,
-		        'total_payment'=>$total_amount,
-				'created_date' => $dd,
-				'payment_status' => 0,
-				'payment_error_message' => "Not Proceed to Payment Gateway"
-		
-		);
-		
-		$db->insert('customer_selected_plan', $customer_selected_plan_data);
-		$idcustomer_selected_plan=$db->lastInsertId();
-	
-		
-		/*
-		 * Updating the Plan Products into Customer Product table
-		 */
-
-		//select p.idproducts,p.product_name,p.customer_id,p.product_feature,p.cost,p.payment_term,p.product_sort_order,p.product_status from 
-		//products p, plan_products pp where p.idproducts=pp.idproducts and pp.idplan=1
-		$select = $db->select()
-					->from(array('p'=>'products',array('p.idproducts','p.category','p.product_name','p.customer_id','p.product_feature','p.cost','setup_fee','p.payment_term','p.product_sort_order','p.product_status','p.provider_cost_nature','p.provider_setup_nature')))
-					->join(array('pp'=>'plan_products'),'pp.idproducts=p.idproducts')
-	   				-> where('pp.idplan='.$id);
-		$row=$db->fetchAll($select);
-		
-		
-		
-		foreach($row as $record)
-		{
-			
-			
-			$customer_selected_plan_features_data = array(
-					'hf_id' => $uid,
-			        'hp_id' => $id,
-					'idproducts' => $record['idproducts'],
-			        'category'=>$record['category'],
-					'product_name'=> $record['product_name'],
-					'customer_id'=> $record['customer_id'],
-					'product_feature' => $record['product_feature'],
-					'cost' => $record['cost'],
-			        'setup_fee'=>$record['setup_fee'],
-			        'product_sort_order'=>$record['product_sort_order'],
-			        'product_status'=>$record['product_status'],
-			        'provider_cost_nature'=>$record['provider_cost_nature'],
-			        'provider_setup_nature'=>$record['provider_setup_nature']
-					
-			);
-			$db->insert('customer_products', $customer_selected_plan_features_data);
-			
-		}
-		/*
-		 * Adding to cart
-		 */
-		
-		
-	
-	$carttotal = $plancost+$plansetupfee-$total_discount;
-	
-		
-		$cartdata = array(
-		        'cartsession'=>session_id(),
-		        'plan_id' => $id,
-				'hf_id' => $uid,
-		        'description'=>$planname." Subscription",
-		        'qty'=>$provider,
-				'unit_price' => $plancost,
-		        'setupfee'=> $plansetupfee,
-		        'discount'=>$PlanCostTotalDiscount,
-		        'setupfee_discount'=>$PlanSetupTotalDiscount,
-		        'total'=>$carttotal,
-				'cstatus'=>0,
-		        'cart_date' => $dd
-		
-		);
-			$db->insert('cart', $cartdata);
-		
-		return $uid;
 		
 	}
+	public function InsertCart($provider,$id,$hf_id)
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+		
+	     $id=base64_decode($id);
+	    
+	   
+	 
+	    /*
+	     * Collecting User details
+	     */
+	    $gnDb = New Application_Model_DbTable_General();
+	    $userdetails=$gnDb->identifierdetails($hf_id);
+	    
+	    
+	    $uid = $hf_id;
+	    $hf_email = $userdetails['hf_email'];
+	   
+	   
+	    
+	    $select = $db->select()
+	    ->from(array('hosted_plans'),array('hp_name','discount','discount_start_date','discount_end_date','bundle_discount_type','bundle_discount_per_cost','bundle_discount_per_setup','bundle_cost'))
+	    ->where('hp_id='.$id);
+	    
+	  
+	    $row=$db->fetchRow($select);
+	    $planname=$row['hp_name'];
+	    $discount=$row['discount'];
+	    $discount_start_date=$row['discount_start_date'];
+	    $discount_end_date=$row['discount_end_date'];
+	    
+	    $bd_type = $row['bundle_discount_type'];
+	    //	echo "<br>";
+	    $bd_dpc = $row['bundle_discount_per_cost'];
+	    //echo "<br>";
+	    $db_dps=$row['bundle_discount_per_setup'];
+	    //	echo "<br>";
+	    
+	    
+	   
+	    // Calcuating One Time Payment and Monthely Payment
+	    
+	    $one_time_payment=0;
+	    $monthly_payment=0;
+	    $discount_amt=0;
+	    $productsetupfee=0;
+	    $PlanCostTotalDiscount=0;
+	    $PlanSetupTotalDiscount=0;
+	    $plancost=0;
+	    $plansetupfee=0;
+	    $select = $db->select()
+	    -> from(array('p'=>'products'),array('sum(p.cost) as pcost','sum(p.setup_fee) as setupcost'))
+	    ->join(array('pp'=>'plan_products'),'pp.idproducts=p.idproducts')
+	    -> where('pp.idplan='.$id);
+	    //$otm = $db->fetchRow($select);
+	    	
+	    $sql = 'select cost,setup_fee,provider_cost_nature,provider_setup_nature from products p ,plan_products pp where pp.idplan='.$id.' and pp.idproducts=p.idproducts';
+	    
+	    $PlanTotal = $db->fetchAll($sql);
+	    /*
+	     * The follwoing section is to calcualte weather the product price is incrementing with additional provider or not.
+	    * Based on that product cost and setup fee calculating for the plan with selected provider
+	    */
+	    foreach($PlanTotal as $PT)
+	    {
+	    	// Cost Section
+	    	if($PT['provider_cost_nature']==1)//increment with provider
+	    	{
+	    		$plancost = $plancost + $PT['cost'] * $provider;
+	    	}
+	    	if($PT['provider_cost_nature']==0)//increment with provider
+	    	{
+	    		$plancost = $plancost + $PT['cost'];
+	    	}
+	    	// Setup Fee section
+	    	if($PT['provider_setup_nature']==1) // increment with provider
+	    	{
+	    		$plansetupfee = $plansetupfee + $PT['setup_fee'] * $provider;
+	    	}
+	    	if($PT['provider_setup_nature']==0) // increment with provider
+	    	{
+	    		$plansetupfee = $plansetupfee + $PT['setup_fee'];
+	    	}
+	    
+	    }
+	    
+	    	
+	    
+	    if($bd_type==1) // if in %
+	    {
+	    	$monthly_payment = $plancost - $plancost * $bd_dpc / 100;
+	    	 
+	    	$one_time_payment = $plansetupfee - $plansetupfee * $db_dps / 100;
+	    	 
+	    	$PlanCostTotalDiscount = $plancost * $bd_dpc / 100;
+	    	$PlanSetupTotalDiscount = $plansetupfee * $db_dps / 100;
+	    }
+	    if($bd_type==2) // if in price
+	    {
+	    	$monthly_payment = ($plancost) - ($bd_dpc*$provider);
+	    	$one_time_payment = ($plansetupfee)-($db_dps*$provider);
+	    		
+	    	$PlanCostTotalDiscount = $bd_dpc * $provider ;
+	    	$PlanSetupTotalDiscount = $db_dps * $provider;
+	    }
+	    
+	    
+	    
+	    
+	    //	echo $PlanCostTotalDiscount;
+	    //	echo "<br>";
+	    //	echo $PlanSetupTotalDiscount;
+	    //die;
+	    $dd=date('Y-m-d');
+	    $total_discount = $PlanCostTotalDiscount + $PlanSetupTotalDiscount;
+	    $total_amount = $one_time_payment + $monthly_payment;
+	    
+	    
+	    
+	    $customer_selected_plan_data = array(
+	    		'plan_id' => $id,
+	    		'plan_name'=> $planname,
+	    		'provider_no'=>$provider,
+	    		'hf_id' => $uid,
+	    		'dashboard_userid' => $hf_email,
+	    		'one_time_payment'=> $one_time_payment,
+	    		'monthly_payment'=>$monthly_payment,
+	    		'setupfee'=>$one_time_payment,
+	    		'discount_percentage'=>$bd_dpc,
+	    		'discount_amount'=>$total_discount,
+	    		'total_payment'=>$total_amount,
+	    		'created_date' => $dd,
+	    		'payment_status' => 0,
+	    		'payment_error_message' => "Not Proceed to Payment Gateway"
+	    
+	    );
+	    
 	
+	    
+	    $db->insert('customer_selected_plan', $customer_selected_plan_data);
+	    $idcustomer_selected_plan=$db->lastInsertId();
+	  
+	    /*
+	     * Updating the Plan Products into Customer Product table
+	    */
+	    
+	    //select p.idproducts,p.product_name,p.customer_id,p.product_feature,p.cost,p.payment_term,p.product_sort_order,p.product_status from
+	    //products p, plan_products pp where p.idproducts=pp.idproducts and pp.idplan=1
+	    $select = $db->select()
+	    ->from(array('p'=>'products',array('p.idproducts','p.category','p.product_name','p.customer_id','p.product_feature','p.cost','setup_fee','p.payment_term','p.product_sort_order','p.product_status','p.provider_cost_nature','p.provider_setup_nature')))
+	    ->join(array('pp'=>'plan_products'),'pp.idproducts=p.idproducts')
+	    -> where('pp.idplan='.$id);
+	    $row=$db->fetchAll($select);
+	    
+	    
+	    
+	    foreach($row as $record)
+	    {
+	    		
+	    		
+	    	$customer_selected_plan_features_data = array(
+	    			'hf_id' => $uid,
+	    			'hp_id' => $id,
+	    			'idproducts' => $record['idproducts'],
+	    			'category'=>$record['category'],
+	    			'product_name'=> $record['product_name'],
+	    			'customer_id'=> $record['customer_id'],
+	    			'product_feature' => $record['product_feature'],
+	    			'cost' => $record['cost'],
+	    			'setup_fee'=>$record['setup_fee'],
+	    			'product_sort_order'=>$record['product_sort_order'],
+	    			'product_status'=>$record['product_status'],
+	    			'provider_cost_nature'=>$record['provider_cost_nature'],
+	    			'provider_setup_nature'=>$record['provider_setup_nature']
+	    				
+	    	);
+	    	$db->insert('customer_products', $customer_selected_plan_features_data);
+	    		
+	    }
+	    /*
+	     * Adding to cart
+	    */
+	    
+	    
+	    
+	    $carttotal = $plancost+$plansetupfee-$total_discount;
+	    
+	    
+	    $cartdata = array(
+	    		'cartsession'=>session_id(),
+	    		'plan_id' => $id,
+	    		'hf_id' => $uid,
+	    		'description'=>$planname." Subscription",
+	    		'qty'=>$provider,
+	    		'unit_price' => $plancost,
+	    		'setupfee'=> $plansetupfee,
+	    		'discount'=>$PlanCostTotalDiscount,
+	    		'setupfee_discount'=>$PlanSetupTotalDiscount,
+	    		'total'=>$carttotal,
+	    		'cstatus'=>0,
+	    		'cart_date' => $dd
+	    
+	    );
+	    $db->insert('cart', $cartdata);
+
+	 
+	    return $uid;
+	}
 	public function UserName($uid) // Retriving Name through uid(hf_id table field)
 	{
 		$db = Zend_Db_Table::getDefaultAdapter();
@@ -378,6 +403,19 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 			throw new Exception("Count not find row 3");
 		}
 		return $row;
+	}
+	public function cleancart($hf_id)
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    $sql = 'delete from customer_invoice where hf_id='.$hf_id;
+	    $db->query($sql);
+	    
+	    $sql = 'delete from customer_products where hf_id='.$hf_id;
+	    $db->query($sql);
+	    
+	    $sql = 'delete from customer_selected_plan where hf_id='.$hf_id;
+	    $db->query($sql);
+	    
 	}
 }
 ?>

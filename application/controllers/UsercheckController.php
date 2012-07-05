@@ -64,17 +64,18 @@ class UsercheckController extends Zend_Controller_Action
 					$userDb = new Application_Model_DbTable_Usercheck();
 					$UserPlanDtd = $userDb->UserPlan($sess->hf_id);
 					
-					echo "<pre>";
-					print_r($UserPlanDtd);
-					echo "</pre>";
+				//	echo "<pre>";
+				//	print_r($UserPlanDtd);
+				//	echo "</pre>";
 					
 					if(is_array($UserPlanDtd))
 					{
 					    if (array_key_exists('plan_id', $UserPlanDtd)) 
 					    {
-					        if($UserPlanDtd['payment_status']==0)
+					        if(!$UserPlanDtd['payment_status']=='COMPLETED')
 					        {
-					            
+					            $sess->step="compare";
+					            $this->_redirect('PlanList/compareplans');
 					        }
 					    }
 					    	
@@ -85,7 +86,7 @@ class UsercheckController extends Zend_Controller_Action
 					    $sess->step="compare";
 						$this->_redirect('PlanList/compareplans');    
 					}
-					die;
+					
 					
 	              	$this->_redirect('user');
 	                return;
@@ -153,7 +154,7 @@ class UsercheckController extends Zend_Controller_Action
 			    	/*
 			    	 * presently redirecting to index page. this section has to modify with login error section
 			    	*/
-			    	$emes=$this->view->Ecode("not");
+			    	//$emes=$this->view->Ecode("not");
 			    	$this->_redirect("/?emes=".$emes."");
 			    }
 			}

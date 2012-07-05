@@ -71,6 +71,8 @@ class Application_Model_DbTable_Services extends Zend_Db_Table_Abstract
 	   // $result[0]['dashboard_password']= $result[0]['dashboard_password'];
 	    
 	    $arr = array(array($userid,$pass,$randomvalue),$result);
+	    
+	
 	    return $arr;
 	}
 	public function activationresult($hf_id,$inv_no,$activation_status,$activation_message)

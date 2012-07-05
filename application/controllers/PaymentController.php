@@ -478,9 +478,9 @@ class PaymentController extends Zend_Controller_Action
     	   // echo $nvpstr;
     	   // die;
     	   // echo  $_SESSION['curl_error_msg'];
-		//	echo "<pre>";
-			//print_r($resArray);
-		//	die;
+	//		echo "<pre>";
+	//		print_r($resArray);
+	//	die;
 			
     	    
     	    /* Display the API response back to the browser.
@@ -578,11 +578,14 @@ class PaymentController extends Zend_Controller_Action
     	        }
  	        	$ProductUpdateToPlan = new Application_Model_DbTable_Paymentdb();
    	        	$uid=$ProductUpdateToPlan->ProductUpdateToPlan($hf_id,$invoice_number,$payment_date,$payment_status,$transaction_id);
-				
+   	        	
    	        	//$this->_helper->redirector('thanks','Payment',null,array('st' => 'success'));
    	        	//$this->_helper->redirector('PlanSetup','Index',null,array('st' => 'success','hfid'=>base64_encode($hf_id)));
 				
-    	        	$this->_redirect('/PlanSetup/index/st/success/hfid/'.base64_encode($hf_id).'/invno/'.base64_encode($invoice_no));
+   	        	$sess = new Zend_Session_Namespace('user');
+   	        	$sess->step="";
+   	        	$sess->dashboard=1;
+   	        	$this->_redirect('/PlanSetup/index/st/success/hfid/'.base64_encode($hf_id).'/invno/'.base64_encode($invoice_no));
    	        	 
     	    }
     	    else // Payment is fail 

@@ -15,6 +15,7 @@ class PlanListController extends Zend_Controller_Action
 
     public function listplanAction()
     {
+        
         $cmsObj = new Application_Model_DbTable_Index();
         $this->view->cms = $cmsObj->getcms('Plan List Page');
         
