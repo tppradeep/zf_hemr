@@ -80,6 +80,14 @@ class Application_Model_DbTable_Services extends Zend_Db_Table_Abstract
 	    
 	    $db = Zend_Db_Table::getDefaultAdapter();
 	    
+	    if($activation_status=='Success')
+	    {
+	        $activation_status=1;
+	    }
+	    else
+	    {
+	        $activation_status=0;
+	    }
 	    $sql = 'update customer_invoice set activation_status='.$activation_status.',activation_message="'.$activation_message.'" where invoice_number="'.$inv_no.'" and hf_id ='.$hf_id;
 	    $db->query($sql);
 	    

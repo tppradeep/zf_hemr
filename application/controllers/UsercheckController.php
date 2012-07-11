@@ -161,6 +161,17 @@ class UsercheckController extends Zend_Controller_Action
 		}
     }
 
-
+    public function validatefacilityAction()
+    {
+        $this->_helper->layout()->disableLayout();
+    	$formData = $this->getRequest()->getPost();
+		$facility = $formData['facility'];
+		$source = $formData['Source'];
+		
+		$UserDB = new Application_Model_DbTable_Usercheck();
+		
+		return $UserDB->validatefacility($facility, $source);
+		
+    }
 }
 

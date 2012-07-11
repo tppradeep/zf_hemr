@@ -23,5 +23,16 @@ class Application_Model_DbTable_Usercheck extends Zend_Db_Table_Abstract
 	    return $db->fetchRow($sql);
 	    
 	}
+	public function validatefacility($facility,$source)
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    
+	    if($source=="getServer"){
+	    	$query = "SELECT hosted_server FROM hosted_facilities WHERE hf_facility_identifier='".$facility."'";
+	    	
+	    	return $db->fetchOne($sql);
+	    	
+	    }
+	}
 }
 

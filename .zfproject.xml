@@ -49,6 +49,7 @@
         </controllerFile>
         <controllerFile controllerName="Usercheck">
           <actionMethod actionName="index"/>
+          <actionMethod actionName="validatefacility"/>
         </controllerFile>
         <controllerFile controllerName="Forgotpassword">
           <actionMethod actionName="index"/>
@@ -253,6 +254,10 @@
             <controllerFile controllerName="Email">
               <actionMethod actionName="index"/>
             </controllerFile>
+            <controllerFile controllerName="Paypal">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="update"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
           <layoutsDirectory enabled="false">
@@ -279,6 +284,7 @@
               <dbTableFile dbTableName="Speciality"/>
               <dbTableFile dbTableName="Faq"/>
               <dbTableFile dbTableName="Email"/>
+              <dbTableFile dbTableName="Paypal"/>
             </dbTableDirectory>
           </modelsDirectory>
           <viewsDirectory>
@@ -543,6 +549,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Email">
                 <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Paypal">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Paypal">
+                <viewScriptFile forActionName="update"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -897,6 +909,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="UserRegister">
             <viewScriptFile forActionName="usernoplan"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Usercheck">
+            <viewScriptFile forActionName="validatefacility"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

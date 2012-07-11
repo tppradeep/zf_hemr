@@ -28,48 +28,12 @@ class ServicesController extends Zend_Controller_Action
     public function viewsoapAction()
     {
         	
-         $this->_helper->layout()->disableLayout();
-   		 $hf_id = '242';
-    	 $inv_no='ZH-2012-07-02-00028';
-    	 $activation_status = 1;
-    	 $activation_message = 'success';
-
-        $gndb = new Application_Model_DbTable_General();
-            
-        $userid = 'hostedopenemrsetup';
-        $randomvalue = $gndb->generatepassword();
-        $tim = strtotime(gmdate("Y-m-d H:m"));
-        $password = sha1('hostedopenemrsetup@123'.date("Y-m-d H",($tim-3600)).$randomvalue);
-        
-       
-        
         $serdb = new Application_Model_DbTable_Services();
-        
+        $hf_id=266;
+        $inv_no='ZH-2012-07-09-00160';
+        $activation_status='Success';
+        $activation_message='';
         $serdb->activationresult($hf_id,$inv_no,$activation_status,$activation_message);
-        die;
-		Zend_Loader::loadClass('Zend_Soap_Client');
-		
-	// initialize SOAP client
-		$options = array(
-	  				'location' => 'http://localhost/zf_hemr/public/services/soap',
-	  				'uri'      => 'urn://soap/zf'
-					);
-		
-		try {
-	  		$client = new Zend_Soap_Client(null, $options);  
-	  		$result = $client->activationresult($hf_id,$inv_no,$activation_status,$activation_message);
-	  		echo "<pre>";
-	  		print_r($result);
-	  		echo "</pre>";
-			} 
-			catch (SoapFault $s) 
-			{
-	  			die('ERROR: [' . $s->faultcode . '] ' . $s->faultstring);
-			} 
-			catch (Exception $e) 
-			{
-	  			die('ERROR: ' . $e->getMessage());
-			}
     }
 
     public function checkAction()

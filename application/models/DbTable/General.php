@@ -109,15 +109,64 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	}
 	public function identifierchecking($identifier)
 	{
+	    
 	    $db = Zend_Db_Table::getDefaultAdapter();
 	    $sql ='select count(hf_id) as hf_id from hosted_facilities where hf_facility_identifier="'.$identifier.'"';
 	    if($db->fetchone($sql)==0)
 	    {
-    		return 1;
+    		//return 1;
+    		
+	        // Checking in patient portal
+	        $gndb=new Application_Model_DbTable_General();
+
+	        $userid = 'hostedopenemrinstaller';
+	        $randomvalue = $gndb->generatepassword();
+	        $password = sha1('hostedopenemrinstaller@123'.gmdate("Y-m-d H").$randomvalue);
+	         
+	        $credentials = array($userid,$password,$randomvalue);
+	         
+	        Zend_Loader::loadClass('Zend_Soap_Client');
+	         
+	        // initialize SOAP client
+	        $options = array(
+	        		'location' => 'https://www.mydocsportal.com/myservices/soap_service/server_side.php',
+	        		'uri'      => 'urn://portal/res'
+	        );
+	         
+	      		
+	        	
+	        	$validarr = array($credentials,$identifier);
+	       
+	        	$client = new Zend_Soap_Client(null, $options);
+	        	$result = $client->check_existing($validarr);
+	        	//echo "<pre>";
+	        	//$result = (string)$result;
+	        //	echo $result;
+	        //	echo "</pre>";
+	        //	die;
+	       
+        	if($result=='absent')
+        	{
+        		return 1;
+        		exit;
+        	}
+        	if($result==false)
+        	{
+        		return 0;
+        		exit;
+        	}	
+	        if($result=='present')
+	        {
+	        	return 0;
+	        	exit;
+	        }
+	        
 	    }
 	    else
 	    {
-	    	return 0;
+	       
+	    	return 1;
+	    	exit;
 	    }
 	}
 	public function facilityidentifier($userid)
@@ -174,6 +223,15 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	
 	public function generatepassword()
 	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    $i=0;
+	    do
+	    {
+	        $randkey = substr(md5(rand().rand()), 0, 8);
+	        $sql = 'select count(autonumber) as id from autonumber where autonumber="'.$randkey.'"';
+	        $i=$db->fetchOne($sql);
+	         
+	    }while($i>0);
 		return substr(md5(rand().rand()), 0, 8);
 	}
 	public function checkautonumer($no)
