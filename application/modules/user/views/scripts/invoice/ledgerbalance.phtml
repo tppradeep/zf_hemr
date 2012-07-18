@@ -30,7 +30,7 @@
     if($ledge['payment_status']!="COMPLETED")
     {
     	$pendingamount = $pendingamount + $ledge['amount'] + $ledge['setupfee'];
-    	echo $currency->toCurrency(round($ledge['amount']+$ledge['setupfee'],2));
+    	echo $currency->toCurrency(round($ledge['amount']+$ledge['setupfee']));
     }
     ?>
     </span></td>
@@ -40,7 +40,7 @@
     if($ledge['payment_status']=="COMPLETED")
     {
     	$confirmamount = $confirmamount + $ledge['amount']+$ledge['setupfee'];
-    	echo $currency->toCurrency(round($ledge['amount']+$ledge['setupfee'],2));
+    	echo $currency->toCurrency(round($ledge['amount']+$ledge['setupfee']));
     }
     ?>
     </span></td>
@@ -62,11 +62,11 @@
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td class="form-label-main">Total :</td>
-    <td class="form-label-main" align="right"><?php echo $currency->toCurrency(round($pendingamount,2));?></td>
-    <td class="form-label-main" align="right"><?php echo $currency->toCurrency(round($confirmamount,2));?></td>
+    <td class="form-label-main" align="right"><?php echo $currency->toCurrency(round($pendingamount));?></td>
+    <td class="form-label-main" align="right"><?php echo $currency->toCurrency(round($confirmamount));?></td>
   </tr>
   <?php 
-  $balance = round($pendingamount,2) - round($confirmamount,2);
+  $balance = round($pendingamount) - round($confirmamount);
   if($balance>0)
   {
   ?>
@@ -76,7 +76,7 @@
      <td class="form-label-main red">Balance :</td>
      <td class="form-label-main red" align="right"><?php 
     
-     echo $currency->toCurrency(round($balance,2));
+     echo $currency->toCurrency(round($balance));
      ?></td>
      <td class="form-label-main" align="right">&nbsp;</td>
    </tr>

@@ -26,8 +26,7 @@ class Admin_UsersController extends Zend_Controller_Action
     {
          $us = new Admin_Model_DbTable_Users();
          $this->view->userlist = $us->userlist();
-         
-         
+         $this->view->st=$this->_getParam('st');
     }
 
     public function userdetailsAction()
@@ -40,6 +39,30 @@ class Admin_UsersController extends Zend_Controller_Action
         
         $country = new Application_Model_DbTable_General();
         $this->view->country = $country->countrylist();
+    }
+    
+    public function editAction()
+    {
+        
+        if ($this->getRequest()->isPost())
+        {
+            $formData = $this->getRequest()->getPost();
+            
+            $userDb = New Admin_Model_DbTable_Users();
+            $userDb->updateuser($formData);
+           $this->_redirect('Admin/Users/index/st/2');
+        }
+        else
+        {
+            
+	        $country = new Application_Model_DbTable_General();
+	        $this->view->country = $country->countrylist();
+	        
+	    	$hf_id = $this->view->Dcode($this->_getParam('id'));
+	    	$userdetails = new Admin_Model_DbTable_Users();
+	    	$this->view->Userdtd = $userdetails->retriveuserdetails($hf_id);
+        }
+    	
     }
 
     public function deleteAction()
@@ -119,5 +142,20 @@ class Admin_UsersController extends Zend_Controller_Action
     	$uDb = new Admin_Model_DbTable_Users();
     	$this->view->erro = $uDb->activationerrorlog($invoiceno);
         
+    }
+    public function deleteallAction()
+    {
+    	$id=$this->_getParam('id');
+    	$delids = explode(",",$id);
+    	
+	   	$pss = new Admin_Model_DbTable_Users();
+
+	   	foreach($delids as $id)
+	   	{
+	   	    if($id<>'0')
+	   	    	$this->del = $pss->deleteUser(base64_decode($id));
+	   	}
+    	
+    	$this->_redirect('Admin/Users/index/st/3');
     }
 }

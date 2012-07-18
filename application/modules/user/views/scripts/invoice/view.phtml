@@ -9,6 +9,7 @@
   <tr>
     <td colspan="3" class="normal-text b">
     <?php
+   
 	if($this->invoicedetails['plan_id']!=0)
 	{
 	?>
@@ -38,7 +39,7 @@
     <td colspan="3" class="normal-text b">&nbsp;</td>
   </tr>
   <tr>
-    <td class="h1">Invoce Details : </td>
+    <td class="h1">Invoice Details : </td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
@@ -49,6 +50,7 @@
         <td width="25%" valign="middle"><img src="<?php echo $this->baseUrl();?>/images/zhhealthcare.jpg"  alt="Z&amp;H" /></td>
         <td width="40%" valign="top" class="invoice-title">
         <?php 
+       
         $Address = new Zend_Session_Namespace('address');
         echo $Address->address;
         ?>
@@ -134,7 +136,7 @@
 		<td class="normal-text line">:</td>
 		<td align="right" class="normal-text b line"><?php 
 		$OneTimeFee = new Zend_Currency('en_US');
-	   echo  $OneTimeFee->toCurrency($this->invoicedetails['subscription_amount']+$this->invoicedetails['discount_amount']);
+	   echo  $OneTimeFee->toCurrency(round($this->invoicedetails['subscription_amount']+$this->invoicedetails['discount_amount']));
 	   // echo $this->onetimepayment;?></td>
 		<td align="right" class="normal-text b line">&nbsp;</td>
 	  </tr>
@@ -150,7 +152,7 @@
 		<td class="normal-text line">:</td>
 		<td align="right" class="normal-text b line"><?php
 		
-		echo $MonthlyFee->toCurrency($this->invoicedetails['setupfee']);
+		echo $MonthlyFee->toCurrency(round($this->invoicedetails['setupfee']));
 	   ?></td>
 		<td align="right" class="normal-text b line">&nbsp;</td>
 	  </tr>
@@ -165,7 +167,7 @@
 	    <td class="normal-text line">:</td>
 	    <td align="right" class="normal-text b line">
         <?php
-		echo $MonthlyFee->toCurrency($this->invoicedetails['discount_amount']);
+		echo $MonthlyFee->toCurrency(round($this->invoicedetails['discount_amount']));
 		?>
         </td>
 	    <td align="right" class="normal-text b line">&nbsp;</td>
@@ -181,7 +183,7 @@
     <td class="normal-text b line">:</td>
     <td align="right" class="normal-text b line"><?php
     $totalFee = new Zend_Currency('en_US');
-    echo $totalFee->toCurrency($this->invoicedetails['amount']+$this->invoicedetails['setupfee']);
+    echo $totalFee->toCurrency(round($this->invoicedetails['amount']+$this->invoicedetails['setupfee']));
     ?></td>
     <td align="right" class="normal-text b line">&nbsp;</td>
    </tr>       </table></td>
@@ -195,7 +197,7 @@
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td align="right" colspan="3"><input type="submit" name="Submit" value="Proceed to Payment" class="user-submit"/></td>
+    <td align="right" colspan="3">&nbsp;</td>
   </tr>
   <td align="right" colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>

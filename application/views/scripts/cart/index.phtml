@@ -57,8 +57,8 @@ function RemoveAdditionalProductFromCart(idcart)
         <td width="37%" class="cart-title shadow">Plan Includes</td>
         <td width="9%" align="center" class="cart-title shadow">Providers</td>
         <td width="12%" align="right" nowrap="nowrap" class="cart-title shadow">Provider / Month</td>
-        <td width="10%" align="right" nowrap="nowrap" class="cart-title shadow">Onetime Fee</td>
-        <td width="19%" align="right" class="cart-title shadow">Diacount</td>
+        <td width="10%" align="right" nowrap="nowrap" class="cart-title shadow">One Time Fee</td>
+        <td width="19%" align="right" class="cart-title shadow">Discount</td>
         <td width="3%" align="right">&nbsp;</td>
       </tr>
       <?php 
@@ -121,7 +121,7 @@ function RemoveAdditionalProductFromCart(idcart)
          $gtotal = $gtotal + (($cart['unit_price'])+$cart['setupfee']);
 		?>
         </td>
-        <td align="right" valign="top" class="normal-text shadowlight"><?php echo $cart['discount'];?></td>
+        <td align="right" valign="top" class="normal-text shadowlight"><?php echo round($cart['discount']);?></td>
         <td align="right" valign="top" class="normal-text shadowlight">
         <?php
 		if($cart['plan_id']==0)
@@ -149,9 +149,9 @@ function RemoveAdditionalProductFromCart(idcart)
           <td class="normal-text"></td>
           <td colspan="2" class="normal-text b">Sub Total</td>
           <td class="normal-text b">&nbsp;</td>
-          <td align="right" class="normal-text b"><?php echo $currency->toCurrency($totalunitprice);?></td>
-          <td align="right" class="normal-text b"><?php echo $currency->toCurrency($totalsetupfee);?></td>
-          <td class="normal-text b" align="right"><?php echo $currency->toCurrency($totaldiscount);?></td>
+          <td align="right" class="normal-text b"><?php echo $currency->toCurrency(round($totalunitprice));?></td>
+          <td align="right" class="normal-text b"><?php echo $currency->toCurrency(round($totalsetupfee));?></td>
+          <td class="normal-text b" align="right"><?php echo $currency->toCurrency(round($totaldiscount));?></td>
           <td width="3%" align="right" class="normal-text b">&nbsp;</td>
         </tr>
         <tr>
@@ -162,7 +162,7 @@ function RemoveAdditionalProductFromCart(idcart)
         <tr>
         <td class="normal-text"></td>
         <td colspan="5" class="normal-text b">Gross Amount</td>
-        <td class="normal-text b" align="right"><?php echo $currency->toCurrency(($gtotal+$gsetupfee)-$totaldiscount);?></td>
+        <td class="normal-text b" align="right"><?php echo $currency->toCurrency(round(($gtotal+$gsetupfee)-$totaldiscount));?></td>
         <td class="normal-text b" align="right">&nbsp;</td>
         </tr>
         <tr>
@@ -229,7 +229,7 @@ function RemoveAdditionalProductFromCart(idcart)
     <td width="70%" class="cart-title shadow">Category</td>
     <td width="70%" nowrap="nowrap" class="cart-title shadow">Product Name</td>
     <td width="12%" align="right" class="cart-title shadow">Provider / Month</td>
-    <td width="12%" align="right" nowrap="nowrap" class="cart-title shadow">Onetime Fee</td>
+    <td width="12%" align="right" nowrap="nowrap" class="cart-title shadow">One Time Fee</td>
     <!--td width="12%" align="left" nowrap="nowrap" class="cart-title shadow">Payment Term</td-->
     <td width="7%" class="cart-title shadow">Providers</td>
     <td width="7%" nowrap="nowrap" class="cart-title shadow">Total Cost</td>

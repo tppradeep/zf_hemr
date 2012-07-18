@@ -277,5 +277,13 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	    
 	    }
 	}
+	public function addotherspeciality($hf_speciality)
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    $sql = 'select max(listing_order)as lval from speciality';
+	    $lval = $db->fetchOne($sql) + 1 ;
+	    $sql ='insert into speciality (sp_name,listing_order,status) values ("'.$hf_speciality.'",'.$lval.',0)';
+	    $db->query($sql);
+	}
 }
 

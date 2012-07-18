@@ -43,8 +43,8 @@ function updateprice(pval)
 		{
 			if(VariableProductCostTotal>0)
 			{
-					VariableProductCostTotal = VariableProductCostTotal * pprovider;
-					VariableProductCostTotal = VariableProductCostTotal - ((VariableProductCostTotal * bundle_discount_per_cost)/100);
+					VariableProductCostTotal = Math.round(VariableProductCostTotal * pprovider);
+					VariableProductCostTotal = Math.round(VariableProductCostTotal - ((VariableProductCostTotal * bundle_discount_per_cost)/100));
 			}
 			else
 			{
@@ -52,21 +52,21 @@ function updateprice(pval)
 			}
 			if(VariableProductSetupFeeTotal>0)
 			{
-				VariableProductSetupFeeTotal = VariableProductSetupFeeTotal * pprovider;
-				VariableProductSetupFeeTotal = VariableProductSetupFeeTotal - ((VariableProductSetupFeeTotal * bundle_discount_per_setup)/100);
+				VariableProductSetupFeeTotal = Math.round(VariableProductSetupFeeTotal * pprovider);
+				VariableProductSetupFeeTotal = Math.round(VariableProductSetupFeeTotal - ((VariableProductSetupFeeTotal * bundle_discount_per_setup)/100));
 			}
 			else
 			{
 				VariableProductSetupFeeTotal=0;	
 			}
-			FixedProductSetupFeeTotal = FixedProductSetupFeeTotal - ((FixedProductSetupFeeTotal * bundle_discount_per_setup)/100);
+			FixedProductSetupFeeTotal = Math.round(FixedProductSetupFeeTotal - ((FixedProductSetupFeeTotal * bundle_discount_per_setup)/100));
 		}
 		
 		if(bundle_discount_type==2) // Flat discount
 		{
 			if(VariableProductCostTotal>0)
 			{
-				VariableProductCostTotal = (VariableProductCostTotal * pprovider) -  (bundle_discount_per_cost * pprovider);
+				VariableProductCostTotal = Math.round(VariableProductCostTotal * pprovider) -  (bundle_discount_per_cost * pprovider);
 			}
 			else
 			{
@@ -74,7 +74,7 @@ function updateprice(pval)
 			}
 			if(VariableProductSetupFeeTotal > 0)
 			{
-				VariableProductSetupFeeTotal = (VariableProductSetupFeeTotal * pprovider) - (bundle_discount_per_setup * pprovider);
+				VariableProductSetupFeeTotal = Math.round(VariableProductSetupFeeTotal * pprovider) - (bundle_discount_per_setup * pprovider);
 			}
 			else
 			{
@@ -82,7 +82,7 @@ function updateprice(pval)
 			}
 
 			
-			FixedProductSetupFeeTotal = (FixedProductSetupFeeTotal) - (bundle_discount_per_setup * pprovider);
+			FixedProductSetupFeeTotal = Math.round(FixedProductSetupFeeTotal) - (bundle_discount_per_setup * pprovider);
 			
 			
 		}
@@ -97,11 +97,11 @@ function updateprice(pval)
 		
 		setupfeee = parseFloat(VariableProductSetupFeeTotal) + parseFloat(FixedProductSetupFeeTotal);
 		
-		totalfee = pcost + setupfeee;
+		totalfee = Math.round(pcost + setupfeee);
 		
-		document.getElementById("pcost").value = pcost;
-		document.getElementById("totalfee").value = totalfee;
-		document.getElementById("totalamount").innerHTML = "$ "+pcost+"";
+		document.getElementById("pcost").value = Math.round(pcost);
+		document.getElementById("totalfee").value = Math.round(totalfee);
+		document.getElementById("totalamount").innerHTML = "$ "+Math.round(pcost)+"";
 		
 		if($("#setupfee").length) {
 		document.getElementById("setupfee").innerHTML="$ "+setupfeee+"";

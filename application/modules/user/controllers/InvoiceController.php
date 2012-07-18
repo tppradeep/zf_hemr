@@ -44,11 +44,12 @@ class User_InvoiceController extends Zend_Controller_Action
 	    	$pname 							= new Application_Model_DbTable_PlanList();
 	    	$this->view->planname 			=$pname->planname($invoicedetails['plan_id']);
     	}
+    	
     	$PayPal_Notification 			= new Application_Model_DbTable_Cms();
     	$this->view->paypaldtd 			= $PayPal_Notification->getcms('Paypal_intimation');
     	
     	$cms 							= new Application_Model_DbTable_Cms();
-    	$this->view->cmsdtd 			= $cms->getcms('User_reg_Confirm');
+    	$this->view->cmsdtd 			= $cms->getcms('Confirm Invoice');
     }
 
     public function paidinvoiceAction()

@@ -36,7 +36,58 @@
 			});
 		});
 	}
-	
+
+	function delall()
+	{
+		delid = document.getElementById("t").value;
+		$(function() {
+		$( "#dialog-confirm" ).addClass("shovisible");
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+			$( "#dialog-confirm" ).dialog({
+				resizable: false,
+				height:180,
+				modal: true,
+				buttons: {
+					"Delete all items": function() {
+						$( this ).dialog( "close" );
+						window.location.href="<?php echo $this->baseUrl();?>/Admin/Users/deleteall/id/"+delid+"";
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		});
+	}
+function updateme()
+{
+    	var oTable = $('#grid').dataTable();  
+		if($('#check_all').attr('checked')=='checked')
+		{
+			$('input', oTable.fnGetNodes()).attr('checked',true);
+		}
+		else
+		{
+			$('input', oTable.fnGetNodes()).attr('checked',false);
+		}
+	updateTextArea();
+}
+
+function updateTextArea() {         
+     var allVals = [];
+     $(':checked').each(function() {
+		 
+		  if (this.checked) {
+			allVals.push($(this).val());
+
+	  }
+
+     });
+     $('#t').val(allVals)
+  }
+
+
+
 	</script>
 <?php
 echo $this->leftmenu(); // Adding admin side Left Side Menu
@@ -49,10 +100,24 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
  <div id="dialog-confirm" title="Delete Record?">
 	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
 </div>
+<?php 
+if($this->st<>"")
+{
+?>
+ <div id="con_mess">
+ <?php
+
+ if($this->st=="2") echo "Record Updated Successfully";
+ if($this->st=="3") echo "Record(s) Deleted Successfully";
+ 
+ ?>
+     </div>
+     <?php }?>
  
 <table width="100%" border="0" cellspacing="0" cellpadding="0" id="grid">
   <thead>
   <tr>
+    <td align="center" nowrap="nowrap" class="invoice-table-title b table-head-bg white"><input type="checkbox" id="check_all" name="check_all" value='0' onclick="updateme()" /> <?php echo "<img src='".$this->baseUrl()."/images/delete.gif' alt='Delete' title='Delete' onClick='delall()' style='cursor:pointer;'/>"; ?></td>
     <td height="20" align="center" nowrap="nowrap" class="invoice-table-title b table-head-bg white">#</td>
     <td class="invoice-table-title b table-head-bg">Facility Identifier</td>
     <td class="invoice-table-title b table-head-bg" align="left">Full Name</td>
@@ -70,6 +135,7 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
   {
   ?>
   <tr>
+    <td class="normal-text  line" align="center"><input type="checkbox" name="hf_id" id="hf_id" value="<?php echo base64_encode($userlist['hf_id']);?>" onclick="updateTextArea()" /></td>
     <td height="22" class="normal-text  line" align="center"><?php echo $sino;?>.</td>
     <td class="normal-text line"><?php echo $userlist['hf_facility_identifier']?></td>
     <td class="normal-text line" align="left"><?php echo $userlist['hf_facility_name'];?></td>
@@ -80,7 +146,7 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
     <?php
     echo($userlist['user_status'])?'<img src="'.$this->baseUrl().'/images/active.png" alt="Active" title="Active"/>':'<img src="'.$this->baseUrl().'/images/disable.png" alt="Disabled" title="Disabled"/>';
     ?></td>
-    <td class="normal-text line" align="center">
+    <td align="center" nowrap="nowrap" class="normal-text line">
 
      <a class="openmodalbox" href="javascript:void(0);"	rel="ajax: <?php echo $this->baseUrl();?>/Admin/Users/viewplan/id/<?php echo $this->Ecode($userlist['hf_id']);?>">
     <?php 
@@ -107,10 +173,10 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
     echo '</a>&nbsp;';
     
     
- //   echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Products','action'=>'edit', 'id'=>$this->Ecode($userlist['hf_id'])),0,true).'">';
- //   echo "<img src='".$this->baseUrl()."/images/edit.png' alt='Edit' title='Edit'  style='cursor:pointer;' />";
- //   echo '</a>&nbsp;';
-       	echo "<img src='".$this->baseUrl()."/images/delete.gif' alt='Delete' title='Delete' onClick='del(".$userlist['hf_id'].")'   style='cursor:pointer;'/>";
+   echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Users','action'=>'edit', 'id'=>$this->Ecode($userlist['hf_id'])),0,true).'">';
+   echo "<img src='".$this->baseUrl()."/images/edit.png' alt='Edit' title='Edit'  style='cursor:pointer;' />";
+   echo '</a>&nbsp;';
+   echo "<img src='".$this->baseUrl()."/images/delete.gif' alt='Delete' title='Delete' onClick='del(".$userlist['hf_id'].")'   style='cursor:pointer;'/>";
     ?>
     </td>
   </tr>
@@ -120,13 +186,15 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
   ?>
   </tbody>
 </table>
+<input name="t" id="t" type="hidden" />
   </div>
  <script type="text/javascript">
                 //<![CDATA[
  $(document).ready(function() {
 	    oTable = $('#grid').dataTable({
 	        "bJQueryUI": true,
-	        "sPaginationType": "full_numbers"
+	        "sPaginationType": "full_numbers",
+			"aoColumnDefs": [{ 'bSortable': false, 'aTargets': [ 0,1,7 ] }]
 	    });
 	} );
                 //]]>

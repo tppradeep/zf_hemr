@@ -10,11 +10,7 @@ Called by TransactionDetails.php, ReviewOrder.php,
 DoDirectPaymentReceipt.php and DoExpressCheckoutPayment.php.
 
 ****************************************************/
-$API_UserName='pradee_1332324973_biz_api1.zhservices.com';
-$API_Password='1332324993';
-$API_Signature='AFcWxV21C7fd0v3bYYYRCpSSRl31ASh58JiqMRQg94gl0iRFYVSC2fVW';
-$API_Endpoint ='https://api-3t.sandbox.paypal.com/nvp';
-$version=urlencode('51.0');
+
 
 
 
@@ -27,17 +23,17 @@ $version=urlencode('51.0');
 */
 
 
-function hash_call($methodName,$nvpStr)
+function hash_call($methodName,$nvpStr,$API_UserName,$API_Password,$API_Signature,$API_Endpoint,$version)
 {
     $_SESSION['nvpReqArray']='';
     $_SESSION['curl_error_no']='';
     $_SESSION['curl_error_msg']='';
     
-    $API_UserName='pradee_1339587675_biz_api1.zhservices.com';
+ /*   $API_UserName='pradee_1339587675_biz_api1.zhservices.com';
     $API_Password='1339587713';
     $API_Signature='AkLZIuO-LKkA1TSAeoEBD3dkzIc4AKb3.ebscal3VYeJ4-cZbEqd8TXY';
     $API_Endpoint ='https://api-3t.sandbox.paypal.com/nvp';
-    $version=urlencode('51.0');
+    $version=urlencode('51.0');*/
     
 	//declaring of global variables
 	// form header string
@@ -99,17 +95,13 @@ function hash_call($methodName,$nvpStr)
 return $nvpResArray;
 }
 
-function hash_call_direct($methodName,$nvpStr)
+function hash_call_direct($methodName,$nvpStr,$API_UserName,$API_Password,$API_Signature,$API_Endpoint,$version)
 {
 	$_SESSION['nvpReqArray']='';
 	$_SESSION['curl_error_no']='';
 	$_SESSION['curl_error_msg']='';
 
-	$API_UserName='pradee_1339587675_biz_api1.zhservices.com';
-	$API_Password='1339587713';
-	$API_Signature='AkLZIuO-LKkA1TSAeoEBD3dkzIc4AKb3.ebscal3VYeJ4-cZbEqd8TXY';
-	$API_Endpoint ='https://api-3t.sandbox.paypal.com/nvp';
-	$version=urlencode('56.0');
+
 
 	//declaring of global variables
 	// form header string

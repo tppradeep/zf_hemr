@@ -23,7 +23,7 @@ class Admin_Model_DbTable_Paypal extends Zend_Db_Table_Abstract
 
 	    $db = Zend_Db_Table::getDefaultAdapter();
 	    
-	    $sql = 'update paypal_setting set username="'.$details['username'].'",password="'.$details['password'].'",signature="'.$details['signature'].'",version="'.$details['version'].'",status='.$details['status'].' where id='.base64_decode($details['id']);
+	    $sql = 'update paypal_setting set username="'.$details['username'].'",password="'.base64_encode($details['password']).'",signature="'.$details['signature'].'",version="'.$details['version'].'",status='.$details['status'].' where id='.base64_decode($details['id']);
 	    $db->query($sql);
 	}
 }

@@ -73,15 +73,48 @@ class Application_Model_DbTable_Cart extends Zend_Db_Table_Abstract
 	    -> where('c.hf_id='.$hf_id);
 	    
 	    $row = $db->fetchAll($select);
+	    
+	 
+	  
 	    $SelectedProductList = array();
+	    $SupportCost = 0;
 	    foreach($row as $r)
 	    {
 	        $SelectedProductList[]=$r["product_id"];
 	        $SelectedProductList[]=$r["idproducts"];
+	        
+	        if($r['category']=='support')
+	        {
+	            $SupportCost = $r['cost'];
+	        }
 	    }
+	    
+	    /*
+	     * Remove the support product, which cost is less then selected plan
+	     */
+	    
+	   	$sql = 'select idproducts from products where category="support" and cost <= '.$SupportCost.' and customer_id='.$cusid;
+	    
+	    $Prolist = $db->fetchAll($sql);
+	    
+
+	    $ExistProId = array();
+	    foreach($Prolist as $pr)
+	    {
+	        $ExistProId[]=$pr['idproducts'];
+	    }
+
+	  
+	    
+	    $ExistProIdList = implode("','", $ExistProId);
+	    
+	    $ExistProIdList = "'".$ExistProIdList."'";
+	   
 		$SelProList = implode("','", $SelectedProductList);
 		$SelProList = "'".$SelProList."'";
-
+		
+		$SelProList = $SelProList.','.$ExistProIdList;
+		
 		$sql = 'select idproducts,category,product_name,product_feature,cost,setup_fee from products where customer_id='.$cusid.' and idproducts Not In ('.$SelProList.') order by category,product_name';
 		$ProductList = $db->fetchAll($sql);
 		 
@@ -98,8 +131,8 @@ class Application_Model_DbTable_Cart extends Zend_Db_Table_Abstract
 			<td height="25" class="normal-text shadowlight">'.$sino.'.</td>
 			        <td height="25" class="normal-text shadowlight">'.$PL['category'].'</td>
 			<td class="normal-text shadowlight" nowrap="nowrap"><a class="openmodalbox" href="javascript:void(0);"	rel="ajax: '.$path.'/user/Products/productfeature/id/'.base64_encode($PL['idproducts']).'">'.$PL['product_name'].'</a></td>
-			<td align="right" class="normal-text shadowlight">'.$currency->toCurrency($PL['cost']).'</td>
-			<td align="right" class="normal-text shadowlight">'.$currency->toCurrency($PL['setup_fee']).'</td>';
+			<td align="right" class="normal-text shadowlight">'.$currency->toCurrency(round($PL['cost'])).'</td>
+			<td align="right" class="normal-text shadowlight">'.$currency->toCurrency(round($PL['setup_fee'])).'</td>';
 			$output.='<td align="center" class="normal-text shadowlight">';
 	
 			$PLID=$PL['idproducts'];
@@ -110,7 +143,7 @@ class Application_Model_DbTable_Cart extends Zend_Db_Table_Abstract
 			
 			$output .=' </td>
 			<td align="right" class="normal-text shadowlight">';
-			$output .= $currency->toCurrency(($PL['cost']*$providerno)+$PL['setup_fee']);
+			$output .= $currency->toCurrency(round($PL['cost']*$providerno)+$PL['setup_fee']);
 			$output .='</td>
 			<td align="center" class="normal-text shadowlight">
 			<input type="checkbox" name="'.$PL['idproducts'].'_cart" id="'.$PL['idproducts'].'_cart" onclick="AddAdditionalProductIntoCart('.$PL['idproducts'].','.$providerno.',this.checked)" />';

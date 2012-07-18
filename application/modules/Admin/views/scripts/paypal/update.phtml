@@ -30,7 +30,7 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
       <tr>
         <td class="label line">Password</td>
         <td>:</td>
-        <td class="label line"><input type="password" name="password" id="password" value="<?php echo $this->PDtd['password'];?>" /></td>
+        <td class="label line"><input type="password" name="password" id="password" value="<?php echo base64_decode($this->PDtd['password']);?>" /></td>
       </tr>
       <tr>
         <td class="label line">Signature</td>

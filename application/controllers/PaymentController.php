@@ -89,7 +89,7 @@ class PaymentController extends Zend_Controller_Action
     	
     	
     	$cms 							= new Application_Model_DbTable_Cms();
-    	$this->view->cmsdtd 			= $cms->getcms('User_reg_Confirm');
+    	//$this->view->cmsdtd 			= $cms->getcms('Confirm Invoice');
     	
     	
     	/*
@@ -234,7 +234,7 @@ class PaymentController extends Zend_Controller_Action
     	    <td align="right" class="normal-text line" valign="middle">';
     	    
     	    $MonthlyFee = new Zend_Currency('en_US');
-    	    $invoicePDF .= $MonthlyFee->toCurrency($invoicedetails['amount']+$invoicedetails['discount_amount']);
+    	    $invoicePDF .= $MonthlyFee->toCurrency(round($invoicedetails['amount']+$invoicedetails['discount_amount']));
     	    $invoicePDF .='</td>
     	    <td align="right" class="normal-text b line">&nbsp;</td>
     	    </tr>';
@@ -249,7 +249,7 @@ class PaymentController extends Zend_Controller_Action
 	    		<td align="right" class="normal-text line" valign="middle">';
 	    	
 	    		$OneTimeFee = new Zend_Currency('en_US');
-	    		$invoicePDF .= $OneTimeFee->toCurrency($invoicedetails['setupfee']);
+	    		$invoicePDF .= $OneTimeFee->toCurrency(round($invoicedetails['setupfee']));
 	    		$invoicePDF .='</td>
 	    		<td align="right" class="normal-text b line">&nbsp;</td>
 	    		</tr>';
@@ -264,7 +264,7 @@ class PaymentController extends Zend_Controller_Action
 	    		<td align="right" class="normal-text line" valign="middle">';
 	    	
 	    		$MonthlyFee = new Zend_Currency('en_US');
-	    		$invoicePDF .= $MonthlyFee->toCurrency($invoicedetails['discount_amount']);
+	    		$invoicePDF .= $MonthlyFee->toCurrency(round($invoicedetails['discount_amount']));
 	    		$invoicePDF .='</td>
 	    		<td align="right" class="normal-text b line">&nbsp;</td>
 	    		</tr>';
@@ -277,7 +277,7 @@ class PaymentController extends Zend_Controller_Action
     			<td align="right" class="normal-text b line" valign="middle" style="padding:10px;">';
     	
     			$totalFee = new Zend_Currency('en_US');
-    			$invoicePDF .= $totalFee->toCurrency($invoicedetails['amount']+$invoicedetails['setupfee']);
+    			$invoicePDF .= $totalFee->toCurrency(round($invoicedetails['amount']+$invoicedetails['setupfee']));
     			$invoicePDF .='</td>
     			<td align="right" class="normal-text b line" style="padding:10px;">&nbsp;</td>
     			</tr>';
@@ -385,11 +385,23 @@ class PaymentController extends Zend_Controller_Action
         $sess = new Zend_Session_Namespace('user');
         $hf_id=$sess->hf_id;
         
+        
+       
         if ($this->getRequest()->isPost()) // Making Payment
         {
 	        $this->view->hfdata = $Gndb->identifierdetails($hf_id);
 	    	$formData = $this->getRequest()->getParams();
 	    	$this->view->formdata = $formData;
+        }
+        else
+        {
+            $this->view->stval=$this->_getParam('st');
+            $this->view->hfdata = $Gndb->identifierdetails($hf_id);
+            $this->view->formdata = $sess->paymentval;
+            
+            $cmsObj = new Application_Model_DbTable_Index();
+            $this->view->failcms = $cmsObj->getcms('Payment Fail');
+            
         }
     }
     
@@ -400,10 +412,12 @@ class PaymentController extends Zend_Controller_Action
     	    
     	    $formData = $this->getRequest()->getParams();
     	    
-    	//    echo "<pre>";
-    	//    print_r($formData);
-    	//    echo "</pre>";
-    	  //  die;
+    	    $sess = new Zend_Session_Namespace('user');
+    	    $sess->paymentval=$formData;
+    	    //echo "<pre>";
+    	   // print_r($sess->paymentval);
+    	  //  echo "</pre>";
+    	//  die;
     	    $this->view->formdata = $formData;
 
     	    $paymentType =urlencode( $formData['cmd']);
@@ -455,6 +469,28 @@ class PaymentController extends Zend_Controller_Action
     	    name value pair string with & as a delimiter */
     	    $direct = 0;
     	    
+    	    /*
+    	     * Fetching Paypal Login Details
+    	     */
+    	    
+    	    $paymentDb = new Application_Model_DbTable_Paymentdb();
+    	    $PayPalDtd = $paymentDb->paypal_details();
+    	    
+    	    $API_UserName = $PayPalDtd['username'];
+    	    $API_Password = base64_decode($PayPalDtd['password']);
+    	    $API_Signature = $PayPalDtd['signature'];
+    	    
+    	    if($PayPalDtd['type']=='live')
+    	    {
+    	        $API_Endpoint = 'https://api-3t.paypal.com/nvp';
+    	    }
+    	    else
+    	    {
+    	        $API_Endpoint = 'https://api-3t.sandbox.paypal.com/nvp';
+    	    }
+    	    $API_Version = $PayPalDtd['version'];
+    	    
+    	    
     	   
     	    if($amount==0) //Direct Payment section
     	    {
@@ -465,7 +501,7 @@ class PaymentController extends Zend_Controller_Action
     	        		"&ZIP=$zip&COUNTRYCODE=US&CURRENCYCODE=$currencyCode&PROFILESTARTDATE=$profileStartDate&DESC=$profileDesc&BILLINGPERIOD=$billingPeriod&BILLINGFREQUENCY=$billingFrequency&TOTALBILLINGCYCLES=$totalBillingCycles";
     	        	
     	     
-    	        $resArray=hash_call_direct("DoDirectPayment",$nvpstr);
+    	        $resArray=hash_call_direct("DoDirectPayment",$nvpstr,$API_UserName,$API_Password,$API_Signature,$API_Endpoint,$API_Version);
     	    }
     	    else // recurrering section 
     	    {
@@ -473,7 +509,7 @@ class PaymentController extends Zend_Controller_Action
     	    	 $nvpstr="&AMT=$amount&INITAMT=$initamt&CREDITCARDTYPE=$creditCardType&ACCT=$creditCardNumber&EXPDATE=".$padDateMonth.$expDateYear."&CVV2=$cvv2Number&FIRSTNAME=$firstName&LASTNAME=$lastName&STREET=$address1&CITY=$city&STATE=$state".
     	    		"&ZIP=$zip&COUNTRYCODE=US&CURRENCYCODE=$currencyCode&PROFILESTARTDATE=$profileStartDate&DESC=$profileDesc&BILLINGPERIOD=$billingPeriod&BILLINGFREQUENCY=$billingFrequency&TOTALBILLINGCYCLES=$totalBillingCycles";
     	
-    	   		$resArray=hash_call("CreateRecurringPaymentsProfile",$nvpstr);
+    	   		$resArray=hash_call("CreateRecurringPaymentsProfile",$nvpstr,$API_UserName,$API_Password,$API_Signature,$API_Endpoint,$API_Version);
     	    }
     	   // echo $nvpstr;
     	   // die;
@@ -492,9 +528,9 @@ class PaymentController extends Zend_Controller_Action
     	    if($ack=="SUCCESS") 
     	    {
 
-    	      	
+    	        $sess->paymentval='';
     	        // Updating the tables and sending mail
-    	        $sess = new Zend_Session_Namespace('user');
+    	        
     	        $hf_id = $sess->hf_id;
     	        
     	        
@@ -590,7 +626,8 @@ class PaymentController extends Zend_Controller_Action
     	    }
     	    else // Payment is fail 
     	    {
-    	        $this->_helper->redirector('fail','Payment',null,array('st' => 'fail'));
+    	        
+    	        $this->_helper->redirector('make-payment','Payment',null,array('st' => 'fail'));
     		}
     	}
     }

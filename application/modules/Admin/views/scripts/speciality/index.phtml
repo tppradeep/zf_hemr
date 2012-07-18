@@ -38,7 +38,56 @@
 			});
 		});
 	}
-	
+	function delall()
+	{
+		delid = document.getElementById("t").value;
+		$(function() {
+		$( "#dialog-confirm" ).addClass("shovisible");
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+			$( "#dialog-confirm" ).dialog({
+				resizable: false,
+				height:180,
+				modal: true,
+				buttons: {
+					"Delete all items": function() {
+						$( this ).dialog( "close" );
+						window.location.href="<?php echo $this->baseUrl();?>/Admin/Speciality/deleteall/id/"+delid+"";
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		});
+	}
+function updateme()
+{
+    	var oTable = $('#grid').dataTable();  
+		if($('#check_all').attr('checked')=='checked')
+		{
+			$('input', oTable.fnGetNodes()).attr('checked',true);
+		}
+		else
+		{
+			$('input', oTable.fnGetNodes()).attr('checked',false);
+		}
+	updateTextArea();
+}
+
+function updateTextArea() {         
+     var allVals = [];
+     $(':checked').each(function() {
+		 
+		  if (this.checked) {
+			allVals.push($(this).val());
+
+	  }
+
+     });
+     $('#t').val(allVals)
+  }
+
+
 	</script>
 <?php
 echo $this->leftmenu(); // Adding admin side Left Side Menu
@@ -57,10 +106,23 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
     Add New Speciality
     <?php echo "</a>";?>
 </div>
-    
+<?php 
+if($this->st<>"")
+{
+?>
+ <div id="con_mess">
+ <?php
+
+ if($this->st=="2") echo "Record Updated Successfully";
+ if($this->st=="3") echo "Record(s) Deleted Successfully";
+ 
+ ?>
+     </div>
+     <?php }?>    
 <table width="100%" border="0" cellspacing="3" cellpadding="2" id="grid">
   <thead>
   <tr>
+   <td align="center" nowrap="nowrap" class="invoice-table-title b table-head-bg white"><input type="checkbox" id="check_all" name="check_all" value='0' onclick="updateme()" /> <?php echo "<img src='".$this->baseUrl()."/images/delete.gif' alt='Delete' title='Delete' onClick='delall()' style='cursor:pointer;'/>"; ?></td>
     <td width="4%" height="20" align="center" class="invoice-table-title b table-head-bg white">#</td>
     <td width="62%" class="invoice-table-title b table-head-bg">Speciality Name</td>
     <td width="15%" align="center" class="invoice-table-title b table-head-bg">Status</td>
@@ -75,16 +137,17 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
   {
   ?>
   <tr>
-    <td height="22" class="normal-text shadowlight" align="center"><?php echo $sino;?>.</td>
-    <td class="normal-text shadowlight"><?php echo stripslashes($sp['sp_name']);?></td>
-    <td class="normal-text shadowlight" align="center">
+  <td class="normal-text  line" align="center"><input type="checkbox" name="hf_id" id="hf_id" value="<?php echo base64_encode($sp['id']);?>" onclick="updateTextArea()" /></td>
+    <td height="22" class="normal-text shadowlight line" align="center"><?php echo $sino;?>.</td>
+    <td class="normal-text shadowlight line"><?php echo stripslashes($sp['sp_name']);?></td>
+    <td class="normal-text shadowlight line" align="center">
     <?php
     echo($sp['status'])?'<img src="'.$this->baseUrl().'/images/active.png" alt="Active" title="Active"/>':'<img src="'.$this->baseUrl().'/images/disable.png" alt="Disabled" title="Disabled"/>';
     ?>
     </td>
-    <td class="normal-text shadowlight" align="center"><?php echo stripslashes($sp['listing_order']);?></td>
+    <td class="normal-text shadowlight line" align="center"><?php echo stripslashes($sp['listing_order']);?></td>
    
-    <td class="normal-text shadowlight" align="center" nowrap="nowrap">
+    <td class="normal-text shadowlight line" align="center" nowrap="nowrap">
  
     <?php 
     
@@ -101,13 +164,15 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
   ?>
   </tbody>
 </table>
+<input name="t" id="t" type="hidden" />
   </div>
  <script type="text/javascript">
                 //<![CDATA[
  $(document).ready(function() {
 	    oTable = $('#grid').dataTable({
 	        "bJQueryUI": true,
-	        "sPaginationType": "full_numbers"
+	        "sPaginationType": "full_numbers",
+			"aoColumnDefs": [{ 'bSortable': false, 'aTargets': [ 0,5 ] }]
 	    });
 	} );
                 //]]>

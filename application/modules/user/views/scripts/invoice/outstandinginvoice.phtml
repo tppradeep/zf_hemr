@@ -32,7 +32,7 @@
     <td class="normal-text line"><?php 
     if($invdetails['payment_date']!="")
     echo $this->Disdate($invdetails['payment_date']);?></td>
-    <td class="normal-text line" align='right'><?php echo $currency->toCurrency($invdetails['amount']+$invdetails['setupfee'])?></td>
+    <td class="normal-text line" align='right'><?php echo $currency->toCurrency(round($invdetails['amount']+$invdetails['setupfee']))?></td>
     <td class="normal-text line"><?php 
     if(trim($invdetails['transaction_id'])!="0")
     		echo $invdetails['transaction_id'];?></td>

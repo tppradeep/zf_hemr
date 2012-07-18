@@ -1,0 +1,121 @@
+<?php
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+?>
+
+<form id="userregister" method="post" action="">
+<table width="85%" border="0" cellspacing="2" cellpadding="4" align="right" id="userregister">
+	<tr>
+		<td colspan="3" class="normal-text red b">
+		<?php 
+		if($this->st=="y")
+			echo "Successfully updated the records";
+		?>
+		</td>
+	</tr>
+	<tr>
+	  <td align="right" class="form-label-main">Organization Name:</td>
+	  <td class="form-label-main">:</td>
+	  <td class="form-label-main"><label for="hf_organization"></label>
+      <input type="text" name="hf_organization" id="hf_organization" value="<?php echo $this->Userdtd['hf_organization'];?>" />
+      <input type="hidden" name="hf_id" id="hf_id"  value="<?php echo $this->Userdtd['hf_id'];?>"/></td>
+    </tr>
+	<tr>
+	  <td align="right" class="form-label-main">Suffix</td>
+	  <td class="form-label-main">:</td>
+	  <td class="form-label-main"><span class="write-box" style="width:65px;">
+	    <select name="hf_facility_suffix" tabindex="2">
+	      <option value="Dr." <?php echo($this->Userdtd['hf_facility_suffix']=='Dr.')?'selected="selected"':'';?>>Dr.</option>
+	      <option value="Mr." <?php echo($this->Userdtd['hf_facility_suffix']=='Mr.')?'selected="selected"':'';?>>Mr.</option>
+	      <option value="Miss." <?php echo($this->Userdtd['hf_facility_suffix']=='Miss.')?'selected="selected"':'';?>>Miss.</option>
+	      <option value="Mrs." <?php echo($this->Userdtd['hf_facility_suffix']=='Mrs.')?'selected="selected"':'';?>>Mrs.</option>
+	      <option value="Ms." <?php echo($this->Userdtd['hf_facility_suffix']=='Ms.')?'selected="selected"':'';?>>Ms.</option>
+        </select>
+	  </span></td>
+    </tr>
+
+	<tr>
+		<td align="right" class="form-label-main"><span class="write-box" style="width:65px;">
+		First Name      </span></td>
+		<td class="form-label-main">:</td>
+		<td class="form-label-main"><input name="hf_facility_name" type="text" id="hf_facility_name" value="<?php echo $this->Userdtd['hf_facility_name']?>" size="40" maxlength="150" class="validate[required]" tabindex="2"/></td>
+	</tr>
+	<tr>
+		<td align="right" class="form-label-main">Last Name </td>
+		<td class="form-label-main">:</td>
+		<td class="form-label-main"><input name="hf_facility_lname" type="text" id="hf_facility_lname" value="<?php echo $this->Userdtd['hf_facility_lname']?>" size="40" maxlength="150" class="validate[required]" tabindex="2"/></td>
+	</tr>
+	<tr>
+		<td align="right"><span class="form-label-main">Speciality</span></td>
+		<td>:</td>
+		<td><input name="hf_speciality" type="text" id="hf_speciality" value="<?php echo $this->Userdtd['hf_speciality']?>" size="40" maxlength="150" class="validate[required]" tabindex="3"/></td>
+	</tr>
+	<tr>
+		<td align="right" class="form-label-main">Email Address
+        </td>
+		<td class="form-label-main">:</td>
+		<td class="form-label-main">
+        <input name="hf_email" type="text" id="hf_email" value="<?php echo $this->Userdtd['hf_email']?>" size="40" maxlength="150" class="validate[required]" tabindex="3"/>
+       </td>
+	</tr>
+	<tr>
+		<td align="right" class="form-label-main">Address</td>
+		<td>:</td>
+		<td><input name="hf_address" value="<?php echo $this->Userdtd['hf_address']?>" type="text" id="hf_address" size="70" maxlength="250" class="validate[required]" tabindex="8"/></td>
+	</tr>
+	<tr>
+		<td align="right"><span class="form-label-sub">City</span></td>
+		<td>:</td>
+		<td><input name="hf_city" type="text" id="hf_city" value="<?php echo $this->Userdtd['hf_city']?>" size="40" maxlength="150" class="validate[required]" tabindex="9"/></td>
+	</tr>
+	<tr>
+		<td align="right"><span class="form-label-sub">State / Province / Region</span></td>
+		<td>:</td>
+		<td><input name="hf_state" type="text" id="hf_state" value="<?php echo $this->Userdtd['hf_state']?>" size="40" maxlength="150" class="validate[required]" tabindex="10"/></td>
+	</tr>
+	<tr>
+		<td align="right"><span class="form-label-sub">Postal / Zip Code</span></td>
+		<td>:</td>
+		<td><input name="hf_zip" type="text" id="hf_zip" value="<?php echo $this->Userdtd['hf_zip']?>" size="40" maxlength="150" class="validate[required]" tabindex="11"/></td>
+	</tr>
+	<tr>
+		<td align="right" class="form-label-main"><span class="form-label-sub">Country</span></td>
+		<td class="form-label-main">:</td>
+		<td class="form-label-main"><select name="hf_country" id="hf_country"  class="validate[required]" tabindex="12">
+		  <?php 
+		  
+		  foreach($this->country as $country)
+		  {
+		  	if($this->Userdtd['hf_country']==$country['Code'])
+		  	{
+		  		$selval = " selected";
+		  	}
+		  	else
+		  	{
+		  		$selval ="";
+		  	}
+		  	echo "<option value='".$country['Code']."' ".$selval.">".$country['Name']."</option>";
+		   
+		  }
+		  ?>
+	    </select></td>
+	</tr>
+	<tr>
+		<td align="right" class="form-label-main">Phone Number</td>
+		<td class="form-label-main">:</td>
+		<td class="form-label-main"><input name="hf_phone" type="text" id="hf_phone" value="<?php echo $this->Userdtd['hf_phone']?>" size="10" maxlength="15" class="validate[required]" tabindex="13"/></td>
+	</tr>
+	<tr>
+		<td align="right"><span class="form-label-main">Fax</span></td>
+		<td>:</td>
+		<td><input name="hf_fax" type="text" id="hf_fax" value="<?php echo $this->Userdtd['hf_fax']?>" size="10" maxlength="15" class="validate[required]" tabindex="14"/></td>
+	</tr>
+
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td><input type="submit" name="Submit" value="Update Details" class="user-submit" tabindex="17" /></td>
+	</tr>
+	
+
+</table>
+</form>

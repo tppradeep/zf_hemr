@@ -76,24 +76,37 @@ Cufon.replace('#steps', { fontFamily: 'Enigmatic Regular', hover: true });
 </div>
  <div class="right-nav-bottom">
  <?php 
- 
-$step=1;
+// echo $_SERVER['HTTP_REFERER'];
+$step=0;
+if($_SERVER['HTTP_REFERER']=='http://www.hostedopenemr.com/')
+	$step=1;
+if(strstr($_SERVER['HTTP_REFERER'],'Index',true))
+    $step=1;
 if(strstr($_SERVER['HTTP_REFERER'],'PlanList/listplan',true))
     $step=2;
+if(strstr($_SERVER['HTTP_REFERER'],'PlanList/listplan/id',true) && $sess->step == "compare")
+    $step=3;	
 if(strstr($_SERVER['HTTP_REFERER'],'PlanList/compareplans',true))
-    $step=2;
+    $step=1;
 if(strstr($_SERVER['HTTP_REFERER'],'UserRegister/adduser',true))
     $step=3; 
 if(strstr($_SERVER['HTTP_REFERER'],'Cart/index',true))
     $step=3;
-if($_GET['tx']!='')
+if(strstr($_SERVER['HTTP_REFERER'],'Viewinvoice/inid',true))
     $step=4;
-
+if(strstr($_SERVER['HTTP_REFERER'],'Payment/make-payment',true))
+{
+    $step=4;
+	$sess->step='';
+}
  ?>
 <div id="steps">
 <div class="st-title">Signup Now</div>
 <dl>
-	<dt <?php if($step==1){echo 'class="selected"';}?>>1</dt>
+	<dt <?php 
+	$sess = new Zend_Session_Namespace('user');
+	
+	if($step==1){echo 'class="selected"';}?>>1</dt>
     <dd>Select Plan
     <?php 
     $SelectedPlan = new Zend_Session_Namespace('SelectedPlan');
@@ -101,6 +114,8 @@ if($_GET['tx']!='')
     {
         echo '('.$SelectedPlan->SelectedPlan.')';
     }
+	if($sess->step<>"compare" or $sess->step=='')
+	{
     ?>
     </dd>
     <dt <?php if($step==2){echo 'class="selected"';}?>>2</dt>
@@ -113,6 +128,7 @@ if($_GET['tx']!='')
     }
     ?>
     </dd>
+    <?php }?>
     <dt <?php if($step==3){echo 'class="selected"';}?>>3</dt>
     <dd>Payment</dd>
     <dt <?php if($step==4){echo 'class="selected"';}?>>4</dt>

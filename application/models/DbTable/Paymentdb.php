@@ -498,6 +498,12 @@ class Application_Model_DbTable_Paymentdb extends Zend_Db_Table_Abstract
 	    $sql ='select provider_no from customer_selected_plan where hf_id='.$hf_id;
 	    return $db->fetchOne($sql);
 	}
+	public function paypal_details()
+	{
+	    $db=Zend_Db_Table::getDefaultAdapter();
+	    $sql = 'select * from paypal_setting where status=1';
+	    return $db->fetchRow($sql);
+	}
 	
 	
 	

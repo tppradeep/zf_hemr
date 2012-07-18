@@ -21,6 +21,7 @@ class Admin_ProductsController extends Zend_Controller_Action
     {
         $ps = new Admin_Model_DbTable_Products();
         $this->view->products = $ps->products();
+        $this->view->st=$this->_getParam('st');
     	
     }
 
@@ -97,8 +98,8 @@ class Admin_ProductsController extends Zend_Controller_Action
 
     public function deleteAction()
     {
-         $id=$this->_getParam('id');
-    	    	
+        $id=$this->_getParam('id');
+    	
     	$pfdel = new Admin_Model_DbTable_Products();
     	try {
     	    $this->view->ffpg = $pfdel->deleteproduct($id);
@@ -114,6 +115,22 @@ class Admin_ProductsController extends Zend_Controller_Action
 		}
     	
     	
+    	
+    	$this->_redirect('Admin/Products/index/st/3');
+    }
+    public function deleteallAction()
+    {
+    	$id=$this->_getParam('id');
+    	$delids = explode(",",$id);
+    	
+	   	$pss = new Admin_Model_DbTable_Products();
+	   	foreach($delids as $id)
+	   	{
+	   	    base64_decode($id);
+	   	    
+	   	    if($id<>'0')
+	   	    	$this->del = $pss->deleteproduct(base64_decode($id));
+	   	}
     	
     	$this->_redirect('Admin/Products/index/st/3');
     }

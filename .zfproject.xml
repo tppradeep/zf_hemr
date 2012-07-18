@@ -183,6 +183,7 @@
               <actionMethod actionName="edit"/>
               <actionMethod actionName="delete"/>
               <actionMethod actionName="view"/>
+              <actionMethod actionName="deleteall"/>
             </controllerFile>
             <controllerFile controllerName="Productprice">
               <actionMethod actionName="index"/>
@@ -200,6 +201,8 @@
               <actionMethod actionName="userActionList"/>
               <actionMethod actionName="setPermission"/>
               <actionMethod actionName="activationError"/>
+              <actionMethod actionName="edit"/>
+              <actionMethod actionName="deleteall"/>
             </controllerFile>
             <controllerFile controllerName="Subproduct">
               <actionMethod actionName="index"/>
@@ -244,12 +247,14 @@
               <actionMethod actionName="add"/>
               <actionMethod actionName="edit"/>
               <actionMethod actionName="delete"/>
+              <actionMethod actionName="deleteall"/>
             </controllerFile>
             <controllerFile controllerName="Faq">
               <actionMethod actionName="index"/>
               <actionMethod actionName="add"/>
               <actionMethod actionName="edit"/>
               <actionMethod actionName="delete"/>
+              <actionMethod actionName="deleteall"/>
             </controllerFile>
             <controllerFile controllerName="Email">
               <actionMethod actionName="index"/>
@@ -555,6 +560,21 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Paypal">
                 <viewScriptFile forActionName="update"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Users">
+                <viewScriptFile forActionName="edit"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Users">
+                <viewScriptFile forActionName="deleteall"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Products">
+                <viewScriptFile forActionName="deleteall"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Speciality">
+                <viewScriptFile forActionName="deleteall"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Faq">
+                <viewScriptFile forActionName="deleteall"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

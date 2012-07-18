@@ -44,21 +44,21 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
 		{
 			bcost = parseFloat(pcost) - (parseFloat(pcost) * parseFloat (cost_discount)/100);
 			bsetup = parseFloat(psetup) - (parseFloat(psetup) * parseFloat(setup_discount)/100);
-			btotal = bcost + bsetup;
+			btotal = Math.round(bcost + bsetup);
 			
 			document.getElementById("setupcost").innerHTML = bsetup;
 			document.getElementById("productcost").innerHTML = bcost;
-			document.getElementById("totalcost").innerHTML = btotal;
+			document.getElementById("totalcost").innerHTML = Math.round(btotal);
 		}
 		if(dtype==2) // in percentage
 		{
 			bcost = parseFloat(pcost) - parseFloat(cost_discount);
 			bsetup = parseFloat(psetup) - parseFloat(setup_discount);
-			btotal = bcost + bsetup;
+			btotal = Math.round(bcost + bsetup);
 			
 			document.getElementById("setupcost").innerHTML = bsetup;
 			document.getElementById("productcost").innerHTML = bcost;
-			document.getElementById("totalcost").innerHTML = btotal;
+			document.getElementById("totalcost").innerHTML = Math.round(btotal);
 		}
 		if(dtype==0)
 		{
@@ -67,11 +67,11 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
 		
 			bcost = parseFloat(pcost);
 			bsetup = parseFloat(psetup);
-			btotal = bcost + bsetup;
+			btotal = Math.round(bcost + bsetup);
 			
 			document.getElementById("setupcost").innerHTML = bsetup;
 			document.getElementById("productcost").innerHTML = bcost;
-			document.getElementById("totalcost").innerHTML = btotal;
+			document.getElementById("totalcost").innerHTML = Math.round(btotal);
 		}
 	}
   </script>

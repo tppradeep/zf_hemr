@@ -27,7 +27,7 @@
     <td class="normal-text line"><?php echo $invdetails['invoice_number']?></td>
     <td class="normal-text line"><?php echo $this->Disdate($invdetails['invoice_date']);?></td>
     <td class="normal-text line"><?php echo $this->Disdate($invdetails['payment_date']);?></td>
-    <td class="normal-text line"><?php echo $currency->toCurrency($invdetails['amount'])?></td>
+    <td class="normal-text line"><?php echo $currency->toCurrency(round($invdetails['amount']))?></td>
     <td class="normal-text line"><?php echo $invdetails['transaction_id']?></td>
     <td class="normal-text line" align="center">
     <a href="<?php echo $this->baseURL()."/uploads/invoice/".$invdetails['invoice_number'];?>.pdf" class="form-label-main" target="_blank"> <img src="<?php echo $this->baseUrl();?>/images/pdf.png" width="17" height="17" alt="View Invoice" /></a>

@@ -38,7 +38,55 @@
 			});
 		});
 	}
+	function delall()
+	{
+		delid = document.getElementById("t").value;
+		$(function() {
+		$( "#dialog-confirm" ).addClass("shovisible");
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+			$( "#dialog-confirm" ).dialog({
+				resizable: false,
+				height:180,
+				modal: true,
+				buttons: {
+					"Delete all items": function() {
+						$( this ).dialog( "close" );
+						window.location.href="<?php echo $this->baseUrl();?>/Admin/Faq/deleteall/id/"+delid+"";
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		});
+	}
+	function updateme()
+	{
+			var oTable = $('#grid').dataTable();  
+			if($('#check_all').attr('checked')=='checked')
+			{
+				$('input', oTable.fnGetNodes()).attr('checked',true);
+			}
+			else
+			{
+				$('input', oTable.fnGetNodes()).attr('checked',false);
+			}
+		updateTextArea();
+	}
 	
+	function updateTextArea() {         
+		 var allVals = [];
+		 $(':checked').each(function() {
+			 
+			  if (this.checked) {
+				allVals.push($(this).val());
+	
+		  }
+	
+		 });
+		 $('#t').val(allVals)
+	  }
+
 	</script>
 <?php
 echo $this->leftmenu(); // Adding admin side Left Side Menu
@@ -65,10 +113,23 @@ if($this->st<>"")
     Add New FAQ
     <?php echo "</a>";?>
 </div>
-    
+<?php 
+if($this->st<>"")
+{
+?>
+ <div id="con_mess">
+ <?php
+
+ if($this->st=="2") echo "Record Updated Successfully";
+ if($this->st=="3") echo "Record(s) Deleted Successfully";
+ 
+ ?>
+     </div>
+     <?php }?>    
 <table width="100%" border="0" cellpadding="0" cellspacing="3" id="grid">
   <thead>
   <tr>
+   <td align="center" nowrap="nowrap" class="invoice-table-title b table-head-bg white"><input type="checkbox" id="check_all" name="check_all" value='0' onclick="updateme()" /> <?php echo "<img src='".$this->baseUrl()."/images/delete.gif' alt='Delete' title='Delete' onClick='delall()' style='cursor:pointer;'/>"; ?></td>
     <td width="5%" height="20" align="center" class="invoice-table-title b table-head-bg white">#</td>
     <td align="left" class="b table-head-bg">Faq Section</td>
     <td align="left" class="b table-head-bg">FAQ Question</td>
@@ -86,12 +147,13 @@ if($this->st<>"")
   {
   ?>
   <tr>
-    <td height="22" class="normal-text  shadowlight" align="center"><?php echo $sino;?>.</td>
-    <td align="left" class="normal-text shadowlight"><?php echo($faq['category']==0)?"General":"User Section";?></td>
-    <td class="normal-text shadowlight" align="left"><?php echo $faq['question'];?></td>
-    <td class="normal-text shadowlight" align="left"><?php echo $faq['answer'];?></td>
-    <td class="normal-text shadowlight" align="center"><?php echo $faq['listing_order'];?></td>
-    <td class="normal-text shadowlight" align="center"><?php
+   <td class="normal-text  line" align="center"><input type="checkbox" name="hf_id" id="hf_id" value="<?php echo base64_encode($faq['faqid']);?>" onclick="updateTextArea()" /></td>
+    <td height="22" class="normal-text  shadowlight line" align="center"><?php echo $sino;?>.</td>
+    <td align="left" class="normal-text shadowlight line"><?php echo($faq['category']==0)?"General":"User Section";?></td>
+    <td class="normal-text shadowlight line" align="left"><?php echo $faq['question'];?></td>
+    <td class="normal-text shadowlight line" align="left"><?php echo $faq['answer'];?></td>
+    <td class="normal-text shadowlight line" align="center"><?php echo $faq['listing_order'];?></td>
+    <td class="normal-text shadowlight line" align="center"><?php
     echo($faq['status'])?'<img src="'.$this->baseUrl().'/images/active.png" alt="Active" title="Active"/>':'<img src="'.$this->baseUrl().'/images/disable.png" alt="Disabled" title="Disabled"/>';
     ?></td>
     
@@ -112,13 +174,16 @@ if($this->st<>"")
   ?>
   </tbody>
 </table>
+<input name="t" id="t" type="hidden" />
+
   </div>
  <script type="text/javascript">
                 //<![CDATA[
  $(document).ready(function() {
 	    oTable = $('#grid').dataTable({
 	        "bJQueryUI": true,
-	        "sPaginationType": "full_numbers"
+	        "sPaginationType": "full_numbers",
+			"aoColumnDefs": [{ 'bSortable': false, 'aTargets': [ 0,1,7 ] }]
 	    });
 	} );
                 //]]>

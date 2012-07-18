@@ -23,7 +23,7 @@
 	if($this->invoicedetails['plan_id']!=0)
 	{
 	?>
-    Hi <?php echo $this->uname;?>,</td>
+    <!--Hi <?php echo $this->uname;?>,--></td>
   </tr>
    <tr>
     <td colspan="3" class="normal-text b">&nbsp;</td>
@@ -65,7 +65,7 @@
     <td colspan="3" class="normal-text b">&nbsp;</td>
   </tr>
   <tr>
-    <td class="h1">Invoce Details : </td>
+    <td class="h1">Invoice Details : </td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
@@ -161,7 +161,7 @@
 		<td class="normal-text line">:</td>
 		<td align="right" class="normal-text b line"><?php 
 		$OneTimeFee = new Zend_Currency('en_US');
-	   echo  $OneTimeFee->toCurrency($this->invoicedetails['subscription_amount']+$this->invoicedetails['discount_amount']);
+	   echo  $OneTimeFee->toCurrency(round($this->invoicedetails['subscription_amount']+$this->invoicedetails['discount_amount']));
 	   // echo $this->onetimepayment;?></td>
 		<td align="right" class="normal-text b line">&nbsp;</td>
 	  </tr>
@@ -177,7 +177,7 @@
 		<td class="normal-text line">:</td>
 		<td align="right" class="normal-text b line"><?php
 		
-		echo $MonthlyFee->toCurrency($this->invoicedetails['setupfee']);
+		echo $MonthlyFee->toCurrency(round($this->invoicedetails['setupfee']));
 	   ?></td>
 		<td align="right" class="normal-text b line">&nbsp;</td>
 	  </tr>
@@ -192,7 +192,7 @@
 	    <td class="normal-text line">:</td>
 	    <td align="right" class="normal-text b line">
         <?php
-		echo $MonthlyFee->toCurrency($this->invoicedetails['discount_amount']);
+		echo $MonthlyFee->toCurrency(round($this->invoicedetails['discount_amount']));
 		?>
         </td>
 	    <td align="right" class="normal-text b line">&nbsp;</td>
@@ -208,7 +208,7 @@
     <td class="normal-text b line">:</td>
     <td align="right" class="normal-text b line"><?php
     $totalFee = new Zend_Currency('en_US');
-    echo $totalFee->toCurrency($this->invoicedetails['amount']+$this->invoicedetails['setupfee']);
+    echo $totalFee->toCurrency(round($this->invoicedetails['amount']+$this->invoicedetails['setupfee']));
     ?></td>
     <td align="right" class="normal-text b line">&nbsp;</td>
    </tr>       </table></td>
@@ -263,7 +263,7 @@
               
 		<?php if($this->invoicedetails['subscription_amount']>0)
 		{?>
-		<input type="hidden" name="a3" value="<?php echo $this->invoicedetails['subscription_amount'];?>">
+		<input type="hidden" name="a3" value="<?php echo round($this->invoicedetails['subscription_amount']);?>">
 		<input type="hidden" name="p3" value="1">
 		<input type="hidden" name="t3" value="M">
 		<input type="hidden" name="src" value="1"><!-- Set recurring payments until canceled. -->

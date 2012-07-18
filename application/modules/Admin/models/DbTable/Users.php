@@ -29,9 +29,26 @@ class Admin_Model_DbTable_Users extends Zend_Db_Table_Abstract
 	{
 		$db = Zend_Db_Table::getDefaultAdapter();
 		$select = $db->select()
-		->from(array('hosted_facilities'),array('hf_facility_name','hf_speciality','hf_email','hf_phone','hf_address','hf_fax','hf_city','hf_zip','hf_state','hf_tax_id','hf_country','hf_npi'))
+		->from(array('hosted_facilities'),array('hf_id','hf_organization','hf_facility_suffix','hf_facility_name','hf_facility_lname','hf_speciality','hf_email','hf_phone','hf_address','hf_fax','hf_city','hf_zip','hf_state','hf_tax_id','hf_country','hf_npi'))
 		->where('hf_id="'.$hf_id.'"');
 		return $db->fetchRow($select);
+	}
+	public function updateuser($formData)
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    $sql ='update hosted_facilities set hf_organization="'.$formData['hf_organization'].'",hf_facility_suffix="'.$formData['hf_facility_suffix'].'",';
+	    $sql = $sql.'hf_facility_name="'.$formData['hf_facility_name'].'",hf_facility_lname="'.$formData['hf_facility_lname'].'",';
+	    $sql = $sql.'hf_speciality="'.$formData['hf_speciality'].'",hf_email="'.$formData['hf_email'].'",hf_address="'.$formData['hf_address'].'",hf_city="'.$formData['hf_city'].'",';
+	    $sql = $sql.'hf_state="'.$formData['hf_state'].'",hf_zip="'.$formData['hf_zip'].'",hf_country="'.hf_country.'",hf_phone="'.$formData['hf_phone'].'",';
+	    $sql = $sql.'hf_fax="'.$formData['hf_fax'].'" where hf_id='.$formData['hf_id'];
+	    
+	    $db->query($sql);
+	    
+	    // Update Email in customer_selected_plan table
+	    
+	    $sql ='update customer_selected_plan set dashboard_userid="'.$formData['hf_email'].'" where hf_id='.$formData['hf_id'];
+	    $db->query($sql);
+	    
 	}
 	public function deleteUser($hf_id)
 	{

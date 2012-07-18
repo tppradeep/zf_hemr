@@ -9,7 +9,7 @@
     <tr>
       <td width="3%" align="center" class="table-head shadow">#</td>
       <td width="73%" class="table-head shadow">Package Name</td>
-      <td width="24%" align="right" class="table-head shadow">Onetime Fee</td>
+      <td width="24%" align="right" class="table-head shadow">One Time Fee</td>
       <td width="24%" align="right" class="table-head shadow">Cost</td>
     </tr>
     <?php
@@ -23,9 +23,11 @@
     ?>
     <tr>
       <td align="center" valign="top" class="normal-text shadowlight"><?php echo $sino;?>.</td>
-      <td class="normal-text shadowlight"><span class="product"><?php echo $productdtd['product_name'];?>
-      </span><br />
-        <div class="features"><?php echo $productdtd['product_feature'];?></div></td>
+      <td class="normal-text shadowlight">
+       <?php
+     echo  '<a class="openmodalbox" href="javascript:void(0);"	rel="ajax: '.$this->baseUrl().'/user/Products/productfeature/id/'.base64_encode($productdtd['idproducts']).'">'.$productdtd['product_name'].'</a>';
+	  ?>
+     </td>
       <td align="right" valign="top" class="normal-text shadowlight"><?php echo $us->toCurrency($productdtd['setup_fee']);?></td>
       <td align="right" valign="top" class="normal-text shadowlight"><?php echo $us->toCurrency($productdtd['cost'] * $this->planname['provider_no']);?></td>
     </tr>

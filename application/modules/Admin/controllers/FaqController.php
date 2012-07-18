@@ -52,7 +52,21 @@ class Admin_FaqController extends Zend_Controller_Action
          $faqdb->deletefaq($id);
          $this->_redirect('Admin/Faq/index/st/3');
     }
+    public function deleteallAction()
+    {
+    	$id=$this->_getParam('id');
+    	$delids = explode(",",$id);
+    	
+	   	$pss = new Admin_Model_DbTable_Faq();
 
+	   	foreach($delids as $id)
+	   	{
+	   	    if($id<>'0')
+	   	    	$this->del = $pss->deletefaq(base64_decode($id));
+	   	}
+    	
+    	$this->_redirect('Admin/Faq/index/st/3');
+    }
 
 }
 

@@ -111,6 +111,7 @@ class UserRegisterController extends Zend_Controller_Action
 		   	    if($hf_speciality=="Other")
 		   	    {
 		   	        $hf_speciality = $formData['hf_speciality_other'];
+		   	        $Gndb->addotherspeciality($hf_speciality);// Adding the new speciality into master section with status 0;
 		   	    }
 		   	    $dashboard_password = $formData['dashboard_password'];
 		   	    $dashboard_password_confirm = $formData['dashboard_password_confirm'];

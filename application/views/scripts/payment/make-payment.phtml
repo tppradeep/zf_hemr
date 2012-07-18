@@ -57,7 +57,7 @@ function updateme()
 	}
 	if(errnomes=='')
 	{
-	document.getElementById("makepayment").innerHTML='<img src="<?php echo $this->baseUrl()?>/images/loadingAnimation.gif"><br/>Please wait we processing your payment request';
+	document.getElementById("makepayment").innerHTML='<img src="<?php echo $this->baseUrl()?>/images/loadingAnimation.gif"><br/>Thank you, please wait while we process your payment';
 	return true;;	
 	}
 	else
@@ -72,14 +72,34 @@ function updateme()
 </script>
 <?php
 $currency = new Zend_Currency('en_US');
-//echo "<pre>";
-//print_r($this->formdata);
-//echo "</pre>";
 ?>
 <link href="../../../../public/css/site.css" rel="stylesheet" type="text/css" />
 
 
-  <form id="payment" action="do-payment" method="POST"  name="CreateRPProfileForm" onsubmit="return updateme()">
+  <form id="payment" action="<?php echo $this->baseUrl();?>/Payment/do-payment" method="POST"  name="CreateRPProfileForm" onsubmit="return updateme()">
+<div class="cms">
+<?php 
+   		 echo $this->paypaldtd['cms_details']; //Cms.php (DbTable)
+    ?>
+    </div>
+    
+    <?php
+	
+	if($this->stval=="fail")
+	{
+	?>
+    <table width="100%" border="0" cellspacing="2" cellpadding="2">
+  <tr>
+    <td class="cms b red"><?php echo $this->failcms['cms_title'];?></td>
+  </tr>
+  <tr>
+    <td class="cms red"><?php echo $this->failcms['cms_details'];?></td>
+  </tr>
+</table>
+
+    <?php	
+	}
+	?>
 <table width="100%" border="0" cellspacing="2" cellpadding="2">
   <tr>
     <td colspan="3" class="table-head"> Credit Card Information</td>
@@ -223,9 +243,7 @@ $currency = new Zend_Currency('en_US');
   </tr>
   <tr>
     <td colspan="3" align="center" class="form-label-sub"> <img src="<?php echo $this->baseUrl().'/images/paypal_logo.jpg'?>"/><br />
-<?php 
-   		 echo $this->escape($this->paypaldtd['cms_details']); //Cms.php (DbTable)
-    ?></td>
+</td>
     </tr>
 </table>
 </form>
