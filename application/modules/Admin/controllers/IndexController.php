@@ -79,9 +79,10 @@ class Admin_IndexController extends Zend_Controller_Action
         $cont = $this->_getParam("cont"); // Controller
         $act = $this->_getParam("act"); // Action 
         $sec = $this->_getParam("sec"); // Menu Id
+		$mgroup = $this->_getParam("mgroup"); // Group ID
         
         $leftmenu = new Zend_Session_Namespace('leftmenuid');
-        $leftmenu->leftmenuid = $sec;
+        $leftmenu->leftmenuid = $mgroup;
         
         $this->_redirect('/'.$cont.'/'.$act.'');
         

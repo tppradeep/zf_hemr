@@ -1,11 +1,20 @@
 <?php
-
+/*
+ * 	  	@copyright Copyright (C) 2012  ZH Healthcare LCC
+ * 	  	Programmer : Pradeep.T.P
+ * 		Date of Coding : 20-July-2012
+ * 
+ * 		INFORMATION
+ * 
+ * 		following functions are general functions and using all over the project as per its requirements.
+ * 		Deleting a function may cause Error or malfunctioning in the project.
+ */
 class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 {
 
     protected $_name = 'hosted_facilities';
 
-	public function countrylist()
+	public function countrylist()// return all Code and Name of Country from country table
 	{
 		$db = Zend_Db_Table::getDefaultAdapter();
 		$select = $db->select()
@@ -13,7 +22,11 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 		->order('Name');
 		return $db->fetchAll($select);
 	}
-	public function resize($image, $width, $height)
+	/*
+	 * resize function using for image resizing. 
+	 * have to pass image full phyaical path, required width and height to resize
+	 */
+	public function resize($image, $width, $height) 
 	{
 		$origWidth = imagesx($image);
 		$origHeight = imagesy($image);
@@ -35,13 +48,13 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	
 		return $resized;
 	}
-	public function emptycartjunk()
+	public function emptycartjunk() // Removing the junk entries of cart. this is for non completing invoices. 
 	{
 	    $db = Zend_Db_Table::getDefaultAdapter();
 	     
 	    $row = $db->query("CALL empty_cart_junk()"); // Its a procedure call
 	}
-	public function userdetails($hf_id)
+	public function userdetails($hf_id) // Retrive User name and email based on hf_id
 	{
 	    $db = Zend_Db_Table::getDefaultAdapter();
 	    $select = $db->select()
@@ -55,37 +68,41 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	    $sql = "select Name from reseller_details where id='.$cusid.'";
 	    return $db->fetchOne($sql);
 	}
-	public function SpecialityList()
+	public function SpecialityList() // to list speciality name from db (for drop box etc)
 	{
 	    $db = Zend_Db_Table::getDefaultAdapter();
 	    $sql ="select sp_name from speciality where status=1 order by listing_order asc";
 	    return $db->fetchAll($sql);
 	}
-	public function listprice($idplan)
+	public function listprice($idplan) 
 	{
+	    /*
+	     * This function return the price of a plan. the listprice is a procedure.
+	     * Please check database to get the defenition
+	     */
 	    $db = Zend_Db_Table::getDefaultAdapter();
 	    $sql ='call listprice('.$idplan.')';
 	    return $db->fetchOne($sql);
 	}
-	public function statelist($countrycode)
+	public function statelist($countrycode) // retriving state list based on country.
 	{
 	    $db = Zend_Db_Table::getDefaultAdapter();
 	    $sql ='select State_name from state where Country_Code="'.$countrycode.'"';
 	    return $db->fetchAll($sql);
 	}
-	public function emailtemplate($template_sec)
+	public function emailtemplate($template_sec)// selecting the required email template to send email
 	{
 	    $db = Zend_Db_Table::getDefaultAdapter();
 	    $sql ='select Subject,content from email_template where template_sec="'.$template_sec.'"';
 	    return $db->fetchRow($sql);
 	}
-	public function ProductDetails($pid)
+	public function ProductDetails($pid) // function to retrive product details
 	{
 	    $db = Zend_Db_Table::getDefaultAdapter();
 	    $sql = "select product_feature from products where idproducts=".$pid;
 	    return $db->fetchRow($sql);
 	}
-	public function emailchecking($eid)
+	public function emailchecking($eid) // checking the entered email is existing or not
 	{
 	    $db = Zend_Db_Table::getDefaultAdapter();
 	    $sql ='select count(hf_id) as hf_id from hosted_facilities where hf_email="'.$eid.'"';
@@ -107,7 +124,7 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	        return 0;
 	    }
 	}
-	public function identifierchecking($identifier)
+	public function identifierchecking($identifier) // function checking the to find duplicate indentifier. Short name is the related field in the registration section
 	{
 	    
 	    $db = Zend_Db_Table::getDefaultAdapter();
@@ -139,11 +156,7 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	       
 	        	$client = new Zend_Soap_Client(null, $options);
 	        	$result = $client->check_existing($validarr);
-	        	//echo "<pre>";
-	        	//$result = (string)$result;
-	        //	echo $result;
-	        //	echo "</pre>";
-	        //	die;
+
 	       
         	if($result=='absent')
         	{
@@ -169,6 +182,9 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	    	exit;
 	    }
 	}
+	/*
+	 * retrive facility identifier by passing user id
+	 */
 	public function facilityidentifier($userid)
 	{
 	    $db = Zend_Db_Table::getDefaultAdapter();
@@ -176,12 +192,18 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	    $sql ='select hf_facility_identifier from hosted_facilities where hf_id='.$userid;
 	    return $db->fetchOne($sql);
 	}
+	/*
+	 * retrive facility email by passing id (hf_id) field
+	 */
 	public function facilityemail($hfid)
 	{
 	    $db = Zend_Db_Table::getDefaultAdapter();
 	    $sql ='select hf_email from hosted_facilities where hf_id='.$hfid;
 	    return $db->fetchOne($sql);
 	}
+	/*
+	 * retrive full identifier details by passing id
+	 */
 	public function identifierdetails($hf_id)
 	{
 	    $db = Zend_Db_Table::getDefaultAdapter();
@@ -189,7 +211,12 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	    $sql ='select hf_facility_suffix,hf_facility_name,hf_facility_lname,hf_email,hf_address,hf_state,hf_city,hf_zip,hf_country,reg_date from hosted_facilities where hf_id='.$hf_id;
 	    return $db->fetchRow($sql);
 	}
-	
+	/*
+	 * This function is used to add indication message to user section. for example
+	 * if we send email, this detail requried to list in the message section of user dashboard.
+	 * so, once send the email, the details has to update to this section. for this the following function is using
+	 * passing facility id, message subject and content of message as parameters.
+	 */
 	public function messageadd($hf_id,$subject,$message)
 	{
 	    $db = Zend_Db_Table::getDefaultAdapter();
@@ -199,6 +226,9 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	    
 	}
 	
+	/*
+	 * This function return the facility details by passing the email (user id)
+	 */
 	public function userdeatils_email($hfemail)
 	{
 		$db = Zend_Db_Table::getDefaultAdapter();
@@ -206,6 +236,9 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 		$sql ='select hf_id,hf_facility_suffix,hf_facility_name,hf_facility_lname,hf_address,hf_state,hf_city,hf_zip,hf_country,reg_date from hosted_facilities where hf_email="'.$hfemail.'"';
 		return $db->fetchRow($sql);
 	}
+	/*
+	 * return all products related emr details to view
+	 */
 	public function emrfeature()
 	{
 	    $db = Zend_Db_Table::getDefaultAdapter();
@@ -221,6 +254,9 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	    return $db->fetchOne($sql);
 	}
 	
+	/*
+	 * Generating unique password which is not generated earlier.
+	 */
 	public function generatepassword()
 	{
 	    $db = Zend_Db_Table::getDefaultAdapter();
@@ -232,7 +268,7 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	        $i=$db->fetchOne($sql);
 	         
 	    }while($i>0);
-		return substr(md5(rand().rand()), 0, 8);
+		return $randkey;
 	}
 	public function checkautonumer($no)
 	{
@@ -284,6 +320,18 @@ class Application_Model_DbTable_General extends Zend_Db_Table_Abstract
 	    $lval = $db->fetchOne($sql) + 1 ;
 	    $sql ='insert into speciality (sp_name,listing_order,status) values ("'.$hf_speciality.'",'.$lval.',0)';
 	    $db->query($sql);
+	}
+	public function activedbserver()
+	{
+	    $db = Zend_Db_Table::getDefaultAdapter();
+	    $sql ='select db_name from db_server where status=1';
+	    return $db->fetchOne($sql);
+	}
+	public function activebackupdbserver()
+	{
+		$db = Zend_Db_Table::getDefaultAdapter();
+		$sql ='select db_name from backup_db_server where status=1';
+		return $db->fetchOne($sql);
 	}
 }
 

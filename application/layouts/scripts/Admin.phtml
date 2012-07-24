@@ -27,14 +27,24 @@ echo $this->doctype();
 <script language="javascript" src="<?php echo $this->baseUrl().'/js/thickbox.js';?>"></script>
 <script language="javascript" src="<?php echo $this->baseUrl().'/js/jquery.corner.js';?>"></script>
 <script language="javascript" src="<?php echo $this->baseUrl().'/js/admin.js';?>"></script>
-
-<script language="javascript" src="<?php echo $this->baseUrl().'/js/jquery.accordion.js';?>"></script>
 <script language="javascript" src="<?php echo $this->baseUrl().'/js/jquery.expander.js';?>"></script>
+
+<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.core.js"></script>
+<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.widget.js"></script>
+<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.accordion.js"></script>
 
 
 
 <link rel="stylesheet" type="text/css" media="all" href="<?php echo $this->baseUrl();?>/css/jquery.modalbox-basic.css" />
 <link rel="stylesheet" type="text/css" media="all" href="<?php echo $this->baseUrl();?>/css/jquery.modalbox.css" />
+<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/themes/base/jquery.ui.all.css">
+<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/demo/demos.css">
+
+<?php 
+$leftmenu = new Zend_Session_Namespace('leftmenuid');
+if($leftmenu->leftmenuid=='')
+    $leftmenu->leftmenuid=10;
+?>
 <script type="text/javascript">
 /* <![CDATA[ */
 	var pageType 	= "Modalbox";
@@ -42,20 +52,10 @@ echo $this->doctype();
 	var isLocalhost = false;
 	
 	$('#details').corner("round");
-	$('#leftmenu').corner("bite");
+//	$('#leftmenu').corner("bite");
 	//$('#con_mess').corner("Bevel");
 
 	
-	jQuery().ready(function(){
-		jQuery('#list3').accordion({ 
-		    header: 'div.title', 
-		    active: false, 
-		    alwaysOpen: false, 
-		    animated: false, 
-		    autoHeight: false 
-		});
-	});
-
 	$(document).ready(function() {
 		  $('div.features').expander({
 		    slicePoint: 30,
@@ -65,7 +65,12 @@ echo $this->doctype();
 		    userCollapseText: '[^]'
 		  });
 		});
-	
+	$(function() {
+		$( "#accordion" ).accordion({
+			collapsible: false,
+			active:<?php echo $leftmenu->leftmenuid;?>
+		});
+	});
 /* ]]> */
 </script>
 <script src="<?php echo $this->baseUrl();?>/js/modelbox.js"></script>

@@ -96,18 +96,7 @@ echo $this->leftmenu(); // Adding admin side Left Side Menu
  <div id="dialog-confirm" title="Delete Record?">
 	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
 </div>
-<?php 
-if($this->st<>"")
-{
-?>
- <div id="con_mess">
- <?php
 
- if($this->st=="2") echo "Record Updated Successfully";
- 
- ?>
-     </div>
-     <?php }?>
 <div class="addnew">
     <?php echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'Faq','action'=>'add'),0,true).'" class="add">';?>
     Add New FAQ

@@ -120,6 +120,7 @@
           <dbTableFile dbTableName="Services"/>
           <dbTableFile dbTableName="Forgotpassword"/>
           <dbTableFile dbTableName="Resetpassword"/>
+          <dbTableFile dbTableName="DBserver"/>
         </dbTableDirectory>
       </modelsDirectory>
       <modulesDirectory>
@@ -263,6 +264,20 @@
               <actionMethod actionName="index"/>
               <actionMethod actionName="update"/>
             </controllerFile>
+            <controllerFile controllerName="DBserver">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="add"/>
+              <actionMethod actionName="edit"/>
+              <actionMethod actionName="delete"/>
+              <actionMethod actionName="deleteall"/>
+            </controllerFile>
+            <controllerFile controllerName="Bkpdbserver">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="add"/>
+              <actionMethod actionName="edit"/>
+              <actionMethod actionName="delete"/>
+              <actionMethod actionName="deleteall"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
           <layoutsDirectory enabled="false">
@@ -290,6 +305,8 @@
               <dbTableFile dbTableName="Faq"/>
               <dbTableFile dbTableName="Email"/>
               <dbTableFile dbTableName="Paypal"/>
+              <dbTableFile dbTableName="DBserver"/>
+              <dbTableFile dbTableName="Bkpdbserver"/>
             </dbTableDirectory>
           </modelsDirectory>
           <viewsDirectory>
@@ -574,6 +591,36 @@
                 <viewScriptFile forActionName="deleteall"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Faq">
+                <viewScriptFile forActionName="deleteall"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="DBserver">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="DBserver">
+                <viewScriptFile forActionName="add"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="DBserver">
+                <viewScriptFile forActionName="edit"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="DBserver">
+                <viewScriptFile forActionName="delete"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="DBserver">
+                <viewScriptFile forActionName="deleteall"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Bkpdbserver">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Bkpdbserver">
+                <viewScriptFile forActionName="add"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Bkpdbserver">
+                <viewScriptFile forActionName="edit"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Bkpdbserver">
+                <viewScriptFile forActionName="delete"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Bkpdbserver">
                 <viewScriptFile forActionName="deleteall"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>

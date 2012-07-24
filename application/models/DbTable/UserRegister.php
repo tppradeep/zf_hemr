@@ -15,6 +15,18 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		 * Checking the any other databse is created with given facility name in mysql schema
 		 * Query : SELECT count(SCHEMA_NAME) FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'test';
 		 */
+		
+		
+		/*
+		 * fetching active db server and backup db server details
+		 * 
+		 */
+		
+		$gndb = new Application_Model_DbTable_General();
+		
+		$dbserver = $gndb->activedbserver();
+		$backupserver = $gndb->activebackupdbserver();
+		
 		$mailuserpwd = $dashboard_password;
 		$dashboard_password = sha1($dashboard_password);
 		$data = array(
@@ -36,7 +48,10 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 				'hf_fax' => $hf_fax,
 				'hf_tax_id' => $hf_tax_id,
 				'hf_npi' => $hf_npi,
-		        'reg_date'=>date('Y-m-d')
+		        'reg_date'=>date('Y-m-d'),
+		        'hosted_server'=>$dbserver,
+		        'db_server'=>$dbserver,
+		        'backup_db_server'=>$backupserver
 		);
 		
 		$sc = Zend_Db_Table::getDefaultAdapter();
@@ -70,13 +85,15 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 			exit;
 		}
 		
-///////////////////////////////////////////////////////////		
+         //////////////////////////////////////////////////////////		
 		$numRows = $db->insert('hosted_facilities', $data);
+		//die;
 		$uid=$db->lastInsertId();
 		
 		$sess = new Zend_Session_Namespace('user');
 		$sess->duser = $row['hf_email'];
 		$sess->hf_id = $uid;
+		
 		
 		$data = array(
 				'hf_id' => $uid,
@@ -131,6 +148,14 @@ class Application_Model_DbTable_UserRegister extends Zend_Db_Table_Abstract
 		    
 		}
 		
+		
+		if($apid=='')
+		{
+		   
+		    $sess = new Zend_Session_Namespace('user');
+		    $sess->step='compare';
+		    return $uid;
+		}
 		return $this->InsertCart($apid,$id,$uid);
 		//die;
 		/*

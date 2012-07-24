@@ -1,4 +1,4 @@
-<?
+<?php
 require_once 'Zend/Acl.php';
 $acl = new Zend_Acl();
 

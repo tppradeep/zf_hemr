@@ -16,6 +16,7 @@ class PlanListController extends Zend_Controller_Action
     public function listplanAction()
     {
         
+       
         $cmsObj = new Application_Model_DbTable_Index();
         $this->view->cms = $cmsObj->getcms('Plan List Page');
         
@@ -40,6 +41,7 @@ class PlanListController extends Zend_Controller_Action
 		
 	
 		$PaymentDetails = $planname->productdetails($pid); 
+		
 		
 		foreach($PaymentDetails as $PD)
 		{
@@ -79,7 +81,7 @@ class PlanListController extends Zend_Controller_Action
     public function compareplansAction()
     {
        // $this->_helper->layout->setLayout('user_noright'); 
-        
+       
        
         $allplans = new Application_Model_DbTable_PlanList();
         $this->view->allplans = $allplans->allplans();
@@ -88,7 +90,7 @@ class PlanListController extends Zend_Controller_Action
         $this->view->cms = $cmsObj->getcms('Compare Plans');
             
         $this->view->cmssupport = $cmsObj->getcms('ZHOpen EMR Support Scope');
-        
+       
     }
 
     public function productdtd($pid)

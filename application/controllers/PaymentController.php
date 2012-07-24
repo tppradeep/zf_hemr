@@ -392,6 +392,10 @@ class PaymentController extends Zend_Controller_Action
 	        $this->view->hfdata = $Gndb->identifierdetails($hf_id);
 	    	$formData = $this->getRequest()->getParams();
 	    	$this->view->formdata = $formData;
+	    	
+	    	
+	    	$paydb = new Application_Model_DbTable_Paymentdb();
+	    	$paydb->updatecartwithinvoice($formData['item_number']);
         }
         else
         {

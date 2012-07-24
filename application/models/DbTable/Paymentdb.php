@@ -319,7 +319,7 @@ class Application_Model_DbTable_Paymentdb extends Zend_Db_Table_Abstract
 					 
 			$cart_invoice_data=array('invoice_no'=>$invoice_number);
 			$ses = session_id();
-			$db->update('cart',$cart_invoice_data,'cartsession="'.$ses.'"');
+		//	$db->update('cart',$cart_invoice_data,'cartsession="'.$ses.'"');
 
 		return $invoice_number;
 	}
@@ -503,6 +503,17 @@ class Application_Model_DbTable_Paymentdb extends Zend_Db_Table_Abstract
 	    $db=Zend_Db_Table::getDefaultAdapter();
 	    $sql = 'select * from paypal_setting where status=1';
 	    return $db->fetchRow($sql);
+	}
+	
+	public function updatecartwithinvoice($invoice_number)
+	{
+	    $db=Zend_Db_Table::getDefaultAdapter();
+	    $cart_invoice_data=array('invoice_no'=>$invoice_number);
+	    $ses = session_id();
+	    $db->update('cart',$cart_invoice_data,'cartsession="'.$ses.'"');
+	    
+	   $sql = 'delete from customer_invoice where cartsessionid="'.$ses.'" and invoice_number <> "'.$invoice_number.'"';
+	   $db->query($sql);
 	}
 	
 	

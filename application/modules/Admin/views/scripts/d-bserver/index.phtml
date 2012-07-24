@@ -1,0 +1,172 @@
+	<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/themes/base/jquery.ui.all.css">
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/external/jquery.bgiframe-2.1.2.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.core.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.widget.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.mouse.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.button.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.draggable.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.position.js"></script>
+	<script src="<?php echo $this->baseUrl();?>/jquery/db/ui/jquery.ui.dialog.js"></script>
+	<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/jquery/db/demo/demos.css">
+	
+	
+		
+	<script>
+	$(function() {
+		$("#dialog-confirm").addClass("hidevisible");  
+		});
+	
+	
+	function del(delid)
+	{
+		$(function() {
+		$( "#dialog-confirm" ).addClass("shovisible");
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+			$( "#dialog-confirm" ).dialog({
+				resizable: false,
+				height:180,
+				modal: true,
+				buttons: {
+					"Delete all items": function() {
+						$( this ).dialog( "close" );
+						window.location.href="<?php echo $this->baseUrl();?>/Admin/DBserver/delete/id/"+delid+"";
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		});
+	}
+	function delall()
+	{
+		delid = document.getElementById("t").value;
+		$(function() {
+		$( "#dialog-confirm" ).addClass("shovisible");
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+			$( "#dialog-confirm" ).dialog({
+				resizable: false,
+				height:180,
+				modal: true,
+				buttons: {
+					"Delete all items": function() {
+						$( this ).dialog( "close" );
+						window.location.href="<?php echo $this->baseUrl();?>/Admin/DBserver/deleteall/id/"+delid+"";
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		});
+	}
+	function updateme()
+	{
+			var oTable = $('#grid').dataTable();  
+			if($('#check_all').attr('checked')=='checked')
+			{
+				$('input', oTable.fnGetNodes()).attr('checked',true);
+			}
+			else
+			{
+				$('input', oTable.fnGetNodes()).attr('checked',false);
+			}
+		updateTextArea();
+	}
+	
+	function updateTextArea() {         
+		 var allVals = [];
+		 $(':checked').each(function() {
+			 
+			  if (this.checked) {
+				allVals.push($(this).val());
+	
+		  }
+	
+		 });
+		 $('#t').val(allVals)
+	  }
+
+	</script>
+<?php
+echo $this->leftmenu(); // Adding admin side Left Side Menu
+?>
+
+<div id="right_panel">
+ <div id="dialog-confirm" title="Delete Record?">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+<?php 
+if($this->st<>"")
+{
+?>
+ <div id="con_mess">
+ <?php
+
+ if($this->st=="2") echo "Record Updated Successfully";
+ 
+ ?>
+     </div>
+     <?php }?>
+<div class="addnew">
+    <?php echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'DBserver','action'=>'add'),0,true).'" class="add">';?>
+    Add New Server
+    <?php echo "</a>";?>
+</div>
+   
+<table width="100%" border="0" cellpadding="0" cellspacing="3" id="grid">
+  <thead>
+  <tr>
+   <td align="center" nowrap="nowrap" class="invoice-table-title b table-head-bg white"><input type="checkbox" id="check_all" name="check_all" value='0' onclick="updateme()" /> <?php echo "<img src='".$this->baseUrl()."/images/delete.gif' alt='Delete' title='Delete' onClick='delall()' style='cursor:pointer;'/>"; ?></td>
+    <td width="5%" height="20" align="center" class="invoice-table-title b table-head-bg white">#</td>
+    <td align="left" class="b table-head-bg">Server Name</td>
+    <td align="center" class=" b table-head-bg">Status</td>
+    <td class=" b table-head-bg">Options</td>
+  </tr>
+  </thead>
+  <tbody>
+  <?php 
+  $sino=1;
+  //$currency = new Zend_Currency();
+  foreach($this->serverlist as $slist)
+  {
+  ?>
+  <tr>
+   <td class="normal-text  line" align="center"><input type="checkbox" name="hf_id" id="hf_id" value="<?php echo base64_encode($slist['id']);?>" onclick="updateTextArea()" /></td>
+    <td height="22" class="normal-text  shadowlight line" align="center"><?php echo $sino;?>.</td>
+    <td class="normal-text shadowlight line" align="left"><?php echo $slist['db_name'];?></td>
+    <td class="normal-text shadowlight line" align="center"><?php
+    echo($slist['status'])?'<img src="'.$this->baseUrl().'/images/active.png" alt="Active" title="Active"/>':'<img src="'.$this->baseUrl().'/images/disable.png" alt="Disabled" title="Disabled"/>';
+    ?></td>
+    
+    <td class="normal-text line" align="center" nowrap="nowrap">
+ <?php 
+    
+    
+    echo '<a href="'.$this->url(array('module'=>'Admin','controller'=>'DBserver','action'=>'edit', 'id'=>$this->Ecode($slist['id'])),0,true).'">';
+    echo "<img src='".$this->baseUrl()."/images/edit.png' alt='Edit' title='Edit'  style='cursor:pointer;' />";
+    echo '</a>&nbsp;';
+       	echo "<img src='".$this->baseUrl()."/images/delete.gif' alt='Delete' title='Delete' onClick='del(".$slist['id'].")'   style='cursor:pointer;'/>";
+    ?>
+    </td>
+  </tr>
+  <?php 
+  $sino = ++$sino;
+  }
+  ?>
+  </tbody>
+</table>
+<input name="t" id="t" type="hidden" />
+
+  </div>
+ <script type="text/javascript">
+                //<![CDATA[
+ $(document).ready(function() {
+	    oTable = $('#grid').dataTable({
+	        "bJQueryUI": true,
+	        "sPaginationType": "full_numbers",
+			"aoColumnDefs": [{ 'bSortable': false, 'aTargets': [ 0,1,4] }]
+	    });
+	} );
+                //]]>
+                </script>
